@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Career Master Portal</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and Babel for In-Browser JSX -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .animate-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        // Manual Lucide Icon Mapping for CDN usage
+        const Icon = ({ name, size = 18, className = "" }) => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, [name]);
+            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
+        };
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('map');
+
+            const careerData = [
+                {
+                    level: "Level 1: Entry (0-2 Years)",
+                    desc: "Monitoring, Hygiene & Foundations",
+                    salary: "$55k - $85k",
+                    tracks: [
+                        {
+                            name: "Defensive",
+                            icon: "shield",
+                            color: "border-[#27DEF2] text-[#27DEF2]",
+                            roles: ["Junior SOC Analyst", "Email Security Analyst", "IAM Provisioner"],
+                            certs: "Security+, BTL1, AZ-900"
+                        },
+                        {
+                            name: "Offensive",
+                            icon: "zap",
+                            color: "border-[#FF5347] text-[#FF5347]",
+                            roles: ["Junior PenTester", "OSINT Specialist", "Vulnerability Scout"],
+                            certs: "eJPT, PenTest+"
+                        },
+                        {
+                            name: "Strategic",
+                            icon: "scale",
+                            color: "border-[#564887] text-[#564887]",
+                            roles: ["Junior GRC Analyst", "Policy Writer", "Privacy Assistant"],
+                            certs: "Security+, ISACA ITCA"
+                        }
+                    ]
+                },
+                {
+                    level: "Level 2: Intermediate (2-5 Years)",
+                    desc: "Specialized Investigation & Technical Execution",
+                    salary: "$90k - $140k",
+                    tracks: [
+                        {
+                            name: "Defensive",
+                            icon: "fingerprint",
+                            color: "border-[#27DEF2] text-[#27DEF2]",
+                            roles: ["Incident Responder", "Malware Analyst", "ICS/SCADA Analyst"],
+                            certs: "CySA+, GCIH, GICSP"
+                        },
+                        {
+                            name: "Offensive",
+                            icon: "target",
+                            color: "border-[#FF5347] text-[#FF5347]",
+                            roles: ["Ethical Hacker", "API Security Tester", "Social Engineer"],
+                            certs: "OSCP, CRT"
+                        },
+                        {
+                            name: "Specialized",
+                            icon: "brain",
+                            color: "border-[#05F283] text-[#05F283]",
+                            roles: ["AI Security Engineer", "Data Privacy Officer (DPO)", "DevSecOps"],
+                            certs: "CIPP, AI-102, CASE"
+                        }
+                    ]
+                },
+                {
+                    level: "Level 3: Advanced (5-8 Years)",
+                    desc: "Architecture, Design & Red Teaming",
+                    salary: "$145k - $190k",
+                    tracks: [
+                        {
+                            name: "Defensive",
+                            icon: "database",
+                            color: "border-[#27DEF2] text-[#27DEF2]",
+                            roles: ["Security Architect", "Detection Engineer", "Purple Team Lead"],
+                            certs: "CISSP, CASP+, GCFA"
+                        },
+                        {
+                            name: "Offensive",
+                            icon: "cpu",
+                            color: "border-[#FF5347] text-[#FF5347]",
+                            roles: ["Red Team Operator", "Exploit Developer", "Adversary Lead"],
+                            certs: "OSWE, GXPN, OSEP"
+                        },
+                        {
+                            name: "Strategic",
+                            icon: "globe",
+                            color: "border-[#564887] text-[#564887]",
+                            roles: ["Risk Manager", "Compliance Director", "BCP Planner"],
+                            certs: "CISM, CISA, CRISC"
+                        }
+                    ]
+                }
+            ];
+
+            return (
+                <div className="min-h-screen pb-20">
+                    {/* Header Section */}
+                    <div className="bg-[#002b56] text-white pt-16 pb-24 px-6 text-center relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-2 flex">
+                            <div className="flex-1 bg-[#05F283]" />
+                            <div className="flex-1 bg-[#564887]" />
+                            <div className="flex-1 bg-[#27DEF2]" />
+                        </div>
+                        <div className="max-w-4xl mx-auto relative z-10">
+                            <h1 className="text-4xl md:text-6xl font-bold mb-4">Cybersecurity Career <span className="text-[#05F283]">Master Portal</span></h1>
+                            <p className="text-lg md:text-xl text-slate-300">The Ultimate 2025 Graduation Roadmap: From Foundations to Leadership.</p>
+                        </div>
+                    </div>
+
+                    {/* Navigation Tabs */}
+                    <div className="max-w-6xl mx-auto -mt-10 px-6">
+                        <div className="bg-white rounded-xl shadow-2xl p-2 flex flex-wrap gap-2">
+                            <button 
+                                onClick={() => setActiveTab('map')}
+                                className={`flex-1 min-w-[150px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'map' ? 'bg-[#002b56] text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+                            >
+                                <Icon name="trending-up" /> Career Map
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('benchmarks')}
+                                className={`flex-1 min-w-[150px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'benchmarks' ? 'bg-[#002b56] text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+                            >
+                                <Icon name="calculator" /> Salary & Certs
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('specialties')}
+                                className={`flex-1 min-w-[150px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'specialties' ? 'bg-[#002b56] text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+                            >
+                                <Icon name="brain" /> AI & Privacy
+                            </button>
+                        </div>
+                    </div>
+
+                    <main className="max-w-7xl mx-auto mt-12 px-6">
+                        {activeTab === 'map' && (
+                            <div className="space-y-12 animate-in">
+                                {careerData.map((lvl, idx) => (
+                                    <div key={idx}>
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-12 h-12 rounded-full bg-[#002b56] text-[#05F283] flex items-center justify-center font-bold text-xl shadow-lg">
+                                                {idx + 1}
+                                            </div>
+                                            <div>
+                                                <h2 className="text-2xl font-bold text-[#002b56]">{lvl.level}</h2>
+                                                <p className="text-slate-500 text-sm font-medium uppercase tracking-widest">{lvl.desc}</p>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            {lvl.tracks.map((track, tidx) => (
+                                                <div key={tidx} className={`bg-white p-6 rounded-2xl shadow-sm border-t-[6px] hover:shadow-xl transition-all ${track.color.split(' ')[0]}`}>
+                                                    <div className="flex items-center justify-between mb-4">
+                                                        <div className={`flex items-center gap-2 font-bold uppercase tracking-tighter ${track.color.split(' ')[1]}`}>
+                                                            <Icon name={track.icon} /> {track.name}
+                                                        </div>
+                                                        <span className="text-[10px] bg-slate-100 px-2 py-1 rounded text-slate-500 font-bold tracking-widest uppercase">TRACK</span>
+                                                    </div>
+                                                    <div className="space-y-3 mb-6">
+                                                        {track.roles.map(r => (
+                                                            <div key={r} className="flex items-center gap-2 group">
+                                                                <Icon name="chevron-right" size={14} className="text-[#05F283]" />
+                                                                <span className="text-sm font-semibold text-slate-700">{r}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="pt-4 border-t border-slate-100">
+                                                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Key Certifications</p>
+                                                        <span className="text-[11px] font-bold bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-600">{track.certs}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {activeTab === 'benchmarks' && (
+                            <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-in">
+                                <div className="bg-[#564887] p-8 text-white">
+                                    <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
+                                        <Icon name="award" size={24} /> Global Career Benchmarks
+                                    </h2>
+                                    <p className="opacity-80">Estimated 2025/2026 tiers based on industry demand.</p>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left">
+                                        <thead>
+                                            <tr className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest border-b">
+                                                <th className="p-6">Level</th>
+                                                <th className="p-6">Experience</th>
+                                                <th className="p-6">Primary Focus</th>
+                                                <th className="p-6 text-right">Target Salary (USD)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="text-sm">
+                                            {careerData.concat({
+                                                level: "Level 4: Leadership",
+                                                desc: "Strategy, Governance & Resilience",
+                                                salary: "$200k - $450k+"
+                                            }).map((item, i) => (
+                                                <tr key={i} className="border-b last:border-0 hover:bg-slate-50">
+                                                    <td className="p-6 font-bold text-[#002b56]">{item.level}</td>
+                                                    <td className="p-6 text-slate-600 font-medium">{i === 0 ? "0-2 Yrs" : i === 1 ? "2-5 Yrs" : i === 2 ? "5-8 Yrs" : "8+ Yrs"}</td>
+                                                    <td className="p-6 text-slate-500">{item.desc}</td>
+                                                    <td className="p-6 text-right font-black text-[#564887]">{item.salary}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'specialties' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in">
+                                <div className="bg-white rounded-3xl p-8 shadow-xl border-l-[10px] border-[#05F283]">
+                                    <div className="w-16 h-16 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6">
+                                        <Icon name="brain" size={32} />
+                                    </div>
+                                    <h2 className="text-3xl font-bold text-[#002b56] mb-4">AI Security Engineer</h2>
+                                    <p className="text-slate-600 mb-6 leading-relaxed">Focuses on adversarial machine learning and secure LLM integration.</p>
+                                    <div className="space-y-4">
+                                        <div className="p-4 bg-slate-50 rounded-xl">
+                                            <h4 className="font-bold flex items-center gap-2"><Icon name="arrow-right" size={16} className="text-[#05F283]"/> LLM Red Teaming</h4>
+                                            <p className="text-xs text-slate-500">Prompt Injection & Data Poisoning testing.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="bg-white rounded-3xl p-8 shadow-xl border-l-[10px] border-[#564887]">
+                                    <div className="w-16 h-16 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6">
+                                        <Icon name="lock" size={32} />
+                                    </div>
+                                    <h2 className="text-3xl font-bold text-[#002b56] mb-4">Data Privacy Officer</h2>
+                                    <p className="text-slate-600 mb-6 leading-relaxed">The legal gatekeeper for GDPR, NDPR, and data ethics.</p>
+                                    <div className="p-4 bg-slate-50 rounded-xl">
+                                        <h4 className="font-bold flex items-center gap-2"><Icon name="arrow-right" size={16} className="text-[#564887]"/> Privacy Impact Assessments</h4>
+                                        <p className="text-xs text-slate-500">Auditing product rollouts for data law compliance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Skill Pivot Footer */}
+                    <div className="max-w-6xl mx-auto mt-20 px-6">
+                        <div className="bg-[#002b56] rounded-3xl p-10 text-white flex flex-col md:flex-row gap-10 items-center border-b-8 border-[#05F283]">
+                            <div className="flex-1">
+                                <h3 className="text-3xl font-bold mb-4">The "Skill Pivot" Logic</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                    <div className="p-4 border border-white/10 rounded-xl">
+                                        <p className="text-[#05F283] font-bold mb-1">Defense → Offense</p>
+                                        <p className="opacity-70">SOC Analysts know what 'noise' looks like, making them elite stealthy hackers.</p>
+                                    </div>
+                                    <div className="p-4 border border-white/10 rounded-xl">
+                                        <p className="text-[#27DEF2] font-bold mb-1">Offense → Strategy</p>
+                                        <p className="opacity-70">Pentesters make the best GRC Leads because they know which policies fail.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full md:w-1/3 p-6 bg-white/5 rounded-2xl text-center">
+                                <p className="text-xl font-bold text-[#05F283]">Never Stop Adapting.</p>
+                                <p className="text-sm opacity-60">Graduating Class of 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
