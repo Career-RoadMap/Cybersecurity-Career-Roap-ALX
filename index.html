@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALX Cybersecurity Career Master Portal</title>
+    <title>ALX Cybersecurity Career & Business Portal</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,35 +22,38 @@
             overflow-x: hidden;
             background-color: #f8fafc;
         }
-        .animate-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Watermark Background - Increased visibility and fixed path */
+        /* Watermark Background - Matching uploaded filename exactly */
         .watermark {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-15deg);
-            opacity: 0.08; /* Increased from 0.04 to be visible */
+            opacity: 0.08;
             z-index: -10;
             width: 60vw;
             pointer-events: none;
             filter: grayscale(100%);
         }
 
-        /* Content safety for watermark */
-        .relative-content {
-            position: relative;
-            z-index: 10;
+        .tab-content {
+            min-height: 500px;
         }
 
-        .tab-content {
-            min-height: 450px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #002b56; border-radius: 10px; }
+        
+        .nav-button {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
 <body class="text-slate-900">
-    <!-- Background Watermark - Spaces in filename replaced with %20 for browser compatibility -->
+    <!-- Background Watermark - Black Logo -->
     <img src="Alx%20black%20transparent.png" alt="" class="watermark">
 
     <div id="root"></div>
@@ -155,47 +158,90 @@
                 }
             ];
 
+            const businessData = [
+                {
+                    tier: "Phase 1: Knowledge Services (Entry)",
+                    roles: [
+                        { title: "Security Awareness Training", desc: "Selling corporate workshops and phishing simulations to local firms." },
+                        { title: "Cyber Content Creator", desc: "Building a brand via YouTube, technical newsletters, or niche courses." },
+                        { title: "SMB Security Auditor", desc: "Affordable basic hygiene checks (MFA, Backups) for small businesses." }
+                    ]
+                },
+                {
+                    tier: "Phase 2: Technical Agency (Growth)",
+                    roles: [
+                        { title: "Managed GRC Agency", desc: "Helping startups achieve ISO 27001, GDPR, or NDPR compliance." },
+                        { title: "Vulnerability Management as a Service", desc: "Monthly scanning and remediation reporting for flat-fee retainers." },
+                        { title: "Incident Response Freelancing", desc: "Providing emergency on-call support for mid-size organizations." }
+                    ]
+                },
+                {
+                    tier: "Phase 3: Elite Consultancy (Mastery)",
+                    roles: [
+                        { title: "vCISO (Virtual CISO)", desc: "strategic security leadership for multiple tech startups simultaneously." },
+                        { title: "AI Integrity Auditing", desc: "Evaluating LLM implementations for data leakage and prompt injection." },
+                        { title: "Bespoke MSSP", desc: "Building a specialized mini-SOC to monitor critical client networks 24/7." }
+                    ]
+                }
+            ];
+
             return (
-                <div className="min-h-screen relative-content">
-                    {/* Condensed Header - Prevent Nav Overlap */}
-                    <div className="bg-[#002b56] text-white pt-6 pb-12 px-6 text-center relative overflow-hidden shadow-md">
+                <div className="min-h-screen relative z-10 flex flex-col">
+                    {/* Compact Branded Header - Fixed visibility for logo */}
+                    <div className="bg-[#002b56] text-white pt-4 pb-10 px-6 text-center relative overflow-hidden border-b border-white/5">
                         <div className="absolute top-0 left-0 w-full h-1.5 flex">
                             <div className="flex-1 bg-[#05F283]" />
                             <div className="flex-1 bg-[#564887]" />
                             <div className="flex-1 bg-[#27DEF2]" />
                         </div>
                         
-                        <div className="max-w-4xl mx-auto relative z-10">
-                            <h1 className="text-2xl md:text-4xl font-bold mb-1 tracking-tight">ALX Cybersecurity <span className="text-[#05F283]">Career Master Portal</span></h1>
-                            <p className="text-xs md:text-base text-slate-400 font-light">Class of 2026 Graduation Roadmap</p>
+                        <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
+                            {/* White Logo - Exact filename from prompt */}
+                            <img 
+                                src="alx%20white%20tranparent.png" 
+                                alt="ALX Logo" 
+                                className="h-10 md:h-12 mb-3 object-contain"
+                                onError={(e) => {
+                                    e.target.onerror = null; 
+                                    e.target.src = "https://via.placeholder.com/100x40/002b56/ffffff?text=ALX";
+                                }}
+                            />
+                            <h1 className="text-xl md:text-3xl font-bold tracking-tight">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
+                            <p className="text-[9px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.3em] mt-1">Class of 2026 Graduation Roadmap</p>
                         </div>
                     </div>
 
-                    {/* Navigation Tabs - High Visibility Positioning */}
-                    <div className="max-w-6xl mx-auto -mt-6 px-6 relative z-30">
-                        <div className="bg-white rounded-xl shadow-2xl p-1.5 flex flex-wrap gap-2 border border-slate-200">
+                    {/* Navigation Tabs - High Visibility */}
+                    <div className="max-w-6xl mx-auto -mt-6 px-6 relative z-30 w-full">
+                        <div className="bg-white rounded-xl shadow-2xl p-1.5 flex flex-wrap gap-1.5 border border-slate-200">
                             <button 
                                 onClick={() => setActiveTab('map')}
-                                className={`flex-1 min-w-[130px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'map' ? 'bg-[#002b56] text-white shadow-lg scale-105' : 'hover:bg-slate-100 text-slate-500'}`}
+                                className={`flex-1 min-w-[110px] nav-button py-2.5 px-3 rounded-lg font-bold flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'map' ? 'bg-[#002b56] text-white shadow-lg' : 'hover:bg-slate-50 text-slate-500'}`}
                             >
-                                <Icon name="trending-up" size={16} /> Career Map
+                                <Icon name="trending-up" size={14} /> Map
                             </button>
                             <button 
                                 onClick={() => setActiveTab('benchmarks')}
-                                className={`flex-1 min-w-[130px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'benchmarks' ? 'bg-[#002b56] text-white shadow-lg scale-105' : 'hover:bg-slate-100 text-slate-500'}`}
+                                className={`flex-1 min-w-[110px] nav-button py-2.5 px-3 rounded-lg font-bold flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'benchmarks' ? 'bg-[#002b56] text-white shadow-lg' : 'hover:bg-slate-50 text-slate-500'}`}
                             >
-                                <Icon name="calculator" size={16} /> Salary & Certs
+                                <Icon name="calculator" size={14} /> Benchmarks
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('biz')}
+                                className={`flex-1 min-w-[110px] nav-button py-2.5 px-3 rounded-lg font-bold flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'biz' ? 'bg-[#564887] text-white shadow-lg' : 'hover:bg-slate-50 text-slate-500'}`}
+                            >
+                                <Icon name="rocket" size={14} /> Business
                             </button>
                             <button 
                                 onClick={() => setActiveTab('specialties')}
-                                className={`flex-1 min-w-[130px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'specialties' ? 'bg-[#002b56] text-white shadow-lg scale-105' : 'hover:bg-slate-100 text-slate-500'}`}
+                                className={`flex-1 min-w-[110px] nav-button py-2.5 px-3 rounded-lg font-bold flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'specialties' ? 'bg-[#002b56] text-white shadow-lg' : 'hover:bg-slate-100 text-slate-500'}`}
                             >
-                                <Icon name="brain" size={16} /> AI & Privacy
+                                <Icon name="brain" size={14} /> AI & Privacy
                             </button>
                         </div>
                     </div>
 
-                    <main className="max-w-7xl mx-auto mt-12 px-6 tab-content">
+                    <main className="max-w-7xl mx-auto mt-10 px-6 tab-content flex-grow w-full">
                         {activeTab === 'map' && (
                             <div className="space-y-12 animate-in">
                                 {careerData.map((lvl, idx) => (
@@ -239,34 +285,34 @@
                         )}
 
                         {activeTab === 'benchmarks' && (
-                            <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden animate-in border border-slate-100">
-                                <div className="bg-[#564887] p-6 text-white">
-                                    <h2 className="text-2xl font-bold flex items-center gap-3">
-                                        <Icon name="award" size={24} /> Global Career Benchmarks
+                            <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden animate-in border border-slate-100 max-w-5xl mx-auto">
+                                <div className="bg-[#564887] p-6 text-white text-center">
+                                    <h2 className="text-2xl font-bold flex items-center justify-center gap-3">
+                                        <Icon name="award" size={24} /> Global Benchmarks
                                     </h2>
-                                    <p className="text-sm opacity-80 mt-1">2025/2026 Tier Estimates</p>
+                                    <p className="text-sm opacity-80 mt-1">Technical Tiers & Market Value 2025/2026</p>
                                 </div>
                                 <div className="overflow-x-auto">
-                                    <table className="w-full text-left">
+                                    <table className="w-full text-left text-sm">
                                         <thead>
                                             <tr className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest border-b">
-                                                <th className="p-4 md:p-6">Level</th>
-                                                <th className="p-4 md:p-6">Years</th>
-                                                <th className="p-4 md:p-6 hidden md:table-cell">Focus</th>
-                                                <th className="p-4 md:p-6 text-right">Salary (USD)</th>
+                                                <th className="p-4">Level</th>
+                                                <th className="p-4">Experience</th>
+                                                <th className="p-4 hidden md:table-cell">Core Focus</th>
+                                                <th className="p-4 text-right">Target Salary (USD)</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="text-sm">
+                                        <tbody>
                                             {careerData.concat({
                                                 level: "Level 4: Leadership",
-                                                desc: "Strategy & Resilience",
+                                                desc: "Governance & Strategy",
                                                 salary: "$200k - $450k+"
                                             }).map((item, i) => (
                                                 <tr key={i} className="border-b last:border-0 hover:bg-slate-50">
-                                                    <td className="p-4 md:p-6 font-bold text-[#002b56]">{item.level.split(':')[0]}</td>
-                                                    <td className="p-4 md:p-6 text-slate-600">{i === 0 ? "0-2" : i === 1 ? "2-5" : i === 2 ? "5-8" : "8+"}</td>
-                                                    <td className="p-4 md:p-6 text-slate-500 hidden md:table-cell text-xs">{item.desc}</td>
-                                                    <td className="p-4 md:p-6 text-right font-black text-[#564887]">{item.salary}</td>
+                                                    <td className="p-4 font-bold text-[#002b56]">{item.level.split(':')[0]}</td>
+                                                    <td className="p-4 text-slate-600">{i === 0 ? "0-2 Yrs" : i === 1 ? "2-5 Yrs" : i === 2 ? "5-8 Yrs" : "8+ Yrs"}</td>
+                                                    <td className="p-4 text-slate-500 hidden md:table-cell text-xs">{item.desc}</td>
+                                                    <td className="p-4 text-right font-black text-[#564887]">{item.salary}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -275,20 +321,52 @@
                             </div>
                         )}
 
+                        {activeTab === 'biz' && (
+                            <div className="space-y-8 animate-in max-w-6xl mx-auto">
+                                <div className="bg-gradient-to-r from-[#002b56] to-[#564887] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                                    <div className="relative z-10">
+                                        <h2 className="text-3xl font-bold mb-2">Cybersecurity Entrepreneurship</h2>
+                                        <p className="text-slate-200 max-w-xl">Don't just work for the industry—build it. From content creation to high-tier strategy agencies.</p>
+                                    </div>
+                                    <Icon name="rocket" size={120} className="absolute -right-10 -bottom-10 opacity-10 rotate-12" />
+                                </div>
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                    {businessData.map((tier, bidx) => (
+                                        <div key={bidx} className="bg-white/90 backdrop-blur-md rounded-2xl p-6 shadow-lg border-b-8 border-[#05F283]">
+                                            <h3 className="text-xs font-bold text-[#564887] uppercase tracking-widest mb-6 block border-b pb-2">{tier.tier}</h3>
+                                            <div className="space-y-6">
+                                                {tier.roles.map((role, ridx) => (
+                                                    <div key={ridx} className="group border-l-2 border-slate-100 pl-4 hover:border-[#05F283] transition-colors">
+                                                        <h4 className="font-bold text-[#002b56] text-sm md:text-base group-hover:text-[#564887]">{role.title}</h4>
+                                                        <p className="text-xs text-slate-500 leading-relaxed mt-1">{role.desc}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="p-6 bg-white border-2 border-dashed border-[#05F283] rounded-2xl text-center shadow-sm">
+                                    <p className="text-sm font-bold text-[#002b56]">Master the Skill. Package the Service. Secure the Future.</p>
+                                </div>
+                            </div>
+                        )}
+
                         {activeTab === 'specialties' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in max-w-5xl mx-auto">
                                 <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
                                     <div className="w-14 h-14 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6">
                                         <Icon name="brain" size={28} />
                                     </div>
                                     <h2 className="text-2xl font-bold text-[#002b56] mb-2">AI Security</h2>
-                                    <p className="text-sm text-slate-600 mb-6">Adversarial ML and LLM infrastructure defense.</p>
+                                    <p className="text-sm text-slate-600 mb-6">Securing the new world of LLMs and Automated Defense.</p>
                                     <div className="space-y-3">
-                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                            <h4 className="text-sm font-bold flex items-center gap-2"><Icon name="arrow-right" size={14} className="text-[#05F283]"/> LLM Red Teaming</h4>
+                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-white transition-colors">
+                                            <h4 className="text-sm font-bold flex items-center gap-2 text-[#002b56]"><Icon name="target" size={14} className="text-[#05F283]"/> LLM Red Teaming</h4>
+                                            <p className="text-[10px] text-slate-500 mt-1">Testing AI for prompt injections & model poisoning.</p>
                                         </div>
-                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                            <h4 className="text-sm font-bold flex items-center gap-2"><Icon name="arrow-right" size={14} className="text-[#05F283]"/> AI Anomaly Detection</h4>
+                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-white transition-colors">
+                                            <h4 className="text-sm font-bold flex items-center gap-2 text-[#002b56]"><Icon name="activity" size={14} className="text-[#05F283]"/> AI SIEM Operations</h4>
+                                            <p className="text-[10px] text-slate-500 mt-1">Building ML models to detect anomalies in real-time.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -296,26 +374,35 @@
                                     <div className="w-14 h-14 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6">
                                         <Icon name="lock" size={28} />
                                     </div>
-                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy</h2>
-                                    <p className="text-sm text-slate-600 mb-6">Global compliance and ethics (GDPR/NDPR).</p>
-                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                        <h4 className="text-sm font-bold flex items-center gap-2"><Icon name="arrow-right" size={14} className="text-[#564887]"/> Privacy Impact Assessments</h4>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy (DPO)</h2>
+                                    <p className="text-sm text-slate-600 mb-6">Ethical and legal gatekeeping in high-stakes environments.</p>
+                                    <div className="space-y-3">
+                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-white transition-colors">
+                                            <h4 className="text-sm font-bold flex items-center gap-2 text-[#002b56]"><Icon name="check-circle" size={14} className="text-[#564887]"/> Privacy Impact (PIA)</h4>
+                                            <p className="text-[10px] text-slate-500 mt-1">Regulatory auditing for global law compliance.</p>
+                                        </div>
+                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-white transition-colors">
+                                            <h4 className="text-sm font-bold flex items-center gap-2 text-[#002b56]"><Icon name="users" size={14} className="text-[#564887]"/> Subject Rights Lead</h4>
+                                            <p className="text-[10px] text-slate-500 mt-1">Managing user data access and erasure requests.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         )}
                     </main>
 
-                    {/* Simplified Footer */}
-                    <div className="max-w-6xl mx-auto mt-16 px-6">
-                        <div className="bg-[#002b56] rounded-3xl p-8 text-white flex flex-col md:flex-row gap-6 items-center border-b-8 border-[#05F283]">
+                    {/* Branded Footer */}
+                    <div className="max-w-6xl mx-auto mt-16 px-6 pb-12 w-full">
+                        <div className="bg-[#002b56] rounded-3xl p-8 text-white flex flex-col md:flex-row gap-8 items-center border-b-8 border-[#05F283] shadow-2xl">
                             <div className="flex-1 text-center md:text-left">
                                 <h3 className="text-xl font-bold mb-1 uppercase tracking-widest text-[#05F283]">Never Stop Adapting</h3>
-                                <p className="text-slate-400 text-xs italic">Graduating Class of 2026</p>
+                                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Graduating Class of 2026 • Ready to Launch</p>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 text-[10px] uppercase font-bold tracking-tighter">
-                                <div className="px-4 py-2 border border-white/20 rounded-lg bg-white/5">Defense → Offense</div>
-                                <div className="px-4 py-2 border border-white/20 rounded-lg bg-white/5">Offense → Strategy</div>
+                            <div className="flex items-center gap-6">
+                                <div className="text-right hidden sm:block">
+                                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Empowered By</p>
+                                </div>
+                                <img src="alx%20white%20tranparent.png" alt="ALX" className="h-8" />
                             </div>
                         </div>
                     </div>
