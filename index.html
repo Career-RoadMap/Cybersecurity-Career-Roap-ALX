@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Career Master Portal</title>
+    <title>ALX Cybersecurity Career Master Portal</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,20 +17,50 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden;
+            background-color: #f8fafc;
+        }
         .animate-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Watermark Background - Increased visibility and fixed path */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            opacity: 0.08; /* Increased from 0.04 to be visible */
+            z-index: -10;
+            width: 60vw;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        /* Content safety for watermark */
+        .relative-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab-content {
+            min-height: 450px;
+        }
     </style>
 </head>
-<body class="bg-[#f8fafc]">
+<body class="text-slate-900">
+    <!-- Background Watermark - Spaces in filename replaced with %20 for browser compatibility -->
+    <img src="Alx%20black%20transparent.png" alt="" class="watermark">
+
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
-        // Manual Lucide Icon Mapping for CDN usage
+        
         const Icon = ({ name, size = 18, className = "" }) => {
             useEffect(() => {
-                lucide.createIcons();
+                if (window.lucide) window.lucide.createIcons();
             }, [name]);
             return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
         };
@@ -126,78 +156,79 @@
             ];
 
             return (
-                <div className="min-h-screen pb-20">
-                    {/* Header Section */}
-                    <div className="bg-[#002b56] text-white pt-16 pb-24 px-6 text-center relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-2 flex">
+                <div className="min-h-screen relative-content">
+                    {/* Condensed Header - Prevent Nav Overlap */}
+                    <div className="bg-[#002b56] text-white pt-6 pb-12 px-6 text-center relative overflow-hidden shadow-md">
+                        <div className="absolute top-0 left-0 w-full h-1.5 flex">
                             <div className="flex-1 bg-[#05F283]" />
                             <div className="flex-1 bg-[#564887]" />
                             <div className="flex-1 bg-[#27DEF2]" />
                         </div>
+                        
                         <div className="max-w-4xl mx-auto relative z-10">
-                            <h1 className="text-4xl md:text-6xl font-bold mb-4">Cybersecurity Career <span className="text-[#05F283]">Master Portal</span></h1>
-                            <p className="text-lg md:text-xl text-slate-300">The Ultimate 2025 Graduation Roadmap: From Foundations to Leadership.</p>
+                            <h1 className="text-2xl md:text-4xl font-bold mb-1 tracking-tight">ALX Cybersecurity <span className="text-[#05F283]">Career Master Portal</span></h1>
+                            <p className="text-xs md:text-base text-slate-400 font-light">Class of 2026 Graduation Roadmap</p>
                         </div>
                     </div>
 
-                    {/* Navigation Tabs */}
-                    <div className="max-w-6xl mx-auto -mt-10 px-6">
-                        <div className="bg-white rounded-xl shadow-2xl p-2 flex flex-wrap gap-2">
+                    {/* Navigation Tabs - High Visibility Positioning */}
+                    <div className="max-w-6xl mx-auto -mt-6 px-6 relative z-30">
+                        <div className="bg-white rounded-xl shadow-2xl p-1.5 flex flex-wrap gap-2 border border-slate-200">
                             <button 
                                 onClick={() => setActiveTab('map')}
-                                className={`flex-1 min-w-[150px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'map' ? 'bg-[#002b56] text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+                                className={`flex-1 min-w-[130px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'map' ? 'bg-[#002b56] text-white shadow-lg scale-105' : 'hover:bg-slate-100 text-slate-500'}`}
                             >
-                                <Icon name="trending-up" /> Career Map
+                                <Icon name="trending-up" size={16} /> Career Map
                             </button>
                             <button 
                                 onClick={() => setActiveTab('benchmarks')}
-                                className={`flex-1 min-w-[150px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'benchmarks' ? 'bg-[#002b56] text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+                                className={`flex-1 min-w-[130px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'benchmarks' ? 'bg-[#002b56] text-white shadow-lg scale-105' : 'hover:bg-slate-100 text-slate-500'}`}
                             >
-                                <Icon name="calculator" /> Salary & Certs
+                                <Icon name="calculator" size={16} /> Salary & Certs
                             </button>
                             <button 
                                 onClick={() => setActiveTab('specialties')}
-                                className={`flex-1 min-w-[150px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 ${activeTab === 'specialties' ? 'bg-[#002b56] text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+                                className={`flex-1 min-w-[130px] py-3 px-4 rounded-lg font-bold transition-all flex items-center justify-center gap-2 text-xs md:text-sm ${activeTab === 'specialties' ? 'bg-[#002b56] text-white shadow-lg scale-105' : 'hover:bg-slate-100 text-slate-500'}`}
                             >
-                                <Icon name="brain" /> AI & Privacy
+                                <Icon name="brain" size={16} /> AI & Privacy
                             </button>
                         </div>
                     </div>
 
-                    <main className="max-w-7xl mx-auto mt-12 px-6">
+                    <main className="max-w-7xl mx-auto mt-12 px-6 tab-content">
                         {activeTab === 'map' && (
                             <div className="space-y-12 animate-in">
                                 {careerData.map((lvl, idx) => (
                                     <div key={idx}>
                                         <div className="flex items-center gap-4 mb-6">
-                                            <div className="w-12 h-12 rounded-full bg-[#002b56] text-[#05F283] flex items-center justify-center font-bold text-xl shadow-lg">
+                                            <div className="w-10 h-10 rounded-full bg-[#002b56] text-[#05F283] flex items-center justify-center font-bold text-lg shadow-md border border-white/20">
                                                 {idx + 1}
                                             </div>
                                             <div>
-                                                <h2 className="text-2xl font-bold text-[#002b56]">{lvl.level}</h2>
-                                                <p className="text-slate-500 text-sm font-medium uppercase tracking-widest">{lvl.desc}</p>
+                                                <h2 className="text-xl md:text-2xl font-bold text-[#002b56]">{lvl.level}</h2>
+                                                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{lvl.desc}</p>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                             {lvl.tracks.map((track, tidx) => (
-                                                <div key={tidx} className={`bg-white p-6 rounded-2xl shadow-sm border-t-[6px] hover:shadow-xl transition-all ${track.color.split(' ')[0]}`}>
+                                                <div key={tidx} className={`bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-sm border-t-[6px] hover:shadow-xl transition-all ${track.color.split(' ')[0]}`}>
                                                     <div className="flex items-center justify-between mb-4">
                                                         <div className={`flex items-center gap-2 font-bold uppercase tracking-tighter ${track.color.split(' ')[1]}`}>
                                                             <Icon name={track.icon} /> {track.name}
                                                         </div>
-                                                        <span className="text-[10px] bg-slate-100 px-2 py-1 rounded text-slate-500 font-bold tracking-widest uppercase">TRACK</span>
+                                                        <span className="text-[9px] bg-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold tracking-widest">TRACK</span>
                                                     </div>
-                                                    <div className="space-y-3 mb-6">
+                                                    <div className="space-y-2 mb-6">
                                                         {track.roles.map(r => (
-                                                            <div key={r} className="flex items-center gap-2 group">
-                                                                <Icon name="chevron-right" size={14} className="text-[#05F283]" />
-                                                                <span className="text-sm font-semibold text-slate-700">{r}</span>
+                                                            <div key={r} className="flex items-center gap-2">
+                                                                <Icon name="chevron-right" size={12} className="text-[#05F283]" />
+                                                                <span className="text-xs md:text-sm font-semibold text-slate-700">{r}</span>
                                                             </div>
                                                         ))}
                                                     </div>
                                                     <div className="pt-4 border-t border-slate-100">
-                                                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Key Certifications</p>
-                                                        <span className="text-[11px] font-bold bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-600">{track.certs}</span>
+                                                        <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Target Certifications</p>
+                                                        <span className="text-[10px] font-bold bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-600 block text-center truncate">{track.certs}</span>
                                                     </div>
                                                 </div>
                                             ))}
@@ -208,34 +239,34 @@
                         )}
 
                         {activeTab === 'benchmarks' && (
-                            <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-in">
-                                <div className="bg-[#564887] p-8 text-white">
-                                    <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
+                            <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden animate-in border border-slate-100">
+                                <div className="bg-[#564887] p-6 text-white">
+                                    <h2 className="text-2xl font-bold flex items-center gap-3">
                                         <Icon name="award" size={24} /> Global Career Benchmarks
                                     </h2>
-                                    <p className="opacity-80">Estimated 2025/2026 tiers based on industry demand.</p>
+                                    <p className="text-sm opacity-80 mt-1">2025/2026 Tier Estimates</p>
                                 </div>
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left">
                                         <thead>
                                             <tr className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest border-b">
-                                                <th className="p-6">Level</th>
-                                                <th className="p-6">Experience</th>
-                                                <th className="p-6">Primary Focus</th>
-                                                <th className="p-6 text-right">Target Salary (USD)</th>
+                                                <th className="p-4 md:p-6">Level</th>
+                                                <th className="p-4 md:p-6">Years</th>
+                                                <th className="p-4 md:p-6 hidden md:table-cell">Focus</th>
+                                                <th className="p-4 md:p-6 text-right">Salary (USD)</th>
                                             </tr>
                                         </thead>
                                         <tbody className="text-sm">
                                             {careerData.concat({
                                                 level: "Level 4: Leadership",
-                                                desc: "Strategy, Governance & Resilience",
+                                                desc: "Strategy & Resilience",
                                                 salary: "$200k - $450k+"
                                             }).map((item, i) => (
                                                 <tr key={i} className="border-b last:border-0 hover:bg-slate-50">
-                                                    <td className="p-6 font-bold text-[#002b56]">{item.level}</td>
-                                                    <td className="p-6 text-slate-600 font-medium">{i === 0 ? "0-2 Yrs" : i === 1 ? "2-5 Yrs" : i === 2 ? "5-8 Yrs" : "8+ Yrs"}</td>
-                                                    <td className="p-6 text-slate-500">{item.desc}</td>
-                                                    <td className="p-6 text-right font-black text-[#564887]">{item.salary}</td>
+                                                    <td className="p-4 md:p-6 font-bold text-[#002b56]">{item.level.split(':')[0]}</td>
+                                                    <td className="p-4 md:p-6 text-slate-600">{i === 0 ? "0-2" : i === 1 ? "2-5" : i === 2 ? "5-8" : "8+"}</td>
+                                                    <td className="p-4 md:p-6 text-slate-500 hidden md:table-cell text-xs">{item.desc}</td>
+                                                    <td className="p-4 md:p-6 text-right font-black text-[#564887]">{item.salary}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -246,53 +277,45 @@
 
                         {activeTab === 'specialties' && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in">
-                                <div className="bg-white rounded-3xl p-8 shadow-xl border-l-[10px] border-[#05F283]">
-                                    <div className="w-16 h-16 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6">
-                                        <Icon name="brain" size={32} />
+                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
+                                    <div className="w-14 h-14 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6">
+                                        <Icon name="brain" size={28} />
                                     </div>
-                                    <h2 className="text-3xl font-bold text-[#002b56] mb-4">AI Security Engineer</h2>
-                                    <p className="text-slate-600 mb-6 leading-relaxed">Focuses on adversarial machine learning and secure LLM integration.</p>
-                                    <div className="space-y-4">
-                                        <div className="p-4 bg-slate-50 rounded-xl">
-                                            <h4 className="font-bold flex items-center gap-2"><Icon name="arrow-right" size={16} className="text-[#05F283]"/> LLM Red Teaming</h4>
-                                            <p className="text-xs text-slate-500">Prompt Injection & Data Poisoning testing.</p>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">AI Security</h2>
+                                    <p className="text-sm text-slate-600 mb-6">Adversarial ML and LLM infrastructure defense.</p>
+                                    <div className="space-y-3">
+                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                            <h4 className="text-sm font-bold flex items-center gap-2"><Icon name="arrow-right" size={14} className="text-[#05F283]"/> LLM Red Teaming</h4>
+                                        </div>
+                                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                            <h4 className="text-sm font-bold flex items-center gap-2"><Icon name="arrow-right" size={14} className="text-[#05F283]"/> AI Anomaly Detection</h4>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="bg-white rounded-3xl p-8 shadow-xl border-l-[10px] border-[#564887]">
-                                    <div className="w-16 h-16 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6">
-                                        <Icon name="lock" size={32} />
+                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#564887]">
+                                    <div className="w-14 h-14 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6">
+                                        <Icon name="lock" size={28} />
                                     </div>
-                                    <h2 className="text-3xl font-bold text-[#002b56] mb-4">Data Privacy Officer</h2>
-                                    <p className="text-slate-600 mb-6 leading-relaxed">The legal gatekeeper for GDPR, NDPR, and data ethics.</p>
-                                    <div className="p-4 bg-slate-50 rounded-xl">
-                                        <h4 className="font-bold flex items-center gap-2"><Icon name="arrow-right" size={16} className="text-[#564887]"/> Privacy Impact Assessments</h4>
-                                        <p className="text-xs text-slate-500">Auditing product rollouts for data law compliance.</p>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy</h2>
+                                    <p className="text-sm text-slate-600 mb-6">Global compliance and ethics (GDPR/NDPR).</p>
+                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <h4 className="text-sm font-bold flex items-center gap-2"><Icon name="arrow-right" size={14} className="text-[#564887]"/> Privacy Impact Assessments</h4>
                                     </div>
                                 </div>
                             </div>
                         )}
                     </main>
 
-                    {/* Skill Pivot Footer */}
-                    <div className="max-w-6xl mx-auto mt-20 px-6">
-                        <div className="bg-[#002b56] rounded-3xl p-10 text-white flex flex-col md:flex-row gap-10 items-center border-b-8 border-[#05F283]">
-                            <div className="flex-1">
-                                <h3 className="text-3xl font-bold mb-4">The "Skill Pivot" Logic</h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                                    <div className="p-4 border border-white/10 rounded-xl">
-                                        <p className="text-[#05F283] font-bold mb-1">Defense → Offense</p>
-                                        <p className="opacity-70">SOC Analysts know what 'noise' looks like, making them elite stealthy hackers.</p>
-                                    </div>
-                                    <div className="p-4 border border-white/10 rounded-xl">
-                                        <p className="text-[#27DEF2] font-bold mb-1">Offense → Strategy</p>
-                                        <p className="opacity-70">Pentesters make the best GRC Leads because they know which policies fail.</p>
-                                    </div>
-                                </div>
+                    {/* Simplified Footer */}
+                    <div className="max-w-6xl mx-auto mt-16 px-6">
+                        <div className="bg-[#002b56] rounded-3xl p-8 text-white flex flex-col md:flex-row gap-6 items-center border-b-8 border-[#05F283]">
+                            <div className="flex-1 text-center md:text-left">
+                                <h3 className="text-xl font-bold mb-1 uppercase tracking-widest text-[#05F283]">Never Stop Adapting</h3>
+                                <p className="text-slate-400 text-xs italic">Graduating Class of 2026</p>
                             </div>
-                            <div className="w-full md:w-1/3 p-6 bg-white/5 rounded-2xl text-center">
-                                <p className="text-xl font-bold text-[#05F283]">Never Stop Adapting.</p>
-                                <p className="text-sm opacity-60">Graduating Class of 2026</p>
+                            <div className="grid grid-cols-2 gap-4 text-[10px] uppercase font-bold tracking-tighter">
+                                <div className="px-4 py-2 border border-white/20 rounded-lg bg-white/5">Defense → Offense</div>
+                                <div className="px-4 py-2 border border-white/20 rounded-lg bg-white/5">Offense → Strategy</div>
                             </div>
                         </div>
                     </div>
