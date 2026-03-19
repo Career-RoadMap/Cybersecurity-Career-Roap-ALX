@@ -320,13 +320,20 @@
                 "Technical Tools": [
                     { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting." },
                     { name: "Nmap", category: "Recon", desc: "The standard for network mapping and discovery." },
+                    { name: "Recon-ng", category: "OSINT", desc: "Modular framework for automated intelligence gathering." },
                     { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities." },
-                    { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and trust relations." }
+                    { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and trust relations." },
+                    { name: "Metasploit", category: "Exploit", desc: "The world's most used penetration testing framework." },
+                    { name: "Gophish", category: "Phishing", desc: "Open-source phishing framework for simulation training." },
+                    { name: "Aircrack-ng", category: "Wireless", desc: "Complete suite of tools to assess WiFi network security." },
+                    { name: "Nessus", category: "Vuln Mgmt", desc: "Industry standard for vulnerability assessment and compliance." },
+                    { name: "OpenVAS", category: "Vuln Mgmt", desc: "Full-featured open-source vulnerability scanner and manager." }
                 ],
-                "Cloud Standards": [
+                "Industry Frameworks": [
                     { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra." },
                     { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques." },
                     { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management." },
+                    { name: "OWASP Top 10", category: "Web App", desc: "Standard awareness document for web application security." },
                     { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between provider and user." }
                 ],
                 "Learning Lab (Platforms)": [
@@ -375,7 +382,7 @@
                                 <button 
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-50 text-slate-500'}`}
+                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-100 text-slate-500'}`}
                                 >
                                     <Icon name={tab.icon} size={14} /> {tab.label}
                                 </button>
@@ -459,7 +466,7 @@
                                     <p className="text-sm text-slate-500 mb-6">Defending LLMs and Automated Infrastructure.</p>
                                     <div className="space-y-1">
                                         <RoleItem title="LLM Red Teaming" desc="Attacking AI models to identify prompt injection, jailbreaking, and secret data leakage." />
-                                        <RoleItem title="AI Defense Engineer" desc="Using ML models to proactively detect anomalous login patterns in real-time logs." />
+                                        <RoleItem title="AI Defense Engineer" desc="Using ML models to proactively detect anomalous login patterns and zero-day behaviors in logs." />
                                     </div>
                                 </div>
                                 <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#564887]">
@@ -470,7 +477,7 @@
                                     <p className="text-sm text-slate-500 mb-6">Legal & Ethical Compliance in the Digital Age.</p>
                                     <div className="space-y-1">
                                         <RoleItem title="Privacy Impact Assessor (PIA)" desc="Evaluating the risk of new product launches against global laws like GDPR and NDPR." />
-                                        <RoleItem title="Subject Rights Lead" desc="Managing user requests for data access and the 'right to be forgotten'." />
+                                        <RoleItem title="Subject Rights Lead" desc="Managing user requests for data access, correction, and the 'right to be forgotten'." />
                                     </div>
                                 </div>
                             </div>
