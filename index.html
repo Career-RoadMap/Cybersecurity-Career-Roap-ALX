@@ -22,7 +22,7 @@
             overflow-x: hidden;
             background-color: #f8fafc;
         }
-        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+        .animate-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Watermark Background */
@@ -88,7 +88,7 @@
                         </div>
                         <Icon name={isOpen ? "minus" : "plus"} size={14} className="text-slate-400" />
                     </button>
-                    <div className={`role-content ${isOpen ? 'max-h-40 opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
+                    <div className={`role-content ${isOpen ? 'max-h-60 opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
                         <div className="ml-7 mr-2 p-3 bg-white rounded-lg border-l-4 border-[#05F283] shadow-sm">
                             <p className="text-[11px] md:text-xs text-slate-500 leading-relaxed italic">
                                 {desc}
@@ -114,23 +114,23 @@
                                 { title: "Email Security Analyst", desc: "Digital gatekeeper. Analyzes headers to stop phishing and BEC attacks." },
                                 { title: "IAM Provisioner", desc: "Controls user identities and access rights within Active Directory." }
                             ],
-                            certs: "Security+, BTL1"
+                            certs: "Security+, BTL1, ISC2"
                         },
                         {
                             name: "Offensive", icon: "zap", color: "border-[#FF5347]",
                             roles: [
                                 { title: "Junior PenTester", desc: "The Scout. Performs authorized scans and initial probes to find open ports." },
                                 { title: "OSINT Specialist", desc: "Digital Detective. Finds exposed company data using public sources." },
-                                { title: "Vulnerability Analyst", desc: "The Inspector. Uses automated tools like Nessus to find unpatched software." }
+                                { title: "Vulnerability Analyst", desc: "Uses automated tools like Nessus to find unpatched software." }
                             ],
                             certs: "eJPT, PenTest+"
                         },
                         {
                             name: "Strategic", icon: "scale", color: "border-[#564887]",
                             roles: [
-                                { title: "GRC Compliance Analyst", desc: "The Verifier. Ensures the organization follows technical rules like ISO 27001 or SOC2." },
-                                { title: "Policy Writer", desc: "The Librarian. Translates tech requirements into readable handbooks for employees." },
-                                { title: "Privacy Assistant", desc: "Assisting with NDPR/GDPR compliance and data mapping." }
+                                { title: "GRC Compliance Analyst", desc: "The Verifier. Ensures internal rules match local and international laws like ISO 27001." },
+                                { title: "Policy Writer", desc: "Translates tech requirements into readable handbooks for employees." },
+                                { title: "Privacy Assistant", desc: "Assisting with NDPR/GDPR compliance and initial data mapping." }
                             ],
                             certs: "Sec+, ITCA"
                         }
@@ -153,7 +153,7 @@
                             name: "Offensive", icon: "target", color: "border-[#FF5347]",
                             roles: [
                                 { title: "Ethical Hacker", desc: "The Infiltrator. Authorized attacks to prove risk to leadership before real hackers do." },
-                                { title: "API Security Tester", desc: "The Logic Specialist. Tests the hidden communication lines between apps for security flaws." }
+                                { title: "API Security Tester", desc: "Tests hidden communication lines between apps for security flaws." }
                             ],
                             certs: "OSCP, PNPT"
                         },
@@ -261,7 +261,7 @@
                         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
                             <img src="asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 mb-4 opacity-100 drop-shadow-lg" />
                             <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
-                            <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">Tambali >>> Ready To Launch</p>
+                            <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">TAMBALI >>> READY TO LAUNCH</p>
                         </div>
                     </header>
 
@@ -271,14 +271,15 @@
                             {[
                                 { id: 'map', label: 'Career Map', icon: 'trending-up' },
                                 { id: 'toolkit', label: 'Security Toolkit', icon: 'wrench' },
-                                { id: 'checklist', label: 'Graduation Checklist', icon: 'check-square' },
+                                { id: 'checklist', label: 'Checklist', icon: 'check-square' },
+                                { id: 'specialties', label: 'AI & Privacy', icon: 'brain' },
                                 { id: 'benchmarks', label: 'Benchmarks', icon: 'award' },
                                 { id: 'biz', label: 'Launch Business', icon: 'rocket' }
                             ].map(tab => (
                                 <button 
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 min-w-[120px] py-3 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-50 text-slate-500'}`}
+                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-50 text-slate-500'}`}
                                 >
                                     <Icon name={tab.icon} size={14} /> {tab.label}
                                 </button>
@@ -358,22 +359,56 @@
                             </div>
                         )}
 
-                        {/* Note: biz and benchmarks integrated as requested in context */}
+                        {/* TAB: SPECIALTIES (AI & PRIVACY) */}
+                        {activeTab === 'specialties' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in max-w-5xl mx-auto">
+                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
+                                    <div className="w-12 h-12 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                                        <Icon name="brain" size={24} />
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">AI Security Track</h2>
+                                    <p className="text-sm text-slate-500 mb-6">Securing Automated Systems and LLM Infrastructures.</p>
+                                    <div className="space-y-1">
+                                        <RoleItem title="LLM Red Teaming" desc="The New Frontier: Attacking AI models to uncover prompt injections, model hijacking, and data poisoning risks." />
+                                        <RoleItem title="AI SIEM Operations" desc="Defensive Engineering: Using Machine Learning to predict attacker behavior before the breach occurs." />
+                                    </div>
+                                </div>
+                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#564887]">
+                                    <div className="w-12 h-12 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                                        <Icon name="lock" size={24} />
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy (DPO)</h2>
+                                    <p className="text-sm text-slate-500 mb-6">Global Compliance and Ethical Data Protection.</p>
+                                    <div className="space-y-1">
+                                        <RoleItem title="Privacy Impact (PIA)" desc="The Auditor: Evaluating high-stakes product launches for compliance with GDPR, NDPR, and CCPA." />
+                                        <RoleItem title="Subject Rights Lead" desc="The Guardian: Managing complex user data access and the 'Right to be Forgotten' requests." />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* TAB: BIZ */}
                         {activeTab === 'biz' && (
                             <div className="space-y-8 animate-in max-w-6xl mx-auto">
-                                <div className="bg-gradient-to-r from-[#002b56] to-[#564887] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
-                                    <h2 className="text-3xl font-bold mb-2">Entrepreneurial Roadmap</h2>
-                                    <p className="text-slate-200 text-sm italic">"Don't just watch the SOC—Build the SOC."</p>
+                                <div className="bg-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
+                                    <div className="relative z-10">
+                                        <h2 className="text-3xl font-bold mb-2">Entrepreneurial Roadmap</h2>
+                                        <p className="text-slate-200 text-sm italic">"Don't just watch the SOC—Build the SOC." Convert technical mastery into a scalable business model.</p>
+                                    </div>
                                     <Icon name="rocket" size={100} className="absolute -right-5 -bottom-5 opacity-10 rotate-12" />
                                 </div>
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    {['Phase 1: Knowledge', 'Phase 2: Agency', 'Phase 3: Consultancy'].map((tier, i) => (
+                                    {[
+                                        { tier: 'Phase 1: Knowledge', roles: [{t: 'Cyber Content Creator', d: 'YouTube/Blogs'}, {t: 'Security Trainer', d: 'Corporate Workshops'}] },
+                                        { tier: 'Phase 2: Agency', roles: [{t: 'Managed GRC', d: 'Audit Prep Agency'}, {t: 'Vuln-as-a-Service', d: 'Monthly Scans'}] },
+                                        { tier: 'Phase 3: Consultancy', roles: [{t: 'vCISO', d: 'Fractional Leadership'}, {t: 'Bespoke MSSP', d: 'Small SOC Ops'}] }
+                                    ].map((item, i) => (
                                         <div key={i} className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-lg border-t-8 border-[#564887]">
-                                            <h3 className="text-[10px] font-bold text-[#564887] uppercase tracking-widest mb-4 block border-b pb-2">{tier}</h3>
+                                            <h3 className="text-[10px] font-bold text-[#564887] uppercase tracking-widest mb-4 block border-b pb-2">{item.tier}</h3>
                                             <div className="space-y-1">
-                                                <RoleItem title="Content Creator" desc="YouTube/Technical Blogs" />
-                                                <RoleItem title="Managed GRC" desc="Compliance Auditing Service" />
-                                                <RoleItem title="vCISO" desc="Fractional Leadership" />
+                                                {item.roles.map((r, ri) => (
+                                                    <RoleItem key={ri} title={r.t} desc={r.d} />
+                                                ))}
                                             </div>
                                         </div>
                                     ))}
@@ -381,6 +416,7 @@
                             </div>
                         )}
 
+                        {/* TAB: BENCHMARKS */}
                         {activeTab === 'benchmarks' && (
                             <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-in border border-slate-100 max-w-4xl mx-auto">
                                 <div className="bg-[#564887] p-8 text-white text-center">
@@ -405,7 +441,7 @@
                             </div>
                             <div className="flex flex-col items-center sm:items-end gap-3 relative z-10">
                                 <span className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.3em]">Empowered By</span>
-                                <img src="asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 opacity-100" />
+                                <img src="asset/iimages/alx%20white%20tranparent.png" alt="ALX" className="h-10 opacity-100" />
                             </div>
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10" />
                         </div>
