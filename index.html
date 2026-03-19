@@ -38,7 +38,7 @@
             filter: grayscale(100%);
         }
 
-        .tab-content { min-height: 550px; }
+        .tab-content { min-height: 600px; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -56,11 +56,21 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             transform: scale(1.02);
         }
+
+        .standard-card:hover {
+            border-color: #05F283;
+            transform: translateY(-2px);
+        }
+
+        .quiz-option:hover {
+            border-color: #002b56;
+            background-color: #f1f5f9;
+        }
     </style>
 </head>
 <body class="text-slate-900">
     <!-- Background Watermark -->
-    <img src="asset/images/Alx%20black%20transparent.png" alt="" class="watermark">
+    <img src="/asset/images/Alx%20black%20transparent.png" alt="" class="watermark">
 
     <div id="root"></div>
 
@@ -99,6 +109,84 @@
             );
         };
 
+        const PathfinderQuiz = () => {
+            const [step, setStep] = useState(0);
+            const [scores, setScores] = useState({ D: 0, O: 0, S: 0 });
+            const [result, setResult] = useState(null);
+
+            const questions = [
+                {
+                    q: "When you find a locked door, what is your first instinct?",
+                    options: [
+                        { text: "Check the cameras and strengthen the lock.", type: "D" },
+                        { text: "Try to find a way to pick the lock or find a key.", type: "O" },
+                        { text: "Check the building's insurance and safety policies.", type: "S" }
+                    ]
+                },
+                {
+                    q: "What was your favorite lab activity?",
+                    options: [
+                        { text: "Analyzing logs and stopping simulated attacks.", type: "D" },
+                        { text: "Breaking into Active Directory and stealing hashes.", type: "O" },
+                        { text: "Reviewing GDPR laws and drafting policies.", type: "S" }
+                    ]
+                },
+                {
+                    q: "How do you prefer to spend your work day?",
+                    options: [
+                        { text: "Investigating puzzles and keeping things stable.", type: "D" },
+                        { text: "Exploring unknown systems and finding flaws.", type: "O" },
+                        { text: "Strategic planning and ensuring legal compliance.", type: "S" }
+                    ]
+                }
+            ];
+
+            const handleAnswer = (type) => {
+                const newScores = { ...scores, [type]: scores[type] + 1 };
+                setScores(newScores);
+                if (step < questions.length - 1) {
+                    setStep(step + 1);
+                } else {
+                    const top = Object.keys(newScores).reduce((a, b) => newScores[a] > newScores[b] ? a : b);
+                    setResult(top);
+                }
+            };
+
+            if (result) {
+                return (
+                    <div className="bg-[#002b56] text-white p-8 rounded-3xl text-center animate-in shadow-xl">
+                        <Icon name="award" size={48} className="mx-auto mb-4 text-[#05F283]" />
+                        <h3 className="text-2xl font-bold mb-2">Recommended Path: 
+                            {result === 'D' ? ' Defensive (Blue Team)' : result === 'O' ? ' Offensive (Red Team)' : ' Strategic (GRC/DPO)'}
+                        </h3>
+                        <p className="text-slate-300 text-sm mb-6">Based on your instincts, you belong in {result === 'D' ? 'the SOC' : result === 'O' ? 'Penetration Testing' : 'Compliance Management'}.</p>
+                        <button onClick={() => {setStep(0); setResult(null); setScores({D:0,O:0,S:0});}} className="text-xs font-bold text-[#05F283] underline uppercase tracking-widest">Restart Quiz</button>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 animate-in">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="font-bold text-[#002b56]">Pathfinder Quiz</h3>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Question {step + 1} of 3</span>
+                    </div>
+                    <p className="text-sm font-medium text-slate-700 mb-6">{questions[step].q}</p>
+                    <div className="space-y-3">
+                        {questions[step].options.map((opt, i) => (
+                            <button 
+                                key={i} 
+                                onClick={() => handleAnswer(opt.type)}
+                                className="w-full text-left p-4 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 transition-all quiz-option"
+                            >
+                                {opt.text}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
             const [activeTab, setActiveTab] = useState('map');
 
@@ -110,27 +198,26 @@
                         {
                             name: "Defensive", icon: "shield", color: "border-[#27DEF2]",
                             roles: [
-                                { title: "Junior SOC Analyst", desc: "Monitors security dashboards 24/7. Detects and triages initial alerts before they become breaches." },
-                                { title: "Email Security Analyst", desc: "Digital gatekeeper. Analyzes headers to stop phishing and BEC attacks." },
-                                { title: "IAM Provisioner", desc: "Controls user identities and access rights within Active Directory." }
+                                { title: "Junior SOC Analyst", desc: "Monitors dashboards for potential threats. Performs initial alert triage (Real vs False Positive)." },
+                                { title: "Email Security Analyst", desc: "Digital Gatekeeper. Performs header forensics to detect spoofing and phishing." },
+                                { title: "IAM Provisioner", desc: "Access Rights Manager. Ensures proper permissions in Active Directory (Principle of Least Privilege)." }
                             ],
-                            certs: "Security+, BTL1, ISC2, CompTIA+"
+                            certs: "Security+, BTL1"
                         },
                         {
                             name: "Offensive", icon: "zap", color: "border-[#FF5347]",
                             roles: [
-                                { title: "Junior PenTester", desc: "The Scout. Performs authorized scans and initial probes to find open ports." },
-                                { title: "OSINT Specialist", desc: "Digital Detective. Finds exposed company data using public sources." },
-                                { title: "Vulnerability Analyst", desc: "Uses automated tools like Nessus to find unpatched software." }
+                                { title: "Junior PenTester", desc: "The Scout. Conducts authorized network scans to identify open doors." },
+                                { title: "OSINT Researcher", desc: "Information Gatherer. Mines public data to find leaked organizational secrets." },
+                                { title: "Vulnerability Scout", desc: "Runs automated scanners (Nessus/OpenVAS) to find missing patches." }
                             ],
                             certs: "eJPT, PenTest+"
                         },
                         {
                             name: "Strategic", icon: "scale", color: "border-[#564887]",
                             roles: [
-                                { title: "GRC Compliance Analyst", desc: "The Verifier. Ensures internal rules match local and international laws like ISO 27001." },
-                                { title: "Policy Writer", desc: "Translates tech requirements into readable handbooks for employees." },
-                                { title: "Privacy Assistant", desc: "Assisting with NDPR/GDPR compliance and initial data mapping." }
+                                { title: "GRC Analyst", desc: "Compliance Auditor. Ensures company policy follows legal standards like GDPR or NDPR." },
+                                { title: "Technical Policy Writer", desc: "Translates complex technical security into readable employee handbooks." }
                             ],
                             certs: "Sec+, ITCA"
                         }
@@ -143,25 +230,25 @@
                         {
                             name: "Defensive", icon: "activity", color: "border-[#27DEF2]",
                             roles: [
-                                { title: "Malware Analyst", desc: "The Scientist. Reverse-engineers code in sandboxes to understand and block threat behavior." },
-                                { title: "Incident Responder", desc: "The Firefighter. Executes rapid containment and recovery during active breaches." },
-                                { title: "Forensics Investigator", desc: "Performs digital autopsies on drives and RAM to find evidence of intrusion." }
+                                { title: "Malware Analyst", desc: "Reverse Engineers code in sandboxes to block malicious payloads." },
+                                { title: "Incident Responder", desc: "The Firefighter. Executes rapid containment to stop breaches in progress." },
+                                { title: "Forensics Investigator", desc: "Digital Detective. Performs autopsies on disks and RAM to extract evidence." }
                             ],
                             certs: "CySA+, GCIH"
                         },
                         {
                             name: "Offensive", icon: "target", color: "border-[#FF5347]",
                             roles: [
-                                { title: "Ethical Hacker", desc: "The Infiltrator. Authorized attacks to prove risk to leadership before real hackers do." },
-                                { title: "API Security Tester", desc: "Tests hidden communication lines between apps for security flaws." }
+                                { title: "Ethical Hacker", desc: "The Infiltrator. Simulates attacks to prove technical risk to business owners." },
+                                { title: "API Security Tester", desc: "Secures the communication lines between mobile and web applications." }
                             ],
                             certs: "OSCP, PNPT"
                         },
                         {
                             name: "Specialized", icon: "brain", color: "border-[#05F283]",
                             roles: [
-                                { title: "AI Security Engineer", desc: "Protects LLMs from Prompt Injection and ensures AI models don't leak secret data." },
-                                { title: "Data Privacy Officer (DPO)", desc: "The legal gatekeeper for ethical data protection and global regulatory compliance." }
+                                { title: "AI Security Engineer", desc: "Protects machine learning models from prompt injection and data poisoning." },
+                                { title: "Data Privacy Officer (DPO)", desc: "Legal Guardian of user data. Manages compliance for high-stakes industries." }
                             ],
                             certs: "CIPP, AI-102"
                         }
@@ -174,27 +261,24 @@
                         {
                             name: "Defensive", icon: "lock", color: "border-[#27DEF2]",
                             roles: [
-                                { title: "Security Architect", desc: "Designs the overall resilient framework for the entire enterprise infrastructure." },
-                                { title: "Detection Engineer", desc: "Writes custom logic and SIEM rules to turn raw logs into high-fidelity alerts." },
-                                { title: "Purple Team Lead", desc: "Coordinating Red and Blue teams to optimize the organizational defense posture." }
+                                { title: "Security Architect", desc: "Blueprints the entire secure infrastructure for an organization." },
+                                { title: "Detection Engineer", desc: "Writes custom SIEM logic and KQL rules to find stealthy attackers." }
                             ],
                             certs: "CISSP, CASP+"
                         },
                         {
                             name: "Offensive", icon: "cpu", color: "border-[#FF5347]",
                             roles: [
-                                { title: "Red Team Operator", desc: "Conducts long-term stealthy simulations of APT (Advanced Persistent Threat) actors." },
-                                { title: "Exploit Developer", desc: "Writing custom code to bypass specific security products and EDR tools." },
-                                { title: "Adversary Lead", desc: "Designing complex attack scenarios to pressure-test the SOC infrastructure." }
+                                { title: "Red Team Operator", desc: "Mimics specific Nation-State actors to pressure-test the SOC." },
+                                { title: "Exploit Developer", desc: "Writes custom code to bypass modern security products (EDR/AV)." }
                             ],
                             certs: "OSWE, GXPN"
                         },
                         {
                             name: "Strategic", icon: "globe", color: "border-[#564887]",
                             roles: [
-                                { title: "Risk Manager", desc: "Translates technical debt into quantifiable business risk for the Board of Directors." },
-                                { title: "Compliance Director", desc: "Managing global regulatory alignment and large-scale security audits." },
-                                { title: "BCP Planner", desc: "Designing resilience strategies for disaster recovery and business continuity." }
+                                { title: "Security Risk Manager", desc: "Calculates the financial impact of security gaps for the Board." },
+                                { title: "Compliance Director", desc: "Leads global regulatory alignment and large-scale audits." }
                             ],
                             certs: "CISM, CRISC"
                         }
@@ -202,29 +286,29 @@
                 },
                 {
                     level: "Level 4: Leadership (8+ Years)",
-                    desc: "Strategy & Governance",
+                    desc: "Executive Strategy",
                     tracks: [
-                        {
-                            name: "Operations", icon: "users", color: "border-[#27DEF2]",
-                            roles: [
-                                { title: "Director of SOC Ops", desc: "Managing the budget, staff, and technology stack for the entire defense center." },
-                                { title: "Head of Incident Response", desc: "Executive leadership during major crises and board-level reporting." }
-                            ],
-                            certs: "CISSP-ISSMP"
-                        },
                         {
                             name: "Executive", icon: "crown", color: "border-[#564887]",
                             roles: [
-                                { title: "CISO", desc: "Chief Information Security Officer. The executive lead bridging security with business growth." },
-                                { title: "Chief Privacy Officer", desc: "Overseeing global data sovereignty and high-level legal privacy strategy." }
+                                { title: "CISO", desc: "Chief Information Security Officer. The executive bridging security with profit." },
+                                { title: "VP of Security Ops", desc: "Directs the entire global security workforce and budget." }
                             ],
                             certs: "CCISO, MBA"
                         },
                         {
-                            name: "Innovation", icon: "lightbulb", color: "border-[#05F283]",
+                            name: "Operations", icon: "users", color: "border-[#27DEF2]",
                             roles: [
-                                { title: "Security Strategist", desc: "Forecasting future threats and aligning the security roadmap with emerging tech." },
-                                { title: "vCISO Consultant", desc: "Providing high-level security leadership for multiple tech startups as a service." }
+                                { title: "Head of SOC", desc: "Manages the people, processes, and technology in the defense center." },
+                                { title: "Director of DFIR", desc: "Leads the response to major catastrophic security failures." }
+                            ],
+                            certs: "CISSP-ISSMP"
+                        },
+                        {
+                            name: "Advisory", icon: "lightbulb", color: "border-[#05F283]",
+                            roles: [
+                                { title: "vCISO Consultant", desc: "Provides high-level strategy as a service to multiple startups." },
+                                { title: "Cyber Policy Advisor", desc: "Interfaces with governments on national security and data laws." }
                             ],
                             certs: "CISM"
                         }
@@ -232,34 +316,33 @@
                 }
             ];
 
-            const toolkit = [
+            const toolkit = {
                 "Technical Tools": [
-                    { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting and forensics." },
-                    { name: "Nmap", category: "Recon", desc: "The standard for network mapping and service discovery." },
-                    { name: "Burp Suite / ZAP", category: "Web", desc: "Interception proxies for testing web application vulnerabilities." },
-                    { name: "BloodHound", category: "Identity", desc: "Graph theory tool for visualizing AD attack paths." },
-                    { name: "Nessus / OpenVAS", category: "Vuln Mgmt", desc: "Enterprise scanners for identifying missing patches." },
-                    { name: "Prowler / Scout Suite", category: "Cloud", desc: "Auditing AWS, Azure, and GCP for misconfigurations." },
-                    { name: "Metasploit", category: "Exploit", desc: "Framework for validating vulnerabilities through exploitation." },
-                    { name: "Volatility", category: "Forensics", desc: "Memory forensics tool for analyzing infected RAM." },
-                    { name: "Wazuh / Splunk", category: "SIEM", desc: "Log aggregation and real-time security monitoring." }
+                    { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting." },
+                    { name: "Nmap", category: "Recon", desc: "The standard for network mapping and discovery." },
+                    { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities." },
+                    { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and trust relations." }
                 ],
-                "Industry Standards": [
-                    { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal systems and critical infra." },
-                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for information security management." },
-                    { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques used by threat hunters." },
-                    { name: "SOC2 Type II", category: "Compliance", desc: "Auditing standards for service organizations managing client data." },
-                    { name: "CIS Benchmarks", category: "Hardening", desc: "Best practices for securely configuring OS and Cloud apps." },
-                    { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between the provider and customer." }
+                "Cloud Standards": [
+                    { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra." },
+                    { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques." },
+                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management." },
+                    { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between provider and user." }
+                ],
+                "Learning Lab (Platforms)": [
+                    { name: "TryHackMe", category: "Gamified", desc: "Best for beginners. Hands-on labs for SOC and Pentesting." },
+                    { name: "HackTheBox", category: "Advanced", desc: "Elite machines to practice exploitation and OSCP prep." },
+                    { name: "PortSwigger Academy", category: "Web", desc: "The free masterclass for all things Web Application Security." },
+                    { name: "Blue Team Labs (BTL)", category: "Defensive", desc: "Realistic investigation scenarios and SIEM training." }
                 ]
-            ];
+            };
 
             const checklist = [
-                { step: "1. Professional Profile", detail: "Update LinkedIn with 'Cybersecurity Graduate' and list specific labs like Kerberoasting and SIEM Triage." },
-                { step: "2. Technical Portfolio", detail: "Publish a GitHub repository showing Nmap scan reports, Python automation scripts, or CTF write-ups." },
-                { step: "3. Certification Target", detail: "Set a date for the CompTIA Security+ or BTL1 exam to solidify your professional credibility." },
-                { step: "4. Niche Selection", detail: "Decide whether to focus on Blue Team (SOC), Red Team (Offense), or GRC (Strategic)." },
-                { step: "5. Networking", detail: "Join industry communities like OWASP, ISACA, or local security meetups to find mentorship." }
+                { step: "Professional Profile", detail: "Update LinkedIn with specific labs: AD Hacking and SIEM Triage." },
+                { step: "Technical Portfolio", detail: "Create a GitHub repo for your custom Nmap reports and Python scripts." },
+                { step: "Certification Sprint", detail: "Register for Security+ or BTL1 to solidify your professional status." },
+                { step: "Common Interview Prep", detail: "Prep: Explain the 3-way handshake, the difference between IDOR and XSS." },
+                { step: "Networking", detail: "Join local OWASP or security meetups to meet your future peers." }
             ];
 
             return (
@@ -272,7 +355,7 @@
                             <div className="flex-1 bg-[#27DEF2]" />
                         </div>
                         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
-                            <img src="asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 mb-4 opacity-100 drop-shadow-lg" />
+                            <img src="/asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 mb-4 opacity-100" />
                             <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
                             <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">TAMBALI >>> READY TO LAUNCH</p>
                         </div>
@@ -284,8 +367,8 @@
                             {[
                                 { id: 'map', label: 'Career Map', icon: 'trending-up' },
                                 { id: 'toolkit', label: 'Security Toolkit', icon: 'wrench' },
-                                { id: 'checklist', label: 'Checklist', icon: 'check-square' },
                                 { id: 'specialties', label: 'AI & Privacy', icon: 'brain' },
+                                { id: 'checklist', label: 'Success Checklist', icon: 'check-square' },
                                 { id: 'benchmarks', label: 'Benchmarks', icon: 'award' },
                                 { id: 'biz', label: 'Launch Business', icon: 'rocket' }
                             ].map(tab => (
@@ -300,10 +383,13 @@
                         </div>
                     </nav>
 
-                    <main className="max-w-7xl mx-auto mt-10 px-6 tab-content flex-grow w-full">
+                    <main className="max-w-7xl mx-auto mt-10 px-6 tab-content flex-grow w-full pb-10">
                         {/* TAB: CAREER MAP */}
                         {activeTab === 'map' && (
                             <div className="space-y-12 animate-in">
+                                <div className="max-w-2xl mx-auto">
+                                    <PathfinderQuiz />
+                                </div>
                                 {careerData.map((lvl, idx) => (
                                     <section key={idx}>
                                         <div className="flex items-center gap-4 mb-6">
@@ -327,8 +413,8 @@
                                                         ))}
                                                     </div>
                                                     <div className="pt-4 border-t border-slate-100">
-                                                        <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Target Certifications</p>
-                                                        <span className="text-[10px] font-bold bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-600 block text-center truncate shadow-sm">{track.certs}</span>
+                                                        <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Target Certification</p>
+                                                        <span className="text-[10px] font-bold bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-600 block text-center truncate">{track.certs}</span>
                                                     </div>
                                                 </div>
                                             ))}
@@ -340,29 +426,66 @@
 
                         {/* TAB: TOOLKIT */}
                         {activeTab === 'toolkit' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in">
-                                {toolkit.map((tool, i) => (
-                                    <div key={i} className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-[#05F283] hover:shadow-lg transition-shadow">
-                                        <div className="flex justify-between items-start mb-3">
-                                            <h3 className="font-bold text-[#002b56] text-lg">{tool.name}</h3>
-                                            <span className="text-[9px] bg-slate-100 px-2 py-0.5 rounded font-bold text-slate-500 uppercase">{tool.category}</span>
+                            <div className="animate-in space-y-12">
+                                {Object.entries(toolkit).map(([sectionTitle, tools]) => (
+                                    <div key={sectionTitle}>
+                                        <h3 className="text-xl font-bold text-[#002b56] mb-6 flex items-center gap-2">
+                                            <div className="w-8 h-1 bg-[#05F283]" /> {sectionTitle}
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            {tools.map((tool, i) => (
+                                                <div key={i} className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-[#05F283] hover:shadow-lg transition-all standard-card border-slate-100 border">
+                                                    <div className="flex justify-between items-start mb-3">
+                                                        <h4 className="font-bold text-[#002b56] text-lg">{tool.name}</h4>
+                                                        <span className="text-[9px] bg-slate-50 px-2 py-0.5 rounded font-bold text-slate-400 uppercase border border-slate-100">{tool.category}</span>
+                                                    </div>
+                                                    <p className="text-xs text-slate-500 leading-relaxed italic">"{tool.desc}"</p>
+                                                </div>
+                                            ))}
                                         </div>
-                                        <p className="text-xs text-slate-500 leading-relaxed italic">"{tool.desc}"</p>
                                     </div>
                                 ))}
+                            </div>
+                        )}
+
+                        {/* TAB: AI & PRIVACY */}
+                        {activeTab === 'specialties' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in max-w-6xl mx-auto">
+                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
+                                    <div className="w-12 h-12 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6">
+                                        <Icon name="brain" size={24} />
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">AI Security Track</h2>
+                                    <p className="text-sm text-slate-500 mb-6">Defending LLMs and Automated Infrastructure.</p>
+                                    <div className="space-y-1">
+                                        <RoleItem title="LLM Red Teaming" desc="Attacking AI models to identify prompt injection, jailbreaking, and secret data leakage." />
+                                        <RoleItem title="AI Defense Engineer" desc="Using ML models to proactively detect anomalous login patterns in real-time logs." />
+                                    </div>
+                                </div>
+                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#564887]">
+                                    <div className="w-12 h-12 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6">
+                                        <Icon name="lock" size={24} />
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy (DPO)</h2>
+                                    <p className="text-sm text-slate-500 mb-6">Legal & Ethical Compliance in the Digital Age.</p>
+                                    <div className="space-y-1">
+                                        <RoleItem title="Privacy Impact Assessor (PIA)" desc="Evaluating the risk of new product launches against global laws like GDPR and NDPR." />
+                                        <RoleItem title="Subject Rights Lead" desc="Managing user requests for data access and the 'right to be forgotten'." />
+                                    </div>
+                                </div>
                             </div>
                         )}
 
                         {/* TAB: CHECKLIST */}
                         {activeTab === 'checklist' && (
                             <div className="max-w-3xl mx-auto space-y-4 animate-in">
-                                <div className="bg-[#002b56] p-8 rounded-3xl text-white mb-6 text-center shadow-xl">
-                                    <h2 className="text-2xl font-bold mb-2">Graduation Success Checklist</h2>
-                                    <p className="text-slate-300 text-sm">Follow these steps to launch your career within 90 days of graduation.</p>
+                                <div className="bg-[#564887] p-8 rounded-3xl text-white mb-6 text-center shadow-xl">
+                                    <h2 className="text-2xl font-bold mb-2">Graduation Success Roadmap</h2>
+                                    <p className="text-slate-300 text-sm">Actionable steps to land your first role or client in 90 days.</p>
                                 </div>
                                 {checklist.map((item, i) => (
-                                    <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex gap-5 hover:bg-slate-50 transition-colors">
-                                        <div className="w-10 h-10 rounded-full bg-[#05F283]/20 text-[#002b56] flex items-center justify-center shrink-0 font-bold text-base shadow-sm">{i+1}</div>
+                                    <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex gap-5 hover:bg-slate-50 transition-colors group">
+                                        <div className="w-10 h-10 rounded-full bg-[#05F283]/10 text-[#002b56] flex items-center justify-center shrink-0 font-bold text-base border border-[#05F283]/30 group-hover:scale-110 transition-transform">{i+1}</div>
                                         <div>
                                             <h4 className="font-bold text-[#002b56] text-sm md:text-base">{item.step}</h4>
                                             <p className="text-xs md:text-sm text-slate-500 mt-1 leading-relaxed">{item.detail}</p>
@@ -372,49 +495,19 @@
                             </div>
                         )}
 
-                        {/* TAB: SPECIALTIES (AI & PRIVACY) */}
-                        {activeTab === 'specialties' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in max-w-5xl mx-auto">
-                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
-                                    <div className="w-12 h-12 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                                        <Icon name="brain" size={24} />
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">AI Security Track</h2>
-                                    <p className="text-sm text-slate-500 mb-6">Securing Automated Systems and LLM Infrastructures.</p>
-                                    <div className="space-y-1">
-                                        <RoleItem title="LLM Red Teaming" desc="The New Frontier: Attacking AI models to uncover prompt injections, model hijacking, and data poisoning risks." />
-                                        <RoleItem title="AI SIEM Operations" desc="Defensive Engineering: Using Machine Learning to predict attacker behavior before the breach occurs." />
-                                    </div>
-                                </div>
-                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#564887]">
-                                    <div className="w-12 h-12 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                                        <Icon name="lock" size={24} />
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy (DPO)</h2>
-                                    <p className="text-sm text-slate-500 mb-6">Global Compliance and Ethical Data Protection.</p>
-                                    <div className="space-y-1">
-                                        <RoleItem title="Privacy Impact (PIA)" desc="The Auditor: Evaluating high-stakes product launches for compliance with GDPR, NDPR, and CCPA." />
-                                        <RoleItem title="Subject Rights Lead" desc="The Guardian: Managing complex user data access and the 'Right to be Forgotten' requests." />
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
                         {/* TAB: BIZ */}
                         {activeTab === 'biz' && (
                             <div className="space-y-8 animate-in max-w-6xl mx-auto">
                                 <div className="bg-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
-                                    <div className="relative z-10">
-                                        <h2 className="text-3xl font-bold mb-2">Entrepreneurial Roadmap</h2>
-                                        <p className="text-slate-200 text-sm italic">"Don't just watch the SOC—Build the SOC." Convert technical mastery into a scalable business model.</p>
-                                    </div>
+                                    <h2 className="text-3xl font-bold mb-2">Entrepreneurial Tracks</h2>
+                                    <p className="text-slate-200 text-sm italic">Monetize your technical skills as a business owner.</p>
                                     <Icon name="rocket" size={100} className="absolute -right-5 -bottom-5 opacity-10 rotate-12" />
                                 </div>
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                     {[
-                                        { tier: 'Phase 1: Knowledge', roles: [{t: 'Cyber Content Creator', d: 'YouTube/Blogs'}, {t: 'Security Trainer', d: 'Corporate Workshops'}] },
-                                        { tier: 'Phase 2: Agency', roles: [{t: 'Managed GRC', d: 'Audit Prep Agency'}, {t: 'Vuln-as-a-Service', d: 'Monthly Scans'}] },
-                                        { tier: 'Phase 3: Consultancy', roles: [{t: 'vCISO', d: 'Fractional Leadership'}, {t: 'Bespoke MSSP', d: 'Small SOC Ops'}] }
+                                        { tier: 'Service-Based', roles: [{t: 'Awareness Trainer', d: 'Phishing Training for SMBs'}, {t: 'Content Creator', d: 'Tech Blogging/Courses'}] },
+                                        { tier: 'Agency Model', roles: [{t: 'Managed GRC', d: 'Policy & Audit Prep'}, {t: 'Vuln Agency', d: 'Scan & Remediate'}] },
+                                        { tier: 'Strategic Model', roles: [{t: 'Virtual CISO', d: 'Strategy-as-a-Service'}, {t: 'Security Auditor', d: 'Niche Tech Audits'}] }
                                     ].map((item, i) => (
                                         <div key={i} className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-lg border-t-8 border-[#564887]">
                                             <h3 className="text-[10px] font-bold text-[#564887] uppercase tracking-widest mb-4 block border-b pb-2">{item.tier}</h3>
@@ -454,7 +547,7 @@
                             </div>
                             <div className="flex flex-col items-center sm:items-end gap-3 relative z-10">
                                 <span className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.3em]">Empowered By</span>
-                                <img src="asset/iimages/alx%20white%20tranparent.png" alt="ALX" className="h-10 opacity-100" />
+                                <img src="/asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 opacity-100" />
                             </div>
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10" />
                         </div>
