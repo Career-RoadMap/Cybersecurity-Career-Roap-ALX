@@ -114,7 +114,7 @@
                                 { title: "Email Security Analyst", desc: "Digital gatekeeper. Analyzes headers to stop phishing and BEC attacks." },
                                 { title: "IAM Provisioner", desc: "Controls user identities and access rights within Active Directory." }
                             ],
-                            certs: "Security+, BTL1, ISC2"
+                            certs: "Security+, BTL1, ISC2, CompTIA+"
                         },
                         {
                             name: "Offensive", icon: "zap", color: "border-[#FF5347]",
@@ -233,12 +233,25 @@
             ];
 
             const toolkit = [
-                { name: "Wireshark", category: "Network", desc: "The world's foremost network protocol analyzer. Used for deep-packet inspection." },
-                { name: "Nmap", category: "Recon", desc: "Network discovery and security auditing. Essential for mapping the attack surface." },
-                { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and revealing unintended trust relationships." },
-                { name: "Nessus", category: "Vuln Mgmt", desc: "Professional-grade vulnerability assessment scanner for enterprise networks." },
-                { name: "Burp Suite", category: "Web App", desc: "Integrated platform for performing security testing of web applications." },
-                { name: "Metasploit", category: "Exploit", desc: "Framework for developing and executing exploit code against remote targets." }
+                "Technical Tools": [
+                    { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting and forensics." },
+                    { name: "Nmap", category: "Recon", desc: "The standard for network mapping and service discovery." },
+                    { name: "Burp Suite / ZAP", category: "Web", desc: "Interception proxies for testing web application vulnerabilities." },
+                    { name: "BloodHound", category: "Identity", desc: "Graph theory tool for visualizing AD attack paths." },
+                    { name: "Nessus / OpenVAS", category: "Vuln Mgmt", desc: "Enterprise scanners for identifying missing patches." },
+                    { name: "Prowler / Scout Suite", category: "Cloud", desc: "Auditing AWS, Azure, and GCP for misconfigurations." },
+                    { name: "Metasploit", category: "Exploit", desc: "Framework for validating vulnerabilities through exploitation." },
+                    { name: "Volatility", category: "Forensics", desc: "Memory forensics tool for analyzing infected RAM." },
+                    { name: "Wazuh / Splunk", category: "SIEM", desc: "Log aggregation and real-time security monitoring." }
+                ],
+                "Industry Standards": [
+                    { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal systems and critical infra." },
+                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for information security management." },
+                    { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques used by threat hunters." },
+                    { name: "SOC2 Type II", category: "Compliance", desc: "Auditing standards for service organizations managing client data." },
+                    { name: "CIS Benchmarks", category: "Hardening", desc: "Best practices for securely configuring OS and Cloud apps." },
+                    { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between the provider and customer." }
+                ]
             ];
 
             const checklist = [
