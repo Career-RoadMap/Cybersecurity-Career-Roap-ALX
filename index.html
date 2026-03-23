@@ -79,7 +79,7 @@
         
         /**
          * Robust Icon Component
-         * Prevents removeChild errors during state transitions by wrapping in a stable span
+         * Fixed: Prevents removeChild errors by using a stable parent container
          */
         const Icon = ({ name, size = 18, className = "" }) => {
             const iconRef = useRef(null);
@@ -220,7 +220,7 @@
                             roles: [
                                 { title: "Junior SOC Analyst", desc: "Monitors dashboards for potential threats. Performs initial alert triage (Real vs False Positive)." },
                                 { title: "Email Security Analyst", desc: "Digital Gatekeeper. Performs header forensics to detect spoofing and phishing." },
-                                { title: "IAM Provisioner", desc: "Access Rights Manager. Ensures proper permissions in Active Directory (Principle of Least Privilege)." }
+                                { title: "IAM Provisioner", desc: "Access Rights Manager. Ensures proper permissions in Active Directory." }
                             ],
                             certs: "Security+, BTL1"
                         },
@@ -347,7 +347,7 @@
                     { name: "Gophish", category: "Phishing", desc: "Open-source phishing framework for simulation training.", url: "https://getgophish.com/" },
                     { name: "Aircrack-ng", category: "Wireless", desc: "Complete suite of tools to assess WiFi network security.", url: "https://www.aircrack-ng.org/" },
                     { name: "Nessus", category: "Vuln Mgmt", desc: "Industry standard for vulnerability assessment and compliance.", url: "https://www.tenable.com/products/nessus" },
-                    { name: "OpenVAS", category: "Vuln Mgmt", desc: "Full-featured open-source vulnerability scanner and manager.", url: "https://www.openvas.org/" }
+                    { name: "OpenVAS", category: "Vuln Mgmt", desc: "Full-featured open-source vulnerability scanner.", url: "https://www.openvas.org/" }
                 ],
                 "Industry Frameworks": [
                     { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra.", url: "https://csrc.nist.gov/publications/sp800" },
@@ -367,7 +367,7 @@
             const checklist = [
                 { 
                     step: "Professional Profile Optimization", 
-                    detail: "Update LinkedIn with specific labs. Use industry best practices for a high-impact profile.",
+                    detail: "Update LinkedIn with specific labs. Use the industry best practices for a high-impact profile.",
                     links: [
                         { label: "Profile Best Practices", url: "https://www.linkedin.com/business/sales/blog/profile-best-practices/17-steps-to-a-better-linkedin-profile-in-2017" }
                     ]
@@ -380,9 +380,14 @@
                     ]
                 },
                 { 
-                    step: "Technical Portfolio", 
-                    detail: "Create a GitHub repo for your custom Nmap reports, Python scripts, and technical write-ups.",
-                    links: []
+                    step: "Technical Portfolio & Blogs", 
+                    detail: "Host your custom scripts, Nmap reports, and technical walkthroughs on these platforms.",
+                    links: [
+                        { label: "GitHub", url: "https://github.com" },
+                        { label: "Medium", url: "https://medium.com" },
+                        { label: "Hashnode", url: "https://hashnode.com" }
+                    ],
+                    hint: "Video content is king! Consider creating YouTube content showing your lab walkthroughs. Demonstrating how you bypass an IDS or triage a SIEM alert on camera builds massive trust with technical recruiters."
                 },
                 { 
                     step: "Interview Mastery & Prep", 
@@ -400,10 +405,9 @@
                         { label: "CSEAN (LinkedIn)", url: "https://ng.linkedin.com/company/csean" },
                         { label: "Cybersecurity Defender", url: "https://www.linkedin.com/company/cyber-defense-group" },
                         { label: "Acumix Top Pick Group", url: "https://www.acumin.co.uk/wp-content/uploads/2018/12/2-linkedin-groups.pdf", type: "download" },
-                        { label: "OWASP Global", url: "https://owasp.org/" },
-                        { label: "ISACA Connect", url: "https://www.isaca.org/" }
+                        { label: "OWASP Global", url: "https://owasp.org/" }
                     ],
-                    hint: "Don't just join groups—start your own! Leading a local study group is one of the best ways to prove leadership to employers."
+                    hint: "Don't just join groups—start your own! Leading a local study group is one of the best ways to prove leadership."
                 }
             ];
 
@@ -452,7 +456,7 @@
                                 <button 
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-50 text-slate-500'}`}
+                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-100 text-slate-500'}`}
                                 >
                                     <Icon name={tab.icon} size={14} /> {tab.label}
                                 </button>
@@ -627,7 +631,7 @@
                                                 ))}
                                             </div>
                                             {item.hint && (
-                                                <div className="mt-4 p-3 bg-[#05F283]/5 border-l-4 border-[#05F283] text-[11px] text-slate-600 italic">
+                                                <div className="mt-4 p-3 bg-[#05F283]/5 border-l-4 border-[#05F283] text-[11px] text-slate-600 italic shadow-sm rounded-lg">
                                                     <strong>HINT:</strong> {item.hint}
                                                 </div>
                                             )}
