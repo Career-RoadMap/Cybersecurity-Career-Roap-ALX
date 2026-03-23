@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Security & GRC Masterclass</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Merriweather:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* CSS resets and management consulting theme styling */
+        * { box-sizing: border-box; }
+        body { background-color: #e2e8f0; display: grid; gap: 40px; grid-template-columns: 1fr; min-height: 100vh; padding: 40px 0; place-items: center; margin: 0; }
+        .slide-container { align-items: center; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); box-sizing: border-box; display: flex; flex-direction: column; font-family: "DM Sans", sans-serif; height: 720px; justify-content: center; overflow: hidden; padding: 60px; position: relative; width: 1280px; background-color: #fff; border-radius: 8px; }
+        .slide-container::before { content: ''; height: 100%; left: 0; position: absolute; top: 0; width: 100%; z-index: 0; }
+        .slide-container>* { position: relative; z-index: 1; }
+
+        /* Typography */
+        .slide-container h1 { color: #fff; font-family: "Merriweather", serif; font-weight: 700; font-size: 72px; line-height: 1.1; margin: 0; }
+        .slide-container .slide-title { font-family: "Merriweather", serif; font-size: 38px; font-weight: 700; color: #002b56; text-align: left; width: 100%; margin-bottom: 30px; border-bottom: 3px solid #05F283; padding-bottom: 10px; }
+        .slide-container h3 { font-family: "Merriweather", serif; font-size: 26px; font-weight: 700; color: #002b56; margin-bottom: 10px; }
+        .slide-container p, .slide-container li, .slide-container .subtitle { font-family: "DM Sans", sans-serif; font-size: 19px; color: #334155; line-height: 1.4; }
+        .slide-container .subtitle { color: #05F283; font-size: 28px; margin-top: 20px; font-weight: 500; }
+
+        /* Layout Definitions */
+        .content-area { display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%; }
+        .section-title-layout { text-align: center; background-color: #002b56; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; border-radius: 8px; padding: 40px; }
+        .section-title-layout hr { background-color: #05F283; border: none; height: 5px; margin: 30px auto; width: 120px; }
+        .section-title-layout h2 { color: #fff; font-family: "Merriweather", serif; font-size: 54px; margin: 0; }
+        .section-title-layout p { color: #cbd5e1; font-size: 22px; max-width: 900px; margin: 20px auto 0; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: start; }
+        .two-column.tiled > div { background-color: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; padding: 30px; height: 100%; }
+        
+        .tiled-content { display: flex; gap: 20px; width: 100%; }
+        .tile { flex: 1; background-color: #f8fafc; border-radius: 12px; padding: 25px; border-top: 5px solid #564887; display: flex; flex-direction: column; gap: 10px; }
+        .tile .icon { color: #002b56; font-size: 32px; margin-bottom: 10px; }
+        .tile h3 { font-size: 22px; margin: 0; }
+        .tile p { font-size: 15px; margin: 0; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 35px; margin-bottom: 15px; font-size: 18px; }
+        .bullet-list i { color: #05F283; position: absolute; left: 0; top: 4px; font-size: 20px; }
+
+        .image-wrapper { border-radius: 12px; overflow: hidden; height: 400px; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .image-wrapper img { height: 100%; width: 100%; object-fit: cover; }
+
+        .table-layout table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        .table-layout th { background-color: #002b56; color: #fff; font-family: "Merriweather", serif; padding: 15px; text-align: left; font-size: 18px; }
+        .table-layout td { border-bottom: 1px solid #e2e8f0; padding: 12px 15px; font-size: 16px; }
+
+        .highlight-box { background: #f1f5f9; padding: 25px; border-radius: 12px; border-left: 6px solid #002b56; }
+        .slide-number { position: absolute; bottom: 30px; right: 40px; font-size: 14px; color: #94a3b8; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide-container" id="slide1" style="background-color: #002b56;">
+    <div class="content-area" style="text-align: center;">
+        <p style="color: #05F283; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;">Strategic Security Leadership</p>
+        <h1>Mastering GRC Architecture</h1>
+        <p class="subtitle">Governance, Risk Management, and Compliance for the Modern Enterprise</p>
+    </div>
+    <div class="slide-number">01</div>
+</div>
+
+<!-- SLIDE 2: GOVERNANCE SECTION -->
+<div class="slide-container" id="slide2">
+    <div class="section-title-layout">
+        <hr>
+        <h2>I. Security Governance</h2>
+        <p>Establishing the strategic framework, organizational structure, and accountability required to align security with business objectives.</p>
+    </div>
+    <div class="slide-number">02</div>
+</div>
+
+<!-- SLIDE 3: GOVERNANCE PRINCIPLES -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">Core Principles of Governance</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-arrows-to-circle"></i></div>
+                <h3>Strategic Alignment</h3>
+                <p>Security investments must deliver business value and directly support organizational objectives through ongoing executive communication.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-user-check"></i></div>
+                <h3>Clear Accountability</h3>
+                <p>Defining roles and responsibilities to ensure no security gaps exist and that decisions are made by authorized stakeholders.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Risk-Based Approach</h3>
+                <p>Allocating resources proportionately to the likelihood and business impact of security events, avoiding over or under-investment.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-rotate"></i></div>
+                <h3>Continuous Improvement</h3>
+                <p>Evolving frameworks based on threat landscape changes, incident post-mortems, and new regulatory requirements.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">03</div>
+</div>
+
+<!-- SLIDE 4: GOVERNANCE STRUCTURE -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">Organizational Structure & Oversight</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>1. Board of Directors</h3>
+                <p>Sets risk appetite and ensures adequate resources. They maintain ultimate responsibility for organizational cybersecurity health.</p>
+                <h3 class="mt-4">2. Executive Leadership</h3>
+                <p>Translates board guidance into operations and bridges the gap between strategy and technical implementation.</p>
+            </div>
+            <div>
+                <h3>3. Security Steering Committee</h3>
+                <p>Cross-functional oversight (IT, Legal, HR, Business). Reviews metrics, approves initiatives, and ensures business coordination.</p>
+                <h3 class="mt-4">4. Security Leadership (CISO)</h3>
+                <p>Translates governance requirements into day-to-day operations and provides regular risk updates to executive teams.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">04</div>
+</div>
+
+<!-- SLIDE 5: POLICY FRAMEWORK -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">The Policy Framework Hierarchy</h2>
+    <div class="content-area">
+        <div class="table-layout">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Document Type</th>
+                        <th>Nature</th>
+                        <th>Characteristics</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Policies</strong></td>
+                        <td>Strategic</td>
+                        <td>Board-approved, enduring, business-focused "What".</td>
+                        <td>Data Protection Policy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standards</strong></td>
+                        <td>Mandatory</td>
+                        <td>Specific, measurable technical requirements.</td>
+                        <td>Encryption Standard (AES-256)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Procedures</strong></td>
+                        <td>Operational</td>
+                        <td>Step-by-step instructions, role-specific "How".</td>
+                        <td>Incident Response Procedure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Guidelines</strong></td>
+                        <td>Recommended</td>
+                        <td>Best practices, flexible, situational guidance.</td>
+                        <td>Remote Work Guidelines</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="highlight-box mt-6">
+            <p style="font-size: 16px; margin: 0;"><strong>Effective Measurement:</strong> Governance success is measured by policy compliance rates, stakeholder engagement levels, and decision-making efficiency rather than just "blocked attacks."</p>
+        </div>
+    </div>
+    <div class="slide-number">05</div>
+</div>
+
+<!-- SLIDE 6: RISK MANAGEMENT SECTION -->
+<div class="slide-container" id="slide6">
+    <div class="section-title-layout">
+        <hr>
+        <h2>II. Strategic Risk Management</h2>
+        <p>Moving beyond technical scans to a systematic analysis of potential threats to core business objectives.</p>
+    </div>
+    <div class="slide-number">06</div>
+</div>
+
+<!-- SLIDE 7: RISK PROCESS -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">The Systematic Risk Process</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <ul class="bullet-list">
+                    <li><i class="fa-solid fa-magnifying-glass"></i> <strong>Identification:</strong> Analyzing external (state actors), internal (insiders), and environmental threats to objectives.</li>
+                    <li><i class="fa-solid fa-flask"></i> <strong>Analysis & Assessment:</strong> Evaluating likelihood and impact (financial, reputational, regulatory).</li>
+                    <li><i class="fa-solid fa-filter"></i> <strong>Evaluation:</strong> Comparing assessed risks against the organization's stated "Risk Appetite."</li>
+                    <li><i class="fa-solid fa-eye"></i> <strong>Monitoring:</strong> Continuous review to ensure treatments remain effective as conditions shift.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/14299863486337839352" alt="Risk assessment data visualization">
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">07</div>
+</div>
+
+<!-- SLIDE 8: ASSESSMENT METHODOLOGIES -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">Assessment Methodologies</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div>
+                <h3>Quantitative Analysis</h3>
+                <p>Assigns numerical values ($). Uses formulas like <strong>ALE = SLE × ARO</strong> (Annual Loss Expectancy).</p>
+                <p class="text-sm italic mt-2">Best for: Precise cost-benefit analysis of security controls.</p>
+            </div>
+            <div>
+                <h3>Qualitative Analysis</h3>
+                <p>Uses descriptive categories (Critical, High, Medium, Low) based on expert judgment and experience.</p>
+                <p class="text-sm italic mt-2">Best for: Rapid evaluation and communication with non-technical stakeholders.</p>
+            </div>
+        </div>
+        <div class="tile mt-6" style="border-top-color: #05F283; background: #fff;">
+            <h3>Hybrid & Scenario-Based</h3>
+            <p>Combining descriptive prioritization with numerical deep-dives on high-priority items. Scenario-based analysis examines multi-stage attacks to understand response requirements.</p>
+        </div>
+    </div>
+    <div class="slide-number">08</div>
+</div>
+
+<!-- SLIDE 9: RISK TREATMENT -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title">Strategic Risk Treatment Options</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-shield"></i></div>
+                <h3>Mitigation</h3>
+                <p>Implementing controls (MFA, Firewalls) to reduce likelihood or impact. The most common security approach.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-handshake"></i></div>
+                <h3>Transfer</h3>
+                <p>Shifting the financial burden to third parties through <strong>Cyber Insurance</strong> or service provider agreements.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-thumbs-up"></i></div>
+                <h3>Acceptance</h3>
+                <p>Bearing consequences when costs of treatment exceed impact. Requires formal board documentation.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-ban"></i></div>
+                <h3>Avoidance</h3>
+                <p>Discontinuing the risky activity entirely (e.g., choosing not to host high-risk data in a specific region).</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">09</div>
+</div>
+
+<!-- SLIDE 10: COMPLIANCE SECTION -->
+<div class="slide-container" id="slide10">
+    <div class="section-title-layout">
+        <hr>
+        <h2>III. Strategic Compliance</h2>
+        <p>Leveraging regulatory frameworks as foundations for robust security programs rather than "check-the-box" exercises.</p>
+    </div>
+    <div class="slide-number">10</div>
+</div>
+
+<!-- SLIDE 11: COMPLIANCE FRAMEWORKS -->
+<div class="slide-container" id="slide11">
+    <h2 class="slide-title">Key Compliance Pillars</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="highlight-box">
+                <h3>Regulatory Drivers</h3>
+                <ul class="bullet-list">
+                    <li><i class="fa-solid fa-user-shield"></i> <strong>Data Privacy:</strong> GDPR, CCPA, NDPR establishing user rights.</li>
+                    <li><i class="fa-solid fa-credit-card"></i> <strong>Industry Standards:</strong> PCI DSS, HIPAA, SOX.</li>
+                    <li><i class="fa-solid fa-book"></i> <strong>Security Frameworks:</strong> ISO 27001, NIST CSF, CIS Controls.</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Strategic Approach</h3>
+                <p>Organizations must distinguish between <strong>Minimum Compliance</strong> and <strong>Robust Security</strong>. Frameworks should be used to drive security value, not just satisfy auditors.</p>
+                <ul class="bullet-list mt-4">
+                    <li>Risk-Based Implementation</li>
+                    <li>Business Value Creation</li>
+                    <li>Continuous Monitoring</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">11</div>
+</div>
+
+<!-- SLIDE 12: COMPETITIVE ADVANTAGE -->
+<div class="slide-container" id="slide12">
+    <h2 class="slide-title">Compliance as Competitive Advantage</h2>
+    <div class="content-area">
+        <div class="two-column tiled">
+            <div style="border-top-color: #05F283;">
+                <h3>Customer Trust</h3>
+                <p>Strong posture demonstrates a commitment to data protection, differentiating the brand in competitive markets.</p>
+            </div>
+            <div style="border-top-color: #05F283;">
+                <h3>Market Access</h3>
+                <p>Certifications (like ISO 27001) are often mandatory for government contracts or enterprise B2B relationships.</p>
+            </div>
+            <div style="border-top-color: #05F283;">
+                <h3>Operational Efficiency</h3>
+                <p>Well-implemented programs improve data quality, documentation, and asset management across the whole business.</p>
+            </div>
+            <div style="border-top-color: #05F283;">
+                <h3>Reduced Risk Costs</h3>
+                <p>Proactive compliance prevents high-cost regulatory penalties, insurance hikes, and incident response expenses.</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">12</div>
+</div>
+
+<!-- SLIDE 13: CONCLUSION -->
+<div class="slide-container" id="slide13" style="background-color: #f1f5f9;">
+    <div class="content-area" style="text-align: center;">
+        <h2 style="font-family: 'Merriweather', serif; font-size: 48px; color: #002b56;">Transforming GRC</h2>
+        <p style="font-size: 24px; margin-top: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">"The key to transformation is viewing compliance and risk not as burdens to be minimized, but as opportunities to strengthen posture and create business value."</p>
+        <hr style="width: 200px; height: 10px; background: #05F283; border: none; margin: 40px auto;">
+        <p style="font-weight: 700; color: #564887;">Master the Basics. Thinking like an Adversary. Defend with Data.</p>
+    </div>
+    <div class="slide-number">13</div>
+</div>
+
+</body>
+</html>
