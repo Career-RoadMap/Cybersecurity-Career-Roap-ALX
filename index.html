@@ -66,6 +66,9 @@
             border-color: #002b56;
             background-color: #f1f5f9;
         }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #564887; border-radius: 10px; }
     </style>
 </head>
 <body class="text-slate-900">
@@ -79,7 +82,7 @@
         
         /**
          * Robust Icon Component
-         * Fixed: Prevents removeChild errors by using a stable parent container
+         * Prevents removeChild errors during state transitions by wrapping in a stable span
          */
         const Icon = ({ name, size = 18, className = "" }) => {
             const iconRef = useRef(null);
@@ -367,7 +370,7 @@
             const checklist = [
                 { 
                     step: "Professional Profile Optimization", 
-                    detail: "Update LinkedIn with specific labs. Use the industry best practices for a high-impact profile.",
+                    detail: "Update LinkedIn with specific labs. Use industry best practices for a high-impact profile.",
                     links: [
                         { label: "Profile Best Practices", url: "https://www.linkedin.com/business/sales/blog/profile-best-practices/17-steps-to-a-better-linkedin-profile-in-2017" }
                     ]
@@ -426,6 +429,54 @@
                 { name: "SimplyHired", url: "https://www.simplyhired.com/search?q=cyber+security", icon: "check-circle" }
             ];
 
+            const businessTracks = [
+                {
+                    tier: 'Phase 1: Knowledge-Based (Freelance)',
+                    roles: [
+                        { t: 'Bug Bounty Professional', d: 'Hunting for vulnerabilities in public platforms for rewards.' },
+                        { t: 'Cyber Content Creator', d: 'Monetizing technical expertise via YouTube, blogs, or newsletters.' },
+                        { t: 'Security Awareness Trainer', d: 'Delivering corporate workshops to reduce human-factor risk.' },
+                        { t: 'Technical Security Writer', d: 'Drafting documentation, whitepapers, and technical manuals.' },
+                        { t: 'CTF Challenge Creator', d: 'Designing competitive labs for schools and enterprise training.' },
+                        { t: 'Cyber Career Coach', d: 'Guiding newcomers through certifications and portfolio building.' },
+                        { t: 'OSINT Investigator', d: 'Providing background checks and digital footprint reports.' },
+                        { t: 'Social Engineering Auditor', d: 'Testing human perimeters through authorized phishing/vishing.' },
+                        { t: 'Ethical Phishing Simulator', d: 'Running monthly simulation services for local businesses.' },
+                        { t: 'Cyber Newsletter Curator', d: 'Monetizing a niche technical roundup via sponsorships.' }
+                    ]
+                },
+                {
+                    tier: 'Phase 2: Agency Model (Growth)',
+                    roles: [
+                        { t: 'Managed GRC Agency', d: 'Helping startups achieve ISO 27001, GDPR, or NDPR compliance.' },
+                        { t: 'VMaaS Provider', d: 'Vulnerability Management as a Service: Scans and remediation.' },
+                        { t: 'Incident Response Retainer', d: 'Providing on-call support for mid-size organizational breaches.' },
+                        { t: 'MSSP for SMBs', d: 'A mini SOC provider monitoring smaller business networks.' },
+                        { t: 'AppSec Testing Boutique', d: 'Focused agency for web and mobile application security.' },
+                        { t: 'Managed Identity Agency', d: 'Specializing in Active Directory and IAM cleanup projects.' },
+                        { t: 'Ransomware Readiness Firm', d: 'Preparing businesses for recovery through immutable backups.' },
+                        { t: 'Cloud Security Agency', d: 'Auditing AWS/Azure environments for misconfigurations.' },
+                        { t: 'DPO-as-a-Service', d: 'Serving as the designated Data Privacy Officer for hire.' },
+                        { t: 'IoT Security Auditing', d: 'Specialized testing for smart devices and factories.' }
+                    ]
+                },
+                {
+                    tier: 'Phase 3: Elite Consultancy (Mastery)',
+                    roles: [
+                        { t: 'vCISO Consultancy', d: 'Fractional CISO leadership for high-growth tech startups.' },
+                        { t: 'Ethical Malware Developer', d: 'Building safe ransomware/malware for simulation purpose.' },
+                        { t: 'AI Integrity Auditor', d: 'Securing LLM implementations against prompt injection.' },
+                        { t: 'M&A Cyber Due Diligence', d: 'Assessing the security debt of companies during acquisitions.' },
+                        { t: 'Critical Infrastructure Advisor', d: 'Strategic consulting for National Security and ICS/SCADA.' },
+                        { t: 'Web3 Security Auditor', d: 'Auditing Smart Contracts and Blockchain architectures.' },
+                        { t: 'Adversary Emulation Firm', d: 'High-end Red Teaming mimicking Nation-State APT actors.' },
+                        { t: 'Cyber Risk Insurance Quantifier', d: 'Helping insurers properly price cyber risk policies.' },
+                        { t: 'Forensic Litigation Support', d: 'Providing expert witness services in cybercrime cases.' },
+                        { t: 'Supply Chain Risk Strategist', d: 'Analyzing vendor ecosystems for third-party vulnerabilities.' }
+                    ]
+                }
+            ];
+
             return (
                 <div className="min-h-screen relative z-10 flex flex-col">
                     {/* Header */}
@@ -448,7 +499,7 @@
                             {[
                                 { id: 'map', label: 'Career Map', icon: 'trending-up' },
                                 { id: 'toolkit', label: 'Security Toolkit', icon: 'wrench' },
-                                { id: 'specialties', label: 'AI & Privacy', icon: 'brain' },
+                                { id: 'specialties', label: 'Frontier Specialties', icon: 'brain' },
                                 { id: 'checklist', label: 'Success Checklist', icon: 'check-square' },
                                 { id: 'benchmarks', label: 'Benchmarks', icon: 'award' },
                                 { id: 'biz', label: 'Launch Business', icon: 'rocket' }
@@ -575,29 +626,59 @@
                             </div>
                         )}
 
-                        {/* TAB: SPECIALTIES */}
+                        {/* TAB: SPECIALTIES (Updated with Cyber-Psychology) */}
                         {activeTab === 'specialties' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in max-w-6xl mx-auto">
-                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
-                                    <div className="w-12 h-12 bg-[#05F283]/10 text-[#05F283] rounded-2xl flex items-center justify-center mb-6">
-                                        <Icon name="brain" size={24} />
-                                    </div>
-                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">AI Security Track</h2>
-                                    <p className="text-sm text-slate-500 mb-6">Defending LLMs and Automated Infrastructure.</p>
-                                    <div className="space-y-1">
-                                        <RoleItem title="LLM Red Teaming" desc="Attacking AI models to identify prompt injection, jailbreaking, and secret data leakage." />
-                                        <RoleItem title="AI Defense Engineer" desc="Using ML models to proactively detect anomalous login patterns and zero-day behaviors in logs." />
-                                    </div>
+                            <div className="animate-in space-y-12 max-w-7xl mx-auto">
+                                <div className="bg-gradient-to-r from-[#002b56] via-[#564887] to-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
+                                    <h2 className="text-3xl font-bold mb-2">The Frontier Defense</h2>
+                                    <p className="text-slate-200 text-sm italic">Pioneering roles at the intersection of AI, Privacy, and Human Performance.</p>
+                                    <Icon name="brain" size={120} className="absolute -right-10 -bottom-10 opacity-10 rotate-12 text-white" />
                                 </div>
-                                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#564887]">
-                                    <div className="w-12 h-12 bg-[#564887]/10 text-[#564887] rounded-2xl flex items-center justify-center mb-6">
-                                        <Icon name="lock" size={24} />
+
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                    {/* AI Security Deep Dive */}
+                                    <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[10px] border-[#05F283]">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-10 h-10 bg-[#05F283]/10 text-[#05F283] rounded-xl flex items-center justify-center">
+                                                <Icon name="zap" size={20} />
+                                            </div>
+                                            <h2 className="text-xl font-bold text-[#002b56]">AI Security</h2>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <RoleItem title="LLM Red Teamer" desc="Performing adversarial testing on Large Language Models to identify Prompt Injection and secret data leakage." />
+                                            <RoleItem title="Model Inversion Analyst" desc="Defending against attacks that attempt to reconstruct private training data from model outputs." />
+                                            <RoleItem title="AI Governance Lead" desc="Aligning AI implementations with NIST AI RMF and EU AI Act requirements." />
+                                        </div>
                                     </div>
-                                    <h2 className="text-2xl font-bold text-[#002b56] mb-2">Data Privacy (DPO)</h2>
-                                    <p className="text-sm text-slate-500 mb-6">Legal & Ethical Compliance in the Digital Age.</p>
-                                    <div className="space-y-1">
-                                        <RoleItem title="Privacy Impact Assessor (PIA)" desc="Evaluating the risk of new product launches against global laws like GDPR and NDPR." />
-                                        <RoleItem title="Subject Rights Lead" desc="Managing user requests for data access, correction, and the 'right to be forgotten'." />
+
+                                    {/* Data Privacy & Sovereignty */}
+                                    <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[10px] border-[#564887]">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-10 h-10 bg-[#564887]/10 text-[#564887] rounded-xl flex items-center justify-center">
+                                                <Icon name="lock" size={20} />
+                                            </div>
+                                            <h2 className="text-xl font-bold text-[#002b56]">Privacy Engineering</h2>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <RoleItem title="Privacy by Design Lead" desc="Integrating Differential Privacy and anonymization directly into product codebases." />
+                                            <RoleItem title="DPO (Data Protection Officer)" desc="Executive advisor ensuring corporate strategy aligns with GDPR, NDPR, and CCPA." />
+                                            <RoleItem title="Consent Architect" desc="Designing preference centers that transparently handle complex data processing permissions." />
+                                        </div>
+                                    </div>
+
+                                    {/* Cyber-Psychology & Resilience */}
+                                    <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[10px] border-[#27DEF2]">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-10 h-10 bg-[#27DEF2]/10 text-[#27DEF2] rounded-xl flex items-center justify-center">
+                                                <Icon name="smile" size={20} />
+                                            </div>
+                                            <h2 className="text-xl font-bold text-[#002b56]">Cyber-Psychology</h2>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <RoleItem title="Resilience Coach (SOC)" desc="Training analysts to manage high-stress environments and avoid burnout during major incidents." />
+                                            <RoleItem title="Behavioral Profiler" desc="Studying the psychological motivations of threat actors to predict future attack vectors." />
+                                            <RoleItem title="Cognitive Bias Trainer" desc="Helping security teams identify and mitigate mental shortcuts that lead to errors in triage." />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -641,29 +722,107 @@
                             </div>
                         )}
 
-                        {/* TAB: BIZ */}
+                        {/* TAB: BIZ (EXPANDED) */}
                         {activeTab === 'biz' && (
-                            <div className="space-y-8 animate-in max-w-6xl mx-auto">
+                            <div className="space-y-12 animate-in max-w-7xl mx-auto">
                                 <div className="bg-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
-                                    <h2 className="text-3xl font-bold mb-2 text-white">Entrepreneurial Tracks</h2>
-                                    <p className="text-slate-200 text-sm italic">Monetize your technical skills as a business owner.</p>
-                                    <Icon name="rocket" size={100} className="absolute -right-5 -bottom-5 opacity-10 rotate-12 text-white" />
+                                    <div className="relative z-10">
+                                        <h2 className="text-3xl font-bold mb-2 text-white">Entrepreneurial Mastery</h2>
+                                        <p className="text-slate-200 text-sm italic mb-4">"Don't just watch the SOC—Build the SOC." Convert technical mastery into a scalable business model.</p>
+                                        <div className="inline-block px-4 py-2 bg-[#05F283] text-[#002b56] rounded-lg font-bold text-sm shadow-lg">
+                                            "Do not under-estimate what you know - Dare O"
+                                        </div>
+                                    </div>
+                                    <Icon name="rocket" size={120} className="absolute -right-10 -bottom-10 opacity-10 rotate-12 text-white" />
                                 </div>
+
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    {[
-                                        { tier: 'Service-Based', roles: [{t: 'Awareness Trainer', d: 'Phishing Training for SMBs'}, {t: 'Content Creator', d: 'Tech Blogging/Courses'}] },
-                                        { tier: 'Agency Model', roles: [{t: 'Managed GRC', d: 'Policy & Audit Prep'}, {t: 'Vuln Agency', d: 'Scan & Remediate'}] },
-                                        { tier: 'Strategic Model', roles: [{t: 'Virtual CISO', d: 'Strategy-as-a-Service'}, {t: 'Security Auditor', d: 'Niche Tech Audits'}] }
-                                    ].map((item, i) => (
+                                    {businessTracks.map((item, i) => (
                                         <div key={i} className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-lg border-t-8 border-[#564887]">
                                             <h3 className="text-[10px] font-bold text-[#564887] uppercase tracking-widest mb-4 block border-b pb-2">{item.tier}</h3>
-                                            <div className="space-y-1">
+                                            <div className="space-y-1 h-[450px] overflow-y-auto pr-2 custom-scrollbar">
                                                 {item.roles.map((r, ri) => (
                                                     <RoleItem key={ri} title={r.t} desc={r.d} />
                                                 ))}
                                             </div>
                                         </div>
                                     ))}
+                                </div>
+
+                                {/* Entrepreneur Journey Guide Section */}
+                                <div className="bg-white rounded-3xl p-10 shadow-xl border border-slate-100 relative overflow-hidden">
+                                    <div className="flex items-center gap-4 mb-8">
+                                        <div className="w-12 h-12 bg-[#05F283]/20 rounded-xl flex items-center justify-center">
+                                            <Icon name="map" size={24} className="text-[#002b56]" />
+                                        </div>
+                                        <h2 className="text-2xl font-bold text-[#002b56]">The Entrepreneurial Roadmap</h2>
+                                    </div>
+
+                                    <div className="p-6 bg-slate-50 border-2 border-dashed border-[#564887] rounded-2xl mb-8">
+                                        <h4 className="font-bold text-[#564887] mb-2 flex items-center gap-2 uppercase tracking-widest text-xs">
+                                            <Icon name="lightbulb" size={14} /> The Starting Hint
+                                        </h4>
+                                        <p className="text-sm text-slate-700 leading-relaxed italic">
+                                            "You don't need a 50-person agency to start. Start with the specialized skills you mastered in this program. Can you run an Nmap scan and interpret the results better than a local business owner? Then you have a service. Package what you know today, and build the complex agency tomorrow."
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-6">
+                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#564887]">
+                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
+                                                    <span className="text-xs bg-[#564887] text-white px-2 py-0.5 rounded">1</span>
+                                                    Identify Niche Opportunities
+                                                </h4>
+                                                <p className="text-xs text-slate-600 leading-relaxed">
+                                                    Success comes from specialization. Focus on AI/ML Security, Regulatory Compliance (GDPR/ISO), or specialized vCISO services.
+                                                </p>
+                                            </div>
+                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#05F283]">
+                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
+                                                    <span className="text-xs bg-[#05F283] text-[#002b56] px-2 py-0.5 rounded">2</span>
+                                                    Foundational Launch Steps
+                                                </h4>
+                                                <p className="text-xs text-slate-600 leading-relaxed">
+                                                    Validate your idea against painful problems. Build a plan defining target markets. Use certs like CISSP for B2B credibility.
+                                                </p>
+                                            </div>
+                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#27DEF2]">
+                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
+                                                    <span className="text-xs bg-[#27DEF2] text-[#002b56] px-2 py-0.5 rounded">3</span>
+                                                    Key Skills to Develop
+                                                </h4>
+                                                <p className="text-xs text-slate-600 leading-relaxed">
+                                                    Shift from technical to business mindset. Master Sales (pitching), Finance (contracts), and Leadership.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-6">
+                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#002b56]">
+                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
+                                                    <span className="text-xs bg-[#002b56] text-white px-2 py-0.5 rounded">4</span>
+                                                    Training & Certifications
+                                                </h4>
+                                                <p className="text-xs text-slate-600 leading-relaxed">
+                                                    Bridge the gap with Cyber Entrepreneurship certificates or ALX Africa technical + business tracks.
+                                                </p>
+                                            </div>
+                                            <div className="p-5 bg-red-50 rounded-2xl border-l-4 border-[#FF5347]">
+                                                <h4 className="font-bold text-[#FF5347] mb-2 flex items-center gap-2 text-sm">
+                                                    <span className="text-xs bg-[#FF5347] text-white px-2 py-0.5 rounded">5</span>
+                                                    Common Pitfalls to Avoid
+                                                </h4>
+                                                <p className="text-xs text-slate-600 leading-relaxed">
+                                                    Avoid overpromising, ignoring internal workflows, or copying competitors without differentiation.
+                                                </p>
+                                            </div>
+                                            <div className="p-6 bg-[#002b56] text-white rounded-2xl text-center">
+                                                <p className="text-xs font-bold uppercase tracking-widest text-[#05F283] mb-1">Market Trend</p>
+                                                <p className="text-[11px] italic">"Simplify tech stacks or quantify risk for insurers to thrive."</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )}
