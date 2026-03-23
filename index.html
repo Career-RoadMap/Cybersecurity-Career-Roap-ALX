@@ -75,13 +75,27 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
         
+        /**
+         * Robust Icon Component
+         * Prevents removeChild errors during state transitions by wrapping in a stable span
+         */
         const Icon = ({ name, size = 18, className = "" }) => {
+            const iconRef = useRef(null);
             useEffect(() => {
-                if (window.lucide) window.lucide.createIcons();
+                if (window.lucide && iconRef.current) {
+                    window.lucide.createIcons({
+                        node: iconRef.current
+                    });
+                }
             }, [name]);
-            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
+
+            return (
+                <span ref={iconRef} className={`inline-flex items-center justify-center ${className}`}>
+                    <i data-lucide={name} style={{ width: size, height: size }}></i>
+                </span>
+            );
         };
 
         const RoleItem = ({ title, desc }) => {
@@ -152,21 +166,27 @@
                 }
             };
 
+            const resetQuiz = () => {
+                setScores({ D: 0, O: 0, S: 0 });
+                setResult(null);
+                setStep(0);
+            };
+
             if (result) {
                 return (
-                    <div className="bg-[#002b56] text-white p-8 rounded-3xl text-center animate-in shadow-xl">
+                    <div key="quiz-result" className="bg-[#002b56] text-white p-8 rounded-3xl text-center animate-in shadow-xl">
                         <Icon name="award" size={48} className="mx-auto mb-4 text-[#05F283]" />
                         <h3 className="text-2xl font-bold mb-2">Recommended Path: 
                             {result === 'D' ? ' Defensive (Blue Team)' : result === 'O' ? ' Offensive (Red Team)' : ' Strategic (GRC/DPO)'}
                         </h3>
                         <p className="text-slate-300 text-sm mb-6">Based on your instincts, you belong in {result === 'D' ? 'the SOC' : result === 'O' ? 'Penetration Testing' : 'Compliance Management'}.</p>
-                        <button onClick={() => {setStep(0); setResult(null); setScores({D:0,O:0,S:0});}} className="text-xs font-bold text-[#05F283] underline uppercase tracking-widest">Restart Quiz</button>
+                        <button onClick={resetQuiz} className="text-xs font-bold text-[#05F283] underline uppercase tracking-widest hover:text-white transition-colors">Restart Quiz</button>
                     </div>
                 );
             }
 
             return (
-                <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 animate-in">
+                <div key={`quiz-step-${step}`} className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 animate-in">
                     <div className="flex justify-between items-center mb-6">
                         <h3 className="font-bold text-[#002b56]">Pathfinder Quiz</h3>
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Question {step + 1} of 3</span>
@@ -318,38 +338,88 @@
 
             const toolkit = {
                 "Technical Tools": [
-                    { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting." },
-                    { name: "Nmap", category: "Recon", desc: "The standard for network mapping and discovery." },
-                    { name: "Recon-ng", category: "OSINT", desc: "Modular framework for automated intelligence gathering." },
-                    { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities." },
-                    { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and trust relations." },
-                    { name: "Metasploit", category: "Exploit", desc: "The world's most used penetration testing framework." },
-                    { name: "Gophish", category: "Phishing", desc: "Open-source phishing framework for simulation training." },
-                    { name: "Aircrack-ng", category: "Wireless", desc: "Complete suite of tools to assess WiFi network security." },
-                    { name: "Nessus", category: "Vuln Mgmt", desc: "Industry standard for vulnerability assessment and compliance." },
-                    { name: "OpenVAS", category: "Vuln Mgmt", desc: "Full-featured open-source vulnerability scanner and manager." }
+                    { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting.", url: "https://www.wireshark.org/" },
+                    { name: "Nmap", category: "Recon", desc: "The standard for network mapping and discovery.", url: "https://nmap.org/" },
+                    { name: "Recon-ng", category: "OSINT", desc: "Modular framework for automated intelligence gathering.", url: "https://github.com/lanmaster53/recon-ng" },
+                    { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities.", url: "https://portswigger.net/burp" },
+                    { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and trust relations.", url: "https://github.com/BloodHoundAD/BloodHound" },
+                    { name: "Metasploit", category: "Exploit", desc: "The world's most used penetration testing framework.", url: "https://www.metasploit.com/" },
+                    { name: "Gophish", category: "Phishing", desc: "Open-source phishing framework for simulation training.", url: "https://getgophish.com/" },
+                    { name: "Aircrack-ng", category: "Wireless", desc: "Complete suite of tools to assess WiFi network security.", url: "https://www.aircrack-ng.org/" },
+                    { name: "Nessus", category: "Vuln Mgmt", desc: "Industry standard for vulnerability assessment and compliance.", url: "https://www.tenable.com/products/nessus" },
+                    { name: "OpenVAS", category: "Vuln Mgmt", desc: "Full-featured open-source vulnerability scanner and manager.", url: "https://www.openvas.org/" }
                 ],
                 "Industry Frameworks": [
-                    { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra." },
-                    { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques." },
-                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management." },
-                    { name: "OWASP Top 10", category: "Web App", desc: "Standard awareness document for web application security." },
-                    { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between provider and user." }
+                    { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra.", url: "https://csrc.nist.gov/publications/sp800" },
+                    { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques.", url: "https://attack.mitre.org/" },
+                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management.", url: "https://www.iso.org/standard/27001" },
+                    { name: "OWASP Top 10", category: "Web App", desc: "Standard awareness document for web application security.", url: "https://owasp.org/www-project-top-ten/" },
+                    { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between provider and user.", url: "https://aws.amazon.com/compliance/shared-responsibility-model/" }
                 ],
                 "Learning Lab (Platforms)": [
-                    { name: "TryHackMe", category: "Gamified", desc: "Best for beginners. Hands-on labs for SOC and Pentesting." },
-                    { name: "HackTheBox", category: "Advanced", desc: "Elite machines to practice exploitation and OSCP prep." },
-                    { name: "PortSwigger Academy", category: "Web", desc: "The free masterclass for all things Web Application Security." },
-                    { name: "Blue Team Labs (BTL)", category: "Defensive", desc: "Realistic investigation scenarios and SIEM training." }
+                    { name: "TryHackMe", category: "Gamified", desc: "Best for beginners. Hands-on labs for SOC and Pentesting.", url: "https://tryhackme.com/" },
+                    { name: "HackTheBox", category: "Advanced", desc: "Elite machines to practice exploitation and OSCP prep.", url: "https://www.hackthebox.com/" },
+                    { name: "PortSwigger Academy", category: "Web", desc: "The free masterclass for all things Web Application Security.", url: "https://portswigger.net/web-security" },
+                    { name: "Blue Team Labs (BTL)", category: "Defensive", desc: "Realistic investigation scenarios and SIEM training.", url: "https://blueteamlabs.online/" }
                 ]
             };
 
             const checklist = [
-                { step: "Professional Profile", detail: "Update LinkedIn with specific labs: AD Hacking and SIEM Triage." },
-                { step: "Technical Portfolio", detail: "Create a GitHub repo for your custom Nmap reports and Python scripts." },
-                { step: "Certification Sprint", detail: "Register for Security+ or BTL1 to solidify your professional status." },
-                { step: "Common Interview Prep", detail: "Prep: Explain the 3-way handshake, the difference between IDOR and XSS." },
-                { step: "Networking", detail: "Join local OWASP or security meetups to meet your future peers." }
+                { 
+                    step: "Professional Profile Optimization", 
+                    detail: "Update LinkedIn with specific labs. Use industry best practices for a high-impact profile.",
+                    links: [
+                        { label: "Profile Best Practices", url: "https://www.linkedin.com/business/sales/blog/profile-best-practices/17-steps-to-a-better-linkedin-profile-in-2017" }
+                    ]
+                },
+                { 
+                    step: "Download the Starter Pack", 
+                    detail: "Your all-in-one resource for kickstarting your cybersecurity journey.",
+                    links: [
+                        { label: "Launch Starter Pack", url: "https://www.canva.com/design/DAG_Ee2mbbA/__BeXOC1zmnEDAsRS3XI8w/edit" }
+                    ]
+                },
+                { 
+                    step: "Technical Portfolio", 
+                    detail: "Create a GitHub repo for your custom Nmap reports, Python scripts, and technical write-ups.",
+                    links: []
+                },
+                { 
+                    step: "Interview Mastery & Prep", 
+                    detail: "Watch mock interviews and prepare for common technical and cultural questions.",
+                    links: [
+                        { label: "Interview Video Playlist", url: "https://www.youtube.com/playlist?list=PLqBeiU46hx1HRTLaifWrN16upEfHSjrl8" },
+                        { label: "Top 100 Interview Guide", url: "https://21880678.fs1.hubspotusercontent-na1.net/hubfs/21880678/Top%20100%20Questions-Best%20Answers%20Cyber%20Analyst%20Job%20Interview%20Guide.pdf?hsCtaTracking=9185beb2-f798-4ebd-8c5e-bbcad52ad4ff%7C3d8c5b23-8196-443d-ad88-19c69e1f8e35", type: "download" },
+                        { label: "Culture Fit & Values", url: "https://drive.google.com/file/d/1hKvfOh0EW_u-bThiGYaGEiJt3uDv4N_Y/view", type: "download" }
+                    ]
+                },
+                { 
+                    step: "Networking & Communities", 
+                    detail: "Join popular cybersecurity groups to meet peers and mentors.",
+                    links: [
+                        { label: "CSEAN (LinkedIn)", url: "https://ng.linkedin.com/company/csean" },
+                        { label: "Cybersecurity Defender", url: "https://www.linkedin.com/company/cyber-defense-group" },
+                        { label: "Acumix Top Pick Group", url: "https://www.acumin.co.uk/wp-content/uploads/2018/12/2-linkedin-groups.pdf", type: "download" },
+                        { label: "OWASP Global", url: "https://owasp.org/" },
+                        { label: "ISACA Connect", url: "https://www.isaca.org/" }
+                    ],
+                    hint: "Don't just join groups—start your own! Leading a local study group is one of the best ways to prove leadership to employers."
+                }
+            ];
+
+            const jobBoards = [
+                { name: "ALX Career Page", url: "https://careers.alxafrica.com/", icon: "award" },
+                { name: "SandTech Careers", url: "https://sandtech.com/careers/", icon: "cpu" },
+                { name: "LinkedIn Jobs", url: "https://www.linkedin.com/jobs/cybersecurity-jobs/", icon: "linkedin" },
+                { name: "Indeed", url: "https://www.indeed.com/q-Cyber-Security-jobs.html", icon: "search" },
+                { name: "Glassdoor", url: "https://www.glassdoor.com/Job/cyber-security-jobs-SRCH_KO0,14.htm", icon: "building" },
+                { name: "We Work Remotely", url: "https://weworkremotely.com/remote-jobs/search?term=security", icon: "home" },
+                { name: "CyberSecJobs.com", url: "https://cybersecjobs.com/", icon: "shield" },
+                { name: "NinjaJobs", url: "https://ninjajobs.org/", icon: "zap" },
+                { name: "Infosec-Jobs.com", url: "https://infosec-jobs.com/", icon: "lock" },
+                { name: "Dice", url: "https://www.dice.com/jobs?q=cybersecurity", icon: "layout" },
+                { name: "Wellfound (AngelList)", url: "https://wellfound.com/role/s/security-engineer", icon: "rocket" },
+                { name: "SimplyHired", url: "https://www.simplyhired.com/search?q=cyber+security", icon: "check-circle" }
             ];
 
             return (
@@ -363,7 +433,7 @@
                         </div>
                         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
                             <img src="asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 mb-4 opacity-100" />
-                            <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
+                            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-white">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
                             <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">TAMBALI >>> READY TO LAUNCH</p>
                         </div>
                     </header>
@@ -382,7 +452,7 @@
                                 <button 
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-100 text-slate-500'}`}
+                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-50 text-slate-500'}`}
                                 >
                                     <Icon name={tab.icon} size={14} /> {tab.label}
                                 </button>
@@ -412,7 +482,7 @@
                                                         <div className="flex items-center gap-2 font-bold uppercase tracking-tighter text-slate-800">
                                                             <Icon name={track.icon} /> {track.name}
                                                         </div>
-                                                        <span className="text-[8px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-bold uppercase">Track</span>
+                                                        <span className="text-[8px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-bold uppercase text-slate-400">Track</span>
                                                     </div>
                                                     <div className="space-y-1 mb-6">
                                                         {track.roles.map(r => (
@@ -431,6 +501,45 @@
                             </div>
                         )}
 
+                        {/* TAB: BENCHMARKS */}
+                        {activeTab === 'benchmarks' && (
+                            <div className="animate-in space-y-10">
+                                <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 max-w-4xl mx-auto">
+                                    <div className="bg-[#564887] p-8 text-white text-center">
+                                        <h2 className="text-xl font-bold flex items-center justify-center gap-3 text-white"><Icon name="award" /> Global Market Benchmarks</h2>
+                                    </div>
+                                    <div className="p-8 text-sm space-y-4">
+                                        <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 1 (Entry)</strong><span className="font-bold text-[#564887]">$55k - $85k</span></div>
+                                        <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 2 (Specialist)</strong><span className="font-bold text-[#564887]">$90k - $140k</span></div>
+                                        <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 3 (Architect)</strong><span className="font-bold text-[#564887]">$145k - $190k</span></div>
+                                        <div className="flex justify-between font-medium"><strong>Level 4 (Executive/CISO)</strong><span className="font-bold text-[#564887]">$200k+</span></div>
+                                    </div>
+                                </div>
+
+                                <div className="max-w-5xl mx-auto">
+                                    <h3 className="text-xl font-bold text-[#002b56] mb-6 flex items-center gap-2">
+                                        <div className="w-8 h-1 bg-[#05F283]" /> Career Launch Boards
+                                    </h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        {jobBoards.map((board, i) => (
+                                            <a 
+                                                key={i} 
+                                                href={board.url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-slate-100 hover:border-[#05F283] hover:shadow-md transition-all flex flex-col items-center text-center group"
+                                            >
+                                                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mb-3 group-hover:bg-[#05F283]/10 transition-colors">
+                                                    <Icon name={board.icon} size={18} className="text-slate-400 group-hover:text-[#002b56]" />
+                                                </div>
+                                                <span className="text-xs font-bold text-slate-700 group-hover:text-[#002b56]">{board.name}</span>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {/* TAB: TOOLKIT */}
                         {activeTab === 'toolkit' && (
                             <div className="animate-in space-y-12">
@@ -441,13 +550,20 @@
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             {tools.map((tool, i) => (
-                                                <div key={i} className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-[#05F283] hover:shadow-lg transition-all standard-card border-slate-100 border">
+                                                <a 
+                                                    key={i} 
+                                                    href={tool.url} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-[#05F283] hover:shadow-lg transition-all standard-card border-slate-100 border block group"
+                                                >
                                                     <div className="flex justify-between items-start mb-3">
-                                                        <h4 className="font-bold text-[#002b56] text-lg">{tool.name}</h4>
-                                                        <span className="text-[9px] bg-slate-50 px-2 py-0.5 rounded font-bold text-slate-400 uppercase border border-slate-100">{tool.category}</span>
+                                                        <h4 className="font-bold text-[#002b56] text-lg group-hover:text-[#564887] transition-colors">{tool.name}</h4>
+                                                        <Icon name="external-link" size={12} className="text-slate-300 group-hover:text-[#05F283]" />
                                                     </div>
+                                                    <span className="text-[9px] bg-slate-50 px-2 py-0.5 rounded font-bold text-slate-400 uppercase border border-slate-100 mb-2 inline-block">{tool.category}</span>
                                                     <p className="text-xs text-slate-500 leading-relaxed italic">"{tool.desc}"</p>
-                                                </div>
+                                                </a>
                                             ))}
                                         </div>
                                     </div>
@@ -455,7 +571,7 @@
                             </div>
                         )}
 
-                        {/* TAB: AI & PRIVACY */}
+                        {/* TAB: SPECIALTIES */}
                         {activeTab === 'specialties' && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in max-w-6xl mx-auto">
                                 <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[12px] border-[#05F283]">
@@ -485,17 +601,36 @@
 
                         {/* TAB: CHECKLIST */}
                         {activeTab === 'checklist' && (
-                            <div className="max-w-3xl mx-auto space-y-4 animate-in">
+                            <div className="max-w-4xl mx-auto space-y-6 animate-in">
                                 <div className="bg-[#564887] p-8 rounded-3xl text-white mb-6 text-center shadow-xl">
-                                    <h2 className="text-2xl font-bold mb-2">Graduation Success Roadmap</h2>
-                                    <p className="text-slate-300 text-sm">Actionable steps to land your first role or client in 90 days.</p>
+                                    <h2 className="text-2xl font-bold mb-2 text-white">Graduation Success Roadmap</h2>
+                                    <p className="text-slate-300 text-sm">Actionable steps and resources to launch your career in 90 days.</p>
                                 </div>
                                 {checklist.map((item, i) => (
                                     <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex gap-5 hover:bg-slate-50 transition-colors group">
                                         <div className="w-10 h-10 rounded-full bg-[#05F283]/10 text-[#002b56] flex items-center justify-center shrink-0 font-bold text-base border border-[#05F283]/30 group-hover:scale-110 transition-transform">{i+1}</div>
-                                        <div>
+                                        <div className="flex-grow">
                                             <h4 className="font-bold text-[#002b56] text-sm md:text-base">{item.step}</h4>
-                                            <p className="text-xs md:text-sm text-slate-500 mt-1 leading-relaxed">{item.detail}</p>
+                                            <p className="text-xs md:text-sm text-slate-500 mt-1 leading-relaxed mb-3">{item.detail}</p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {item.links.map((link, li) => (
+                                                    <a 
+                                                        key={li} 
+                                                        href={link.url} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        className={`px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-2 transition-all ${link.type === 'download' ? 'bg-[#05F283] text-[#002b56] hover:bg-[#002b56] hover:text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                                    >
+                                                        <Icon name={link.type === 'download' ? "download" : "external-link"} size={10} />
+                                                        {link.label}
+                                                    </a>
+                                                ))}
+                                            </div>
+                                            {item.hint && (
+                                                <div className="mt-4 p-3 bg-[#05F283]/5 border-l-4 border-[#05F283] text-[11px] text-slate-600 italic">
+                                                    <strong>HINT:</strong> {item.hint}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -506,9 +641,9 @@
                         {activeTab === 'biz' && (
                             <div className="space-y-8 animate-in max-w-6xl mx-auto">
                                 <div className="bg-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
-                                    <h2 className="text-3xl font-bold mb-2">Entrepreneurial Tracks</h2>
+                                    <h2 className="text-3xl font-bold mb-2 text-white">Entrepreneurial Tracks</h2>
                                     <p className="text-slate-200 text-sm italic">Monetize your technical skills as a business owner.</p>
-                                    <Icon name="rocket" size={100} className="absolute -right-5 -bottom-5 opacity-10 rotate-12" />
+                                    <Icon name="rocket" size={100} className="absolute -right-5 -bottom-5 opacity-10 rotate-12 text-white" />
                                 </div>
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                     {[
@@ -528,21 +663,6 @@
                                 </div>
                             </div>
                         )}
-
-                        {/* TAB: BENCHMARKS */}
-                        {activeTab === 'benchmarks' && (
-                            <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-in border border-slate-100 max-w-4xl mx-auto">
-                                <div className="bg-[#564887] p-8 text-white text-center">
-                                    <h2 className="text-xl font-bold flex items-center justify-center gap-3"><Icon name="award" /> Industry Benchmarks</h2>
-                                </div>
-                                <div className="p-8 text-sm space-y-4">
-                                    <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 1 (Entry)</strong><span className="font-bold text-[#564887]">$55k - $85k</span></div>
-                                    <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 2 (Specialist)</strong><span className="font-bold text-[#564887]">$90k - $140k</span></div>
-                                    <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 3 (Architect)</strong><span className="font-bold text-[#564887]">$145k - $190k</span></div>
-                                    <div className="flex justify-between font-medium"><strong>Level 4 (Executive/CISO)</strong><span className="font-bold text-[#564887]">$200k+</span></div>
-                                </div>
-                            </div>
-                        )}
                     </main>
 
                     {/* Footer */}
@@ -550,7 +670,7 @@
                         <div className="bg-[#002b56] rounded-3xl p-10 text-white flex flex-col md:flex-row gap-10 items-center border-b-8 border-[#05F283] shadow-2xl relative overflow-hidden">
                             <div className="flex-1 text-center md:text-left relative z-10">
                                 <h3 className="text-2xl font-bold mb-1 uppercase tracking-widest text-[#05F283]">Never Stop Adapting</h3>
-                                <p className="text-slate-400 text-xs tracking-wider">Cybersecurity Mastery • Do Hard Things</p>
+                                <p className="text-slate-400 text-xs tracking-wider uppercase font-bold">Cybersecurity Mastery • Do Hard Things</p>
                             </div>
                             <div className="flex flex-col items-center sm:items-end gap-3 relative z-10">
                                 <span className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.3em]">Empowered By</span>
