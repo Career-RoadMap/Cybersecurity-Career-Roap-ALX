@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALX Cybersecurity Career & Resources Portal</title>
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React and Babel -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { 
@@ -50,13 +46,6 @@
             overflow: hidden;
         }
 
-        .nav-active {
-            background-color: #002b56 !important;
-            color: white !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            transform: scale(1.02);
-        }
-
         .standard-card:hover {
             border-color: #05F283;
             transform: translateY(-2px);
@@ -72,9 +61,7 @@
     </style>
 </head>
 <body class="text-slate-900">
-    <!-- Background Watermark -->
-    <img src="asset/images/Alx%20black%20transparent.png" alt="" class="watermark">
-
+    
     <div id="root"></div>
 
     <script type="text/babel">
@@ -110,7 +97,7 @@
                         className="w-full flex items-center justify-between py-3 group text-left hover:bg-slate-50/80 px-3 rounded-lg transition-all"
                     >
                         <div className="flex items-center gap-3">
-                            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isOpen ? 'bg-[#05F283] scale-150' : 'bg-slate-300'}`} />
+                            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isOpen ? 'bg-emerald-400 scale-150' : 'bg-slate-300'}`} />
                             <span className={`text-xs md:text-sm font-semibold transition-colors ${isOpen ? 'text-[#002b56]' : 'text-slate-600'}`}>{title}</span>
                         </div>
                         <Icon name={isOpen ? "minus" : "plus"} size={14} className="text-slate-400" />
@@ -179,28 +166,28 @@
                 return (
                     <div key="quiz-result" className="bg-[#002b56] text-white p-8 rounded-3xl text-center animate-in shadow-xl">
                         <Icon name="award" size={48} className="mx-auto mb-4 text-[#05F283]" />
-                        <h3 className="text-2xl font-bold mb-2">Recommended Path: 
+                        <h3 className="text-xl font-bold mb-2">Recommended Path: 
                             {result === 'D' ? ' Defensive (Blue Team)' : result === 'O' ? ' Offensive (Red Team)' : ' Strategic (GRC/DPO)'}
                         </h3>
-                        <p className="text-slate-300 text-sm mb-6">Based on your instincts, you belong in {result === 'D' ? 'the SOC' : result === 'O' ? 'Penetration Testing' : 'Compliance Management'}.</p>
+                        <p className="text-slate-300 text-xs mb-6">Based on your instincts, you belong in {result === 'D' ? 'the SOC' : result === 'O' ? 'Penetration Testing' : 'Compliance Management'}.</p>
                         <button onClick={resetQuiz} className="text-xs font-bold text-[#05F283] underline uppercase tracking-widest hover:text-white transition-colors">Restart Quiz</button>
                     </div>
                 );
             }
 
             return (
-                <div key={`quiz-step-${step}`} className="bg-white p-8 rounded-3xl shadow-lg border border-slate-100 animate-in">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="font-bold text-[#002b56]">Pathfinder Quiz</h3>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Question {step + 1} of 3</span>
+                <div key={`quiz-step-${step}`} className="bg-white p-6 rounded-3xl shadow-md border border-slate-100 animate-in">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="font-bold text-[#002b56] text-sm">Pathfinder Quiz</h3>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Q {step + 1} of 3</span>
                     </div>
-                    <p className="text-sm font-medium text-slate-700 mb-6">{questions[step].q}</p>
-                    <div className="space-y-3">
+                    <p className="text-xs font-medium text-slate-700 mb-4">{questions[step].q}</p>
+                    <div className="space-y-2">
                         {questions[step].options.map((opt, i) => (
                             <button 
                                 key={i} 
                                 onClick={() => handleAnswer(opt.type)}
-                                className="w-full text-left p-4 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 transition-all quiz-option"
+                                className="w-full text-left p-3 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 transition-all quiz-option"
                             >
                                 {opt.text}
                             </button>
@@ -276,66 +263,6 @@
                             certs: "CIPP, AI-102"
                         }
                     ]
-                },
-                {
-                    level: "Level 3: Advanced (5-8 Years)",
-                    desc: "Architecture & Design",
-                    tracks: [
-                        {
-                            name: "Defensive", icon: "lock", color: "border-[#27DEF2]",
-                            roles: [
-                                { title: "Security Architect", desc: "Blueprints the entire secure infrastructure for an organization." },
-                                { title: "Detection Engineer", desc: "Writes custom SIEM logic and KQL rules to find stealthy attackers." }
-                            ],
-                            certs: "CISSP, CASP+"
-                        },
-                        {
-                            name: "Offensive", icon: "cpu", color: "border-[#FF5347]",
-                            roles: [
-                                { title: "Red Team Operator", desc: "Mimics specific Nation-State actors to pressure-test the SOC." },
-                                { title: "Exploit Developer", desc: "Writes custom code to bypass modern security products (EDR/AV)." }
-                            ],
-                            certs: "OSWE, GXPN"
-                        },
-                        {
-                            name: "Strategic", icon: "globe", color: "border-[#564887]",
-                            roles: [
-                                { title: "Security Risk Manager", desc: "Calculates the financial impact of security gaps for the Board." },
-                                { title: "Compliance Director", desc: "Leads global regulatory alignment and large-scale audits." }
-                            ],
-                            certs: "CISM, CRISC"
-                        }
-                    ]
-                },
-                {
-                    level: "Level 4: Leadership (8+ Years)",
-                    desc: "Executive Strategy",
-                    tracks: [
-                        {
-                            name: "Executive", icon: "crown", color: "border-[#564887]",
-                            roles: [
-                                { title: "CISO", desc: "Chief Information Security Officer. The executive bridging security with profit." },
-                                { title: "VP of Security Ops", desc: "Directs the entire global security workforce and budget." }
-                            ],
-                            certs: "CCISO, MBA"
-                        },
-                        {
-                            name: "Operations", icon: "users", color: "border-[#27DEF2]",
-                            roles: [
-                                { title: "Head of SOC", desc: "Manages the people, processes, and technology in the defense center." },
-                                { title: "Director of DFIR", desc: "Leads the response to major catastrophic security failures." }
-                            ],
-                            certs: "CISSP-ISSMP"
-                        },
-                        {
-                            name: "Advisory", icon: "lightbulb", color: "border-[#05F283]",
-                            roles: [
-                                { title: "vCISO Consultant", desc: "Provides high-level strategy as a service to multiple startups." },
-                                { title: "Cyber Policy Advisor", desc: "Interfaces with governments on national security and data laws." }
-                            ],
-                            certs: "CISM"
-                        }
-                    ]
                 }
             ];
 
@@ -344,26 +271,12 @@
                     { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting.", url: "https://www.wireshark.org/" },
                     { name: "Nmap", category: "Recon", desc: "The standard for network mapping and discovery.", url: "https://nmap.org/" },
                     { name: "Recon-ng", category: "OSINT", desc: "Modular framework for automated intelligence gathering.", url: "https://github.com/lanmaster53/recon-ng" },
-                    { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities.", url: "https://portswigger.net/burp" },
-                    { name: "BloodHound", category: "Identity", desc: "Visualizing AD attack paths and trust relations.", url: "https://github.com/BloodHoundAD/BloodHound" },
-                    { name: "Metasploit", category: "Exploit", desc: "The world's most used penetration testing framework.", url: "https://www.metasploit.com/" },
-                    { name: "Gophish", category: "Phishing", desc: "Open-source phishing framework for simulation training.", url: "https://getgophish.com/" },
-                    { name: "Aircrack-ng", category: "Wireless", desc: "Complete suite of tools to assess WiFi network security.", url: "https://www.aircrack-ng.org/" },
-                    { name: "Nessus", category: "Vuln Mgmt", desc: "Industry standard for vulnerability assessment and compliance.", url: "https://www.tenable.com/products/nessus" },
-                    { name: "OpenVAS", category: "Vuln Mgmt", desc: "Full-featured open-source vulnerability scanner.", url: "https://www.openvas.org/" }
+                    { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities.", url: "https://portswigger.net/burp" }
                 ],
                 "Industry Frameworks": [
                     { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra.", url: "https://csrc.nist.gov/publications/sp800" },
                     { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques.", url: "https://attack.mitre.org/" },
-                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management.", url: "https://www.iso.org/standard/27001" },
-                    { name: "OWASP Top 10", category: "Web App", desc: "Standard awareness document for web application security.", url: "https://owasp.org/www-project-top-ten/" },
-                    { name: "Shared Responsibility", category: "Cloud", desc: "Defining security duties between provider and user.", url: "https://aws.amazon.com/compliance/shared-responsibility-model/" }
-                ],
-                "Learning Lab (Platforms)": [
-                    { name: "TryHackMe", category: "Gamified", desc: "Best for beginners. Hands-on labs for SOC and Pentesting.", url: "https://tryhackme.com/" },
-                    { name: "HackTheBox", category: "Advanced", desc: "Elite machines to practice exploitation and OSCP prep.", url: "https://www.hackthebox.com/" },
-                    { name: "PortSwigger Academy", category: "Web", desc: "The free masterclass for all things Web Application Security.", url: "https://portswigger.net/web-security" },
-                    { name: "Blue Team Labs (BTL)", category: "Defensive", desc: "Realistic investigation scenarios and SIEM training.", url: "https://blueteamlabs.online/" }
+                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management.", url: "https://www.iso.org/standard/27001" }
                 ]
             };
 
@@ -371,62 +284,20 @@
                 { 
                     step: "Professional Profile Optimization", 
                     detail: "Update LinkedIn with specific labs. Use industry best practices for a high-impact profile.",
-                    links: [
-                        { label: "Profile Best Practices", url: "https://www.linkedin.com/business/sales/blog/profile-best-practices/17-steps-to-a-better-linkedin-profile-in-2017" }
-                    ]
+                    links: [{ label: "Profile Best Practices", url: "https://www.linkedin.com" }]
                 },
                 { 
                     step: "Download the Starter Pack", 
                     detail: "Your all-in-one resource for kickstarting your cybersecurity journey.",
-                    links: [
-                        { label: "Launch Starter Pack", url: "https://www.canva.com/design/DAG_Ee2mbbA/JjftJPWTIRmxQ63qcm5soA/view?utm_content=DA[…]hare&utm_medium=link2&utm_source=uniquelinks&utlId=he20d37b35e" }
-                    ]
-                },
-                { 
-                    step: "Technical Portfolio & Blogs", 
-                    detail: "Host your custom scripts, Nmap reports, and technical walkthroughs on these platforms.",
-                    links: [
-                        { label: "GitHub", url: "https://github.com" },
-                        { label: "Medium", url: "https://medium.com" },
-                        { label: "Hashnode", url: "https://hashnode.com" }
-                    ],
-                    hint: "Video content is king! Consider creating YouTube content showing your lab walkthroughs. Demonstrating how you bypass an IDS or triage a SIEM alert on camera builds massive trust with technical recruiters."
-                },
-                { 
-                    step: "Interview Mastery & Prep", 
-                    detail: "Watch mock interviews and prepare for common technical and cultural questions.",
-                    links: [
-                        { label: "Interview Video Playlist", url: "https://www.youtube.com/playlist?list=PLqBeiU46hx1HRTLaifWrN16upEfHSjrl8" },
-                        { label: "Top 100 Interview Guide", url: "https://21880678.fs1.hubspotusercontent-na1.net/hubfs/21880678/Top%20100%20Questions-Best%20Answers%20Cyber%20Analyst%20Job%20Interview%20Guide.pdf?hsCtaTracking=9185beb2-f798-4ebd-8c5e-bbcad52ad4ff%7C3d8c5b23-8196-443d-ad88-19c69e1f8e35", type: "download" },
-                        { label: "Culture Fit & Values", url: "https://drive.google.com/file/d/1hKvfOh0EW_u-bThiGYaGEiJt3uDv4N_Y/view", type: "download" }
-                    ]
-                },
-                { 
-                    step: "Networking & Communities", 
-                    detail: "Join popular cybersecurity groups to meet peers and mentors.",
-                    links: [
-                        { label: "CSEAN (LinkedIn)", url: "https://ng.linkedin.com/company/csean" },
-                        { label: "Cybersecurity Defender", url: "https://www.linkedin.com/company/cyber-defense-group" },
-                        { label: "Acumix Top Pick Group", url: "https://www.acumin.co.uk/wp-content/uploads/2018/12/2-linkedin-groups.pdf", type: "download" },
-                        { label: "OWASP Global", url: "https://owasp.org/" }
-                    ],
-                    hint: "Don't just join groups—start your own! Leading a local study group is one of the best ways to prove leadership."
+                    links: [{ label: "Launch Starter Pack", url: "https://www.canva.com" }]
                 }
             ];
 
             const jobBoards = [
                 { name: "ALX Career Page", url: "https://careers.alxafrica.com/", icon: "award" },
-                { name: "SandTech Careers", url: "https://sandtech.com/careers/", icon: "cpu" },
-                { name: "LinkedIn Jobs", url: "https://www.linkedin.com/jobs/cybersecurity-jobs/", icon: "linkedin" },
-                { name: "Indeed", url: "https://www.indeed.com/q-Cyber-Security-jobs.html", icon: "search" },
-                { name: "Glassdoor", url: "https://www.glassdoor.com/Job/cyber-security-jobs-SRCH_KO0,14.htm", icon: "building" },
-                { name: "We Work Remotely", url: "https://weworkremotely.com/remote-jobs/search?term=security", icon: "home" },
-                { name: "CyberSecJobs.com", url: "https://cybersecjobs.com/", icon: "shield" },
+                { name: "LinkedIn Jobs", url: "https://www.linkedin.com/jobs/", icon: "linkedin" },
                 { name: "NinjaJobs", url: "https://ninjajobs.org/", icon: "zap" },
-                { name: "Infosec-Jobs.com", url: "https://infosec-jobs.com/", icon: "lock" },
-                { name: "Dice", url: "https://www.dice.com/jobs?q=cybersecurity", icon: "layout" },
-                { name: "Wellfound (AngelList)", url: "https://wellfound.com/role/s/security-engineer", icon: "rocket" },
-                { name: "SimplyHired", url: "https://www.simplyhired.com/search?q=cyber+security", icon: "check-circle" }
+                { name: "Infosec-Jobs.com", url: "https://infosec-jobs.com/", icon: "lock" }
             ];
 
             const businessTracks = [
@@ -435,50 +306,13 @@
                     roles: [
                         { t: 'Bug Bounty Professional', d: 'Hunting for vulnerabilities in public platforms for rewards.' },
                         { t: 'Cyber Content Creator', d: 'Monetizing technical expertise via YouTube, blogs, or newsletters.' },
-                        { t: 'Security Awareness Trainer', d: 'Delivering corporate workshops to reduce human-factor risk.' },
-                        { t: 'Technical Security Writer', d: 'Drafting documentation, whitepapers, and technical manuals.' },
-                        { t: 'CTF Challenge Creator', d: 'Designing competitive labs for schools and enterprise training.' },
-                        { t: 'Cyber Career Coach', d: 'Guiding newcomers through certifications and portfolio building.' },
-                        { t: 'OSINT Investigator', d: 'Providing background checks and digital footprint reports.' },
-                        { t: 'Social Engineering Auditor', d: 'Testing human perimeters through authorized phishing/vishing.' },
-                        { t: 'Ethical Phishing Simulator', d: 'Running monthly simulation services for local businesses.' },
-                        { t: 'Cyber Newsletter Curator', d: 'Monetizing a niche technical roundup via sponsorships.' }
-                    ]
-                },
-                {
-                    tier: 'Phase 2: Agency Model (Growth)',
-                    roles: [
-                        { t: 'Managed GRC Agency', d: 'Helping startups achieve ISO 27001, GDPR, or NDPR compliance.' },
-                        { t: 'VMaaS Provider', d: 'Vulnerability Management as a Service: Scans and remediation.' },
-                        { t: 'Incident Response Retainer', d: 'Providing on-call support for mid-size organizational breaches.' },
-                        { t: 'MSSP for SMBs', d: 'A mini SOC provider monitoring smaller business networks.' },
-                        { t: 'AppSec Testing Boutique', d: 'Focused agency for web and mobile application security.' },
-                        { t: 'Managed Identity Agency', d: 'Specializing in Active Directory and IAM cleanup projects.' },
-                        { t: 'Ransomware Readiness Firm', d: 'Preparing businesses for recovery through immutable backups.' },
-                        { t: 'Cloud Security Agency', d: 'Auditing AWS/Azure environments for misconfigurations.' },
-                        { t: 'DPO-as-a-Service', d: 'Serving as the designated Data Privacy Officer for hire.' },
-                        { t: 'IoT Security Auditing', d: 'Specialized testing for smart devices and factories.' }
-                    ]
-                },
-                {
-                    tier: 'Phase 3: Elite Consultancy (Mastery)',
-                    roles: [
-                        { t: 'vCISO Consultancy', d: 'Fractional CISO leadership for high-growth tech startups.' },
-                        { t: 'Ethical Malware Developer', d: 'Building safe ransomware/malware for simulation purpose.' },
-                        { t: 'AI Integrity Auditor', d: 'Securing LLM implementations against prompt injection.' },
-                        { t: 'M&A Cyber Due Diligence', d: 'Assessing the security debt of companies during acquisitions.' },
-                        { t: 'Critical Infrastructure Advisor', d: 'Strategic consulting for National Security and ICS/SCADA.' },
-                        { t: 'Web3 Security Auditor', d: 'Auditing Smart Contracts and Blockchain architectures.' },
-                        { t: 'Adversary Emulation Firm', d: 'High-end Red Teaming mimicking Nation-State APT actors.' },
-                        { t: 'Cyber Risk Insurance Quantifier', d: 'Helping insurers properly price cyber risk policies.' },
-                        { t: 'Forensic Litigation Support', d: 'Providing expert witness services in cybercrime cases.' },
-                        { t: 'Supply Chain Risk Strategist', d: 'Analyzing vendor ecosystems for third-party vulnerabilities.' }
+                        { t: 'Security Awareness Trainer', d: 'Delivering corporate workshops to reduce human-factor risk.' }
                     ]
                 }
             ];
 
             return (
-                <div className="min-h-screen relative z-10 flex flex-col">
+                <div className="min-h-screen relative z-10 flex flex-col bg-slate-50">
                     {/* Header */}
                     <header className="bg-[#002b56] text-white pt-6 pb-12 px-6 text-center relative overflow-hidden shadow-2xl">
                         <div className="absolute top-0 left-0 w-full h-1.5 flex">
@@ -487,137 +321,81 @@
                             <div className="flex-1 bg-[#27DEF2]" />
                         </div>
                         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
-                            <img src="asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 mb-4 opacity-100" />
                             <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-white">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
                             <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">TAMBALI >>> READY TO LAUNCH</p>
                         </div>
                     </header>
 
-                    {/* Navigation */}
+                    {/* Navigation Bar */}
                     <nav className="max-w-7xl mx-auto -mt-6 px-4 relative z-30 w-full">
-                        <div className="bg-white rounded-xl shadow-xl p-1 flex flex-wrap gap-1 border border-slate-200">
+                        <div className="bg-white rounded-xl shadow-xl p-1.5 flex flex-wrap gap-1 border border-slate-200 justify-center sm:justify-start">
                             {[
                                 { id: 'map', label: 'Career Map', icon: 'trending-up' },
                                 { id: 'toolkit', label: 'Security Toolkit', icon: 'wrench' },
                                 { id: 'specialties', label: 'Frontier Specialties', icon: 'brain' },
                                 { id: 'checklist', label: 'Success Checklist', icon: 'check-square' },
-                                { id: 'benchmarks', label: 'Benchmarks', icon: 'award' },
-                                { id: 'biz', label: 'Launch Business', icon: 'rocket' }
-                            ].map(tab => (
-                                <button 
+                                { id: 'benchmarks', label: 'Job Boards & Pathfinder', icon: 'briefcase' }
+                            ].map((tab) => (
+                                <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 min-w-[110px] py-2.5 px-2 rounded-lg font-bold flex items-center justify-center gap-2 text-[10px] md:text-xs transition-all ${activeTab === tab.id ? 'nav-active' : 'hover:bg-slate-100 text-slate-500'}`}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${activeTab === tab.id ? 'bg-[#002b56] text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'}`}
                                 >
-                                    <Icon name={tab.icon} size={14} /> {tab.label}
+                                    <Icon name={tab.icon} size={14} />
+                                    {tab.label}
                                 </button>
                             ))}
                         </div>
                     </nav>
 
-                    <main className="max-w-7xl mx-auto mt-10 px-6 tab-content flex-grow w-full pb-10">
-                        {/* TAB: CAREER MAP */}
+                    {/* Content Display Engine */}
+                    <main className="max-w-7xl mx-auto px-4 py-8 flex-1 w-full tab-content">
                         {activeTab === 'map' && (
-                            <div className="space-y-12 animate-in">
-                                <div className="max-w-2xl mx-auto">
-                                    <PathfinderQuiz />
-                                </div>
+                            <div className="space-y-6 animate-in">
                                 {careerData.map((lvl, idx) => (
-                                    <section key={idx}>
-                                        <div className="flex items-center gap-4 mb-6">
-                                            <div className="w-10 h-10 rounded-full bg-[#002b56] text-[#05F283] flex items-center justify-center font-bold text-lg shadow-md border border-white/20">
-                                                {idx + 1}
-                                            </div>
-                                            <h2 className="text-xl md:text-2xl font-bold text-[#002b56]">{lvl.level}</h2>
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                            {lvl.tracks.map((track, tidx) => (
-                                                <div key={tidx} className={`bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-sm border-t-[6px] transition-all hover:shadow-lg ${track.color}`}>
-                                                    <div className="flex items-center justify-between mb-4 border-b border-slate-50 pb-2">
-                                                        <div className="flex items-center gap-2 font-bold uppercase tracking-tighter text-slate-800">
-                                                            <Icon name={track.icon} /> {track.name}
+                                    <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                        <h3 className="text-base font-bold text-[#002b56]">{lvl.level}</h3>
+                                        <p className="text-xs text-slate-400 mb-4">{lvl.desc}</p>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            {lvl.tracks.map((track, tIdx) => (
+                                                <div key={tIdx} className={`p-4 rounded-2xl border-2 ${track.color} bg-slate-50/50 flex flex-col justify-between`}>
+                                                    <div>
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <Icon name={track.icon} size={15} className="text-[#564887]" />
+                                                            <h4 className="font-bold text-xs text-slate-700">{track.name}</h4>
                                                         </div>
-                                                        <span className="text-[8px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-bold uppercase text-slate-400">Track</span>
+                                                        <div className="space-y-1">
+                                                            {track.roles.map((role, rIdx) => (
+                                                                <RoleItem key={rIdx} title={role.title} desc={role.desc} />
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                    <div className="space-y-1 mb-6">
-                                                        {track.roles.map(r => (
-                                                            <RoleItem key={r.title} title={r.title} desc={r.desc} />
-                                                        ))}
-                                                    </div>
-                                                    <div className="pt-4 border-t border-slate-100">
-                                                        <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Target Certification</p>
-                                                        <span className="text-[10px] font-bold bg-slate-50 border border-slate-200 px-2 py-1 rounded text-slate-600 block text-center truncate">{track.certs}</span>
+                                                    <div className="mt-4 pt-2 border-t border-slate-200 text-[11px] text-slate-500">
+                                                        <strong>Target Certs:</strong> {track.certs}
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
-                                    </section>
+                                    </div>
                                 ))}
                             </div>
                         )}
 
-                        {/* TAB: BENCHMARKS */}
-                        {activeTab === 'benchmarks' && (
-                            <div className="animate-in space-y-10">
-                                <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 max-w-4xl mx-auto">
-                                    <div className="bg-[#564887] p-8 text-white text-center">
-                                        <h2 className="text-xl font-bold flex items-center justify-center gap-3 text-white"><Icon name="award" /> Global Market Benchmarks</h2>
-                                    </div>
-                                    <div className="p-8 text-sm space-y-4">
-                                        <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 1 (Entry)</strong><span className="font-bold text-[#564887]">$55k - $85k</span></div>
-                                        <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 2 (Specialist)</strong><span className="font-bold text-[#564887]">$90k - $140k</span></div>
-                                        <div className="flex justify-between border-b pb-2 font-medium"><strong>Level 3 (Architect)</strong><span className="font-bold text-[#564887]">$145k - $190k</span></div>
-                                        <div className="flex justify-between font-medium"><strong>Level 4 (Executive/CISO)</strong><span className="font-bold text-[#564887]">$200k+</span></div>
-                                    </div>
-                                </div>
-
-                                <div className="max-w-5xl mx-auto">
-                                    <h3 className="text-xl font-bold text-[#002b56] mb-6 flex items-center gap-2">
-                                        <div className="w-8 h-1 bg-[#05F283]" /> Career Launch Boards
-                                    </h3>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                        {jobBoards.map((board, i) => (
-                                            <a 
-                                                key={i} 
-                                                href={board.url} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-sm border border-slate-100 hover:border-[#05F283] hover:shadow-md transition-all flex flex-col items-center text-center group"
-                                            >
-                                                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center mb-3 group-hover:bg-[#05F283]/10 transition-colors">
-                                                    <Icon name={board.icon} size={18} className="text-slate-400 group-hover:text-[#002b56]" />
-                                                </div>
-                                                <span className="text-xs font-bold text-slate-700 group-hover:text-[#002b56]">{board.name}</span>
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* TAB: TOOLKIT */}
                         {activeTab === 'toolkit' && (
-                            <div className="animate-in space-y-12">
-                                {Object.entries(toolkit).map(([sectionTitle, tools]) => (
-                                    <div key={sectionTitle}>
-                                        <h3 className="text-xl font-bold text-[#002b56] mb-6 flex items-center gap-2">
-                                            <div className="w-8 h-1 bg-[#05F283]" /> {sectionTitle}
-                                        </h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                            {tools.map((tool, i) => (
-                                                <a 
-                                                    key={i} 
-                                                    href={tool.url} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer"
-                                                    className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-[#05F283] hover:shadow-lg transition-all standard-card border-slate-100 border block group"
-                                                >
-                                                    <div className="flex justify-between items-start mb-3">
-                                                        <h4 className="font-bold text-[#002b56] text-lg group-hover:text-[#564887] transition-colors">{tool.name}</h4>
-                                                        <Icon name="external-link" size={12} className="text-slate-300 group-hover:text-[#05F283]" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in">
+                                {Object.keys(toolkit).map((catName) => (
+                                    <div key={catName} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                        <h3 className="text-base font-bold text-[#002b56] mb-4">{catName}</h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            {toolkit[catName].map((tool, tIdx) => (
+                                                <a href={tool.url} target="_blank" rel="noreferrer" key={tIdx} className="p-3 rounded-xl border border-slate-100 hover:border-[#05F283] transition-all bg-slate-50 flex flex-col justify-between group">
+                                                    <div>
+                                                        <div className="flex justify-between items-center mb-1">
+                                                            <span className="font-bold text-xs text-slate-700 group-hover:text-[#002b56]">{tool.name}</span>
+                                                            <span className="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-semibold uppercase">{tool.category}</span>
+                                                        </div>
+                                                        <p className="text-[11px] text-slate-400 leading-normal">{tool.desc}</p>
                                                     </div>
-                                                    <span className="text-[9px] bg-slate-50 px-2 py-0.5 rounded font-bold text-slate-400 uppercase border border-slate-100 mb-2 inline-block">{tool.category}</span>
-                                                    <p className="text-xs text-slate-500 leading-relaxed italic">"{tool.desc}"</p>
                                                 </a>
                                             ))}
                                         </div>
@@ -626,221 +404,87 @@
                             </div>
                         )}
 
-                        {/* TAB: SPECIALTIES (Updated with Cyber-Psychology) */}
                         {activeTab === 'specialties' && (
-                            <div className="animate-in space-y-12 max-w-7xl mx-auto">
-                                <div className="bg-gradient-to-r from-[#002b56] via-[#564887] to-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
-                                    <h2 className="text-3xl font-bold mb-2">The Frontier Defense</h2>
-                                    <p className="text-slate-200 text-sm italic">Pioneering roles at the intersection of AI, Privacy, and Human Performance.</p>
-                                    <Icon name="brain" size={120} className="absolute -right-10 -bottom-10 opacity-10 rotate-12 text-white" />
-                                </div>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                    {/* AI Security Deep Dive */}
-                                    <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[10px] border-[#05F283]">
-                                        <div className="flex items-center gap-4 mb-6">
-                                            <div className="w-10 h-10 bg-[#05F283]/10 text-[#05F283] rounded-xl flex items-center justify-center">
-                                                <Icon name="zap" size={20} />
-                                            </div>
-                                            <h2 className="text-xl font-bold text-[#002b56]">AI Security</h2>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <RoleItem title="LLM Red Teamer" desc="Performing adversarial testing on Large Language Models to identify Prompt Injection and secret data leakage." />
-                                            <RoleItem title="Model Inversion Analyst" desc="Defending against attacks that attempt to reconstruct private training data from model outputs." />
-                                            <RoleItem title="AI Governance Lead" desc="Aligning AI implementations with NIST AI RMF and EU AI Act requirements." />
-                                        </div>
-                                    </div>
-
-                                    {/* Data Privacy & Sovereignty */}
-                                    <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[10px] border-[#564887]">
-                                        <div className="flex items-center gap-4 mb-6">
-                                            <div className="w-10 h-10 bg-[#564887]/10 text-[#564887] rounded-xl flex items-center justify-center">
-                                                <Icon name="lock" size={20} />
-                                            </div>
-                                            <h2 className="text-xl font-bold text-[#002b56]">Privacy Engineering</h2>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <RoleItem title="Privacy by Design Lead" desc="Integrating Differential Privacy and anonymization directly into product codebases." />
-                                            <RoleItem title="DPO (Data Protection Officer)" desc="Executive advisor ensuring corporate strategy aligns with GDPR, NDPR, and CCPA." />
-                                            <RoleItem title="Consent Architect" desc="Designing preference centers that transparently handle complex data processing permissions." />
-                                        </div>
-                                    </div>
-
-                                    {/* Cyber-Psychology & Resilience */}
-                                    <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-xl border-l-[10px] border-[#27DEF2]">
-                                        <div className="flex items-center gap-4 mb-6">
-                                            <div className="w-10 h-10 bg-[#27DEF2]/10 text-[#27DEF2] rounded-xl flex items-center justify-center">
-                                                <Icon name="smile" size={20} />
-                                            </div>
-                                            <h2 className="text-xl font-bold text-[#002b56]">Cyber-Psychology</h2>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <RoleItem title="Resilience Coach (SOC)" desc="Training analysts to manage high-stress environments and avoid burnout during major incidents." />
-                                            <RoleItem title="Behavioral Profiler" desc="Studying the psychological motivations of threat actors to predict future attack vectors." />
-                                            <RoleItem title="Cognitive Bias Trainer" desc="Helping security teams identify and mitigate mental shortcuts that lead to errors in triage." />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* TAB: CHECKLIST */}
-                        {activeTab === 'checklist' && (
-                            <div className="max-w-4xl mx-auto space-y-6 animate-in">
-                                <div className="bg-[#564887] p-8 rounded-3xl text-white mb-6 text-center shadow-xl">
-                                    <h2 className="text-2xl font-bold mb-2 text-white">Graduation Success Roadmap</h2>
-                                    <p className="text-slate-300 text-sm">Actionable steps and resources to launch your career in 90 days.</p>
-                                </div>
-                                {checklist.map((item, i) => (
-                                    <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex gap-5 hover:bg-slate-50 transition-colors group">
-                                        <div className="w-10 h-10 rounded-full bg-[#05F283]/10 text-[#002b56] flex items-center justify-center shrink-0 font-bold text-base border border-[#05F283]/30 group-hover:scale-110 transition-transform">{i+1}</div>
-                                        <div className="flex-grow">
-                                            <h4 className="font-bold text-[#002b56] text-sm md:text-base">{item.step}</h4>
-                                            <p className="text-xs md:text-sm text-slate-500 mt-1 leading-relaxed mb-3">{item.detail}</p>
-                                            <div className="flex flex-wrap gap-2">
-                                                {item.links.map((link, li) => (
-                                                    <a 
-                                                        key={li} 
-                                                        href={link.url} 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer"
-                                                        className={`px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-2 transition-all ${link.type === 'download' ? 'bg-[#05F283] text-[#002b56] hover:bg-[#002b56] hover:text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                                                    >
-                                                        <Icon name={link.type === 'download' ? "download" : "external-link"} size={10} />
-                                                        {link.label}
-                                                    </a>
-                                                ))}
-                                            </div>
-                                            {item.hint && (
-                                                <div className="mt-4 p-3 bg-[#05F283]/5 border-l-4 border-[#05F283] text-[11px] text-slate-600 italic shadow-sm rounded-lg">
-                                                    <strong>HINT:</strong> {item.hint}
+                            <div className="space-y-6 animate-in">
+                                {businessTracks.map((phase, pIdx) => (
+                                    <div key={pIdx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                        <h3 className="text-base font-bold text-[#564887] mb-4">{phase.tier}</h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {phase.roles.map((bizRole, rIdx) => (
+                                                <div key={rIdx} className="p-4 rounded-xl border border-slate-100 bg-slate-50/30 border-l-4 border-l-[#002b56] standard-card transition-all">
+                                                    <h4 className="font-bold text-xs text-[#002b56] mb-1">{bizRole.t}</h4>
+                                                    <p className="text-[11px] text-slate-500 leading-relaxed">{bizRole.d}</p>
                                                 </div>
-                                            )}
+                                            ))}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         )}
 
-                        {/* TAB: BIZ (EXPANDED) */}
-                        {activeTab === 'biz' && (
-                            <div className="space-y-12 animate-in max-w-7xl mx-auto">
-                                <div className="bg-[#002b56] p-10 rounded-3xl text-white shadow-xl relative overflow-hidden border-b-8 border-[#05F283]">
-                                    <div className="relative z-10">
-                                        <h2 className="text-3xl font-bold mb-2 text-white">Entrepreneurial Mastery</h2>
-                                        <p className="text-slate-200 text-sm italic mb-4">"Don't just watch the SOC—Build the SOC." Convert technical mastery into a scalable business model.</p>
-                                        <div className="inline-block px-4 py-2 bg-[#05F283] text-[#002b56] rounded-lg font-bold text-sm shadow-lg">
-                                            "Do not under-estimate what you know - Dare O"
-                                        </div>
-                                    </div>
-                                    <Icon name="rocket" size={120} className="absolute -right-10 -bottom-10 opacity-10 rotate-12 text-white" />
-                                </div>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    {businessTracks.map((item, i) => (
-                                        <div key={i} className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-lg border-t-8 border-[#564887]">
-                                            <h3 className="text-[10px] font-bold text-[#564887] uppercase tracking-widest mb-4 block border-b pb-2">{item.tier}</h3>
-                                            <div className="space-y-1 h-[450px] overflow-y-auto pr-2 custom-scrollbar">
-                                                {item.roles.map((r, ri) => (
-                                                    <RoleItem key={ri} title={r.t} desc={r.d} />
-                                                ))}
+                        {activeTab === 'checklist' && (
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in">
+                                <div className="lg:col-span-2 space-y-3">
+                                    {checklist.map((item, cIdx) => (
+                                        <div key={cIdx} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-start">
+                                            <div className="p-2 bg-emerald-50 text-emerald-500 rounded-xl mt-0.5">
+                                                <Icon name="check-circle" size={16} />
+                                            </div>
+                                            <div className="space-y-1 flex-1">
+                                                <h4 className="font-bold text-xs text-[#002b56]">{item.step}</h4>
+                                                <p className="text-[11px] text-slate-500 leading-relaxed">{item.detail}</p>
+                                                <div className="flex flex-wrap gap-2 pt-1">
+                                                    {item.links.map((link, lIdx) => (
+                                                        <a key={lIdx} href={link.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 bg-slate-100 text-slate-600 hover:bg-[#002b56] hover:text-white px-2.5 py-1 rounded text-[10px] font-semibold transition-all">
+                                                            {link.label} <Icon name="external-link" size={8} />
+                                                        </a>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
+                                <div className="bg-gradient-to-br from-[#564887] to-[#002b56] text-white p-6 rounded-3xl shadow-md h-fit">
+                                    <h4 className="font-bold text-xs mb-2 flex items-center gap-2">
+                                        <Icon name="rocket" size={14} className="text-[#05F283]" /> Operational Baseline
+                                    </h4>
+                                    <p className="text-[11px] text-slate-300 leading-relaxed">
+                                        Complete your primary portfolio blocks first. Stacking live laboratory proof environments generates the fastest corporate recruitment response.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
 
-                                {/* Entrepreneur Journey Guide Section */}
-                                <div className="bg-white rounded-3xl p-10 shadow-xl border border-slate-100 relative overflow-hidden">
-                                    <div className="flex items-center gap-4 mb-8">
-                                        <div className="w-12 h-12 bg-[#05F283]/20 rounded-xl flex items-center justify-center">
-                                            <Icon name="map" size={24} className="text-[#002b56]" />
-                                        </div>
-                                        <h2 className="text-2xl font-bold text-[#002b56]">The Entrepreneurial Roadmap</h2>
+                        {activeTab === 'benchmarks' && (
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in">
+                                <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                    <h3 className="text-base font-bold text-[#002b56] mb-4 flex items-center gap-2">
+                                        <Icon name="briefcase" size={16} /> Cyber Ecosystem Job Boards
+                                    </h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        {jobBoards.map((jb, jIdx) => (
+                                            <a key={jIdx} href={jb.url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-all group">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-slate-200 text-slate-600 group-hover:bg-[#002b56] group-hover:text-white rounded-lg transition-colors">
+                                                        <Icon name={jb.icon} size={12} />
+                                                    </div>
+                                                    <span className="text-xs font-semibold text-slate-700">{jb.name}</span>
+                                                </div>
+                                                <Icon name="chevron-right" size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                                            </a>
+                                        ))}
                                     </div>
-
-                                    <div className="p-6 bg-slate-50 border-2 border-dashed border-[#564887] rounded-2xl mb-8">
-                                        <h4 className="font-bold text-[#564887] mb-2 flex items-center gap-2 uppercase tracking-widest text-xs">
-                                            <Icon name="lightbulb" size={14} /> The Starting Hint
-                                        </h4>
-                                        <p className="text-sm text-slate-700 leading-relaxed italic">
-                                            "You don't need a 50-person agency to start. Start with the specialized skills you mastered in this program. Can you run an Nmap scan and interpret the results better than a local business owner? Then you have a service. Package what you know today, and build the complex agency tomorrow."
-                                        </p>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div className="space-y-6">
-                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#564887]">
-                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
-                                                    <span className="text-xs bg-[#564887] text-white px-2 py-0.5 rounded">1</span>
-                                                    Identify Niche Opportunities
-                                                </h4>
-                                                <p className="text-xs text-slate-600 leading-relaxed">
-                                                    Success comes from specialization. Focus on AI/ML Security, Regulatory Compliance (GDPR/ISO), or specialized vCISO services.
-                                                </p>
-                                            </div>
-                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#05F283]">
-                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
-                                                    <span className="text-xs bg-[#05F283] text-[#002b56] px-2 py-0.5 rounded">2</span>
-                                                    Foundational Launch Steps
-                                                </h4>
-                                                <p className="text-xs text-slate-600 leading-relaxed">
-                                                    Validate your idea against painful problems. Build a plan defining target markets. Use certs like CISSP for B2B credibility.
-                                                </p>
-                                            </div>
-                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#27DEF2]">
-                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
-                                                    <span className="text-xs bg-[#27DEF2] text-[#002b56] px-2 py-0.5 rounded">3</span>
-                                                    Key Skills to Develop
-                                                </h4>
-                                                <p className="text-xs text-slate-600 leading-relaxed">
-                                                    Shift from technical to business mindset. Master Sales (pitching), Finance (contracts), and Leadership.
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-6">
-                                            <div className="p-5 bg-slate-50 rounded-2xl border-l-4 border-[#002b56]">
-                                                <h4 className="font-bold text-[#002b56] mb-2 flex items-center gap-2 text-sm">
-                                                    <span className="text-xs bg-[#002b56] text-white px-2 py-0.5 rounded">4</span>
-                                                    Training & Certifications
-                                                </h4>
-                                                <p className="text-xs text-slate-600 leading-relaxed">
-                                                    Bridge the gap with Cyber Entrepreneurship certificates or ALX Africa technical + business tracks.
-                                                </p>
-                                            </div>
-                                            <div className="p-5 bg-red-50 rounded-2xl border-l-4 border-[#FF5347]">
-                                                <h4 className="font-bold text-[#FF5347] mb-2 flex items-center gap-2 text-sm">
-                                                    <span className="text-xs bg-[#FF5347] text-white px-2 py-0.5 rounded">5</span>
-                                                    Common Pitfalls to Avoid
-                                                </h4>
-                                                <p className="text-xs text-slate-600 leading-relaxed">
-                                                    Avoid overpromising, ignoring internal workflows, or copying competitors without differentiation.
-                                                </p>
-                                            </div>
-                                            <div className="p-6 bg-[#002b56] text-white rounded-2xl text-center">
-                                                <p className="text-xs font-bold uppercase tracking-widest text-[#05F283] mb-1">Market Trend</p>
-                                                <p className="text-[11px] italic">"Simplify tech stacks or quantify risk for insurers to thrive."</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div>
+                                    <PathfinderQuiz />
                                 </div>
                             </div>
                         )}
                     </main>
 
-                    {/* Footer */}
-                    <footer className="max-w-7xl mx-auto mt-16 px-6 pb-12 w-full">
-                        <div className="bg-[#002b56] rounded-3xl p-10 text-white flex flex-col md:flex-row gap-10 items-center border-b-8 border-[#05F283] shadow-2xl relative overflow-hidden">
-                            <div className="flex-1 text-center md:text-left relative z-10">
-                                <h3 className="text-2xl font-bold mb-1 uppercase tracking-widest text-[#05F283]">Never Stop Adapting</h3>
-                                <p className="text-slate-400 text-xs tracking-wider uppercase font-bold">Cybersecurity Mastery • Do Hard Things</p>
-                            </div>
-                            <div className="flex flex-col items-center sm:items-end gap-3 relative z-10">
-                                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.3em]">Empowered By</span>
-                                <img src="asset/images/alx%20white%20tranparent.png" alt="ALX" className="h-10 opacity-100" />
-                            </div>
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10" />
-                        </div>
+                    {/* Footer Alignment */}
+                    <footer className="bg-slate-900 text-slate-500 text-center py-6 text-[10px] border-t border-slate-800 tracking-wider font-semibold">
+                        © 2026 ALX CYBERSECURITY CAREER INSIGHT HUB • DEPLOYED THROUGH IN-BROWSER BABEL TRANSCOMPILATION
                     </footer>
                 </div>
             );
