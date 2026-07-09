@@ -6,58 +6,39 @@
     <title>ALX Cybersecurity Career & Resources Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { 
             font-family: 'Poppins', sans-serif; 
             overflow-x: hidden;
             background-color: #f8fafc;
         }
-        .animate-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Watermark Background */
-        .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            opacity: 0.05;
-            z-index: -10;
-            width: 60vw;
-            pointer-events: none;
-            filter: grayscale(100%);
-        }
-
-        .tab-content { min-height: 600px; }
-
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #002b56; border-radius: 10px; }
         
         .role-content {
-            transition: max-height 0.3s ease-out, opacity 0.2s ease-in;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-in;
             overflow: hidden;
         }
 
         .standard-card:hover {
             border-color: #05F283;
             transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .quiz-option:hover {
             border-color: #002b56;
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
         }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #564887; border-radius: 10px; }
     </style>
 </head>
 <body class="text-slate-900">
@@ -67,46 +48,187 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         
-        /**
-         * Robust Icon Component
-         * Prevents removeChild errors during state transitions by wrapping in a stable span
-         */
+        // Native High-Performance inline-SVG mapping to prevent external resource failure and DOM mutation crashes
+        const iconPaths = {
+            compass: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                </g>
+            ),
+            "trending-up": (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="23 6 13.5 16 8.5 11 1 21"/>
+                    <polyline points="17 6 23 6 23 12"/>
+                </g>
+            ),
+            wrench: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </g>
+            ),
+            brain: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1 0-3.12 3 3 0 0 1 0-4.88 2.5 2.5 0 0 1 0-3.12A2.5 2.5 0 0 1 9.5 2Z"/>
+                    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 0-3.12 3 3 0 0 0 0-4.88 2.5 2.5 0 0 0 0-3.12A2.5 2.5 0 0 0 14.5 2Z"/>
+                </g>
+            ),
+            "check-square": (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 11 12 14 22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </g>
+            ),
+            briefcase: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </g>
+            ),
+            shield: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </g>
+            ),
+            zap: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </g>
+            ),
+            scale: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="2" x2="12" y2="22"/>
+                    <line x1="5" y1="7" x2="19" y2="7"/>
+                    <path d="M5 7H2l3 9h4l3-9H9"/>
+                    <path d="M19 7h-2l3 9h-4l3-9h-9"/>
+                </g>
+            ),
+            terminal: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                </g>
+            ),
+            "alert-circle": (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </g>
+            ),
+            book: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z"/>
+                </g>
+            ),
+            award: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="8" r="7"/>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                </g>
+            ),
+            linkedin: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                </g>
+            ),
+            lock: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </g>
+            ),
+            "chevron-right": (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                </g>
+            ),
+            plus: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </g>
+            ),
+            minus: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </g>
+            ),
+            "external-link": (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                </g>
+            ),
+            "check-circle": (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </g>
+            ),
+            rocket: (
+                <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2L2 22l9-4 9 4L12 2z"/>
+                </g>
+            )
+        };
+
         const Icon = ({ name, size = 18, className = "" }) => {
-            const iconRef = useRef(null);
-            useEffect(() => {
-                if (window.lucide && iconRef.current) {
-                    window.lucide.createIcons({
-                        node: iconRef.current
-                    });
-                }
-            }, [name]);
+            const svgContent = iconPaths[name] || (
+                <g fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                </g>
+            );
 
             return (
-                <span ref={iconRef} className={`inline-flex items-center justify-center ${className}`}>
-                    <i data-lucide={name} style={{ width: size, height: size }}></i>
-                </span>
+                <svg 
+                    viewBox="0 0 24 24" 
+                    width={size} 
+                    height={size} 
+                    className={`inline-block shrink-0 ${className}`}
+                >
+                    {svgContent}
+                </svg>
             );
         };
 
-        const RoleItem = ({ title, desc }) => {
+        const RoleItem = ({ title, desc, salaries, currency, certs }) => {
             const [isOpen, setIsOpen] = useState(false);
+            
+            // Safe fallback structure to protect against any missing properties
+            const salaryText = salaries && salaries.ngn && salaries.usd
+                ? (currency === 'NGN' 
+                    ? `₦${(salaries.ngn / 1000000).toFixed(1)}M / year`
+                    : `$${(salaries.usd / 1000).toFixed(0)}k / year`)
+                : "Salary TBD";
+
             return (
                 <div className="border-b border-slate-100 last:border-0">
                     <button 
                         onClick={() => setIsOpen(!isOpen)}
-                        className="w-full flex items-center justify-between py-3 group text-left hover:bg-slate-50/80 px-3 rounded-lg transition-all"
+                        className="w-full flex items-center justify-between py-3.5 group text-left hover:bg-slate-50/80 px-3 rounded-lg transition-all"
                     >
                         <div className="flex items-center gap-3">
-                            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isOpen ? 'bg-emerald-400 scale-150' : 'bg-slate-300'}`} />
+                            <div className={`w-2 h-2 rounded-full transition-all duration-300 ${isOpen ? 'bg-emerald-400 scale-150' : 'bg-slate-300'}`} />
                             <span className={`text-xs md:text-sm font-semibold transition-colors ${isOpen ? 'text-[#002b56]' : 'text-slate-600'}`}>{title}</span>
                         </div>
-                        <Icon name={isOpen ? "minus" : "plus"} size={14} className="text-slate-400" />
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] md:text-xs font-semibold px-2 py-0.5 bg-slate-100 rounded text-slate-500 whitespace-nowrap">{salaryText}</span>
+                            <Icon name={isOpen ? "minus" : "plus"} size={14} className="text-slate-400" />
+                        </div>
                     </button>
-                    <div className={`role-content ${isOpen ? 'max-h-60 opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
-                        <div className="ml-7 mr-2 p-3 bg-white rounded-lg border-l-4 border-[#05F283] shadow-sm">
-                            <p className="text-[11px] md:text-xs text-slate-500 leading-relaxed italic">
+                    <div className={`role-content transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
+                        <div className="ml-7 mr-2 p-4 bg-white rounded-lg border-l-4 border-[#05F283] shadow-sm space-y-3">
+                            <p className="text-[11px] md:text-xs text-slate-600 leading-relaxed font-medium">
                                 {desc}
                             </p>
+                            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[10px] text-slate-400">
+                                <span><strong>Milestones/Certs:</strong> {certs || "None Required"}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -120,27 +242,43 @@
 
             const questions = [
                 {
-                    q: "When you find a locked door, what is your first instinct?",
+                    q: "When reviewing complex software, where do your eyes drift first?",
                     options: [
-                        { text: "Check the cameras and strengthen the lock.", type: "D" },
-                        { text: "Try to find a way to pick the lock or find a key.", type: "O" },
-                        { text: "Check the building's insurance and safety policies.", type: "S" }
+                        { text: "The network config and sanitization layers to ensure no entry point is exposed.", type: "D" },
+                        { text: "Flaws in structural parsing logic to inject unauthorized payloads.", type: "O" },
+                        { text: "Licensing agreements, internal access governance logs, and structural checklists.", type: "S" }
                     ]
                 },
                 {
-                    q: "What was your favorite lab activity?",
+                    q: "What project scenario sounds most engaging to you?",
                     options: [
-                        { text: "Analyzing logs and stopping simulated attacks.", type: "D" },
-                        { text: "Breaking into Active Directory and stealing hashes.", type: "O" },
-                        { text: "Reviewing GDPR laws and drafting policies.", type: "S" }
+                        { text: "Setting up automated SIEM triggers to block automated bot brute-forcing in real time.", type: "D" },
+                        { text: "Analyzing an API endpoint to find security gaps and exploit logic patterns.", type: "O" },
+                        { text: "Drafting a localized privacy workflow that adheres strictly to global standards like GDPR/NDPR.", type: "S" }
                     ]
                 },
                 {
-                    q: "How do you prefer to spend your work day?",
+                    q: "A high-severity zero-day exploit is disclosed globally. What is your action plan?",
                     options: [
-                        { text: "Investigating puzzles and keeping things stable.", type: "D" },
-                        { text: "Exploring unknown systems and finding flaws.", type: "O" },
-                        { text: "Strategic planning and ensuring legal compliance.", type: "S" }
+                        { text: "Immediately audit system logs to track potential compromises and apply structural patches.", type: "D" },
+                        { text: "Analyze the POC code structure to see how it can be bypassed on various frameworks.", type: "O" },
+                        { text: "Assess legal vulnerabilities, verify business liabilities, and formulate response communication templates.", type: "S" }
+                    ]
+                },
+                {
+                    q: "What is your primary design philosophy for digital environments?",
+                    options: [
+                        { text: "Zero-Trust: Limit individual authorizations and isolate modular containers completely.", type: "D" },
+                        { text: "Assume Compromise: Explore the system from an adversary perspective to identify weak links.", type: "O" },
+                        { text: "Process Integrity: Formulate standard procedures and training rules to stop human errors.", type: "S" }
+                    ]
+                },
+                {
+                    q: "Which publication or educational track interests you the most?",
+                    options: [
+                        { text: "Blue Team Handbook and Advanced Defensive Event Correlation techniques.", type: "D" },
+                        { text: "Offensive Security Web Exploitation and bypassing cloud firewalls.", type: "O" },
+                        { text: "ISO/IEC 27001 Auditor training guides and Data Protection compliance legislation.", type: "S" }
                     ]
                 }
             ];
@@ -164,13 +302,17 @@
 
             if (result) {
                 return (
-                    <div key="quiz-result" className="bg-[#002b56] text-white p-8 rounded-3xl text-center animate-in shadow-xl">
+                    <div key="quiz-result" className="bg-[#002b56] text-white p-8 rounded-3xl text-center animate-in shadow-xl border border-slate-700">
                         <Icon name="award" size={48} className="mx-auto mb-4 text-[#05F283]" />
-                        <h3 className="text-xl font-bold mb-2">Recommended Path: 
-                            {result === 'D' ? ' Defensive (Blue Team)' : result === 'O' ? ' Offensive (Red Team)' : ' Strategic (GRC/DPO)'}
+                        <h3 className="text-xl font-bold mb-2">Your Career Path: 
+                            {result === 'D' ? ' Defensive (Blue Team)' : result === 'O' ? ' Offensive (Red Team)' : ' Strategic & GRC Audit'}
                         </h3>
-                        <p className="text-slate-300 text-xs mb-6">Based on your instincts, you belong in {result === 'D' ? 'the SOC' : result === 'O' ? 'Penetration Testing' : 'Compliance Management'}.</p>
-                        <button onClick={resetQuiz} className="text-xs font-bold text-[#05F283] underline uppercase tracking-widest hover:text-white transition-colors">Restart Quiz</button>
+                        <p className="text-slate-300 text-xs mb-6 leading-relaxed">
+                            {result === 'D' ? 'You belong in defensive operations: correlating logs, hunting system anomalies, and hardening corporate structures.' : 
+                             result === 'O' ? 'You excel at active exploratory tactics: penetrative auditing, model red teaming, and proving technical impact.' : 
+                             'You thrive in governance: implementing compliance, designing standard operating guidelines, and acting as a legal protector.'}
+                        </p>
+                        <button onClick={resetQuiz} className="text-xs font-bold text-[#05F283] underline uppercase tracking-widest hover:text-white transition-colors">Restart Pathfinder</button>
                     </div>
                 );
             }
@@ -178,16 +320,19 @@
             return (
                 <div key={`quiz-step-${step}`} className="bg-white p-6 rounded-3xl shadow-md border border-slate-100 animate-in">
                     <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-bold text-[#002b56] text-sm">Pathfinder Quiz</h3>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Q {step + 1} of 3</span>
+                        <h3 className="font-bold text-[#002b56] text-sm flex items-center gap-1.5">
+                            <Icon name="compass" size={16} className="text-[#564887]" />
+                            Career Pathfinder Engine
+                        </h3>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full">Question {step + 1} of 5</span>
                     </div>
-                    <p className="text-xs font-medium text-slate-700 mb-4">{questions[step].q}</p>
+                    <p className="text-xs font-semibold text-slate-700 mb-4 leading-relaxed">{questions[step].q}</p>
                     <div className="space-y-2">
                         {questions[step].options.map((opt, i) => (
                             <button 
                                 key={i} 
                                 onClick={() => handleAnswer(opt.type)}
-                                className="w-full text-left p-3 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 transition-all quiz-option"
+                                className="w-full text-left p-3.5 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 transition-all quiz-option"
                             >
                                 {opt.text}
                             </button>
@@ -199,179 +344,292 @@
 
         const App = () => {
             const [activeTab, setActiveTab] = useState('map');
+            const [currency, setCurrency] = useState('NGN');
 
             const careerData = [
                 {
-                    level: "Level 1: Entry (0-2 Years)",
-                    desc: "Foundational Operations",
+                    level: "Level 1: Entry Foundations (0-2 Years Experience)",
+                    desc: "Operational Gatekeepers & Core Practitioners",
                     tracks: [
                         {
-                            name: "Defensive", icon: "shield", color: "border-[#27DEF2]",
+                            name: "Defensive Operations", icon: "shield", color: "border-[#27DEF2]",
                             roles: [
-                                { title: "Junior SOC Analyst", desc: "Monitors dashboards for potential threats. Performs initial alert triage (Real vs False Positive)." },
-                                { title: "Email Security Analyst", desc: "Digital Gatekeeper. Performs header forensics to detect spoofing and phishing." },
-                                { title: "IAM Provisioner", desc: "Access Rights Manager. Ensures proper permissions in Active Directory." }
+                                { 
+                                    title: "Junior SOC Analyst", 
+                                    desc: "First line of protection. Monitors dynamic alerting dashboards, triages events, analyzes system anomalies, and escalates active breaches.",
+                                    salaries: { usd: 75000, ngn: 3600000 },
+                                    certs: "CompTIA Security+, Blue Team Level 1 (BTL1)"
+                                },
+                                { 
+                                    title: "Email Security Specialist", 
+                                    desc: "Protects enterprise communication channels. Performs packet header analysis, validates SPF/DKIM/DMARC configurations, and stops complex BEC/phishing campaigns.",
+                                    salaries: { usd: 68000, ngn: 3000000 },
+                                    certs: "Phishing Forensics Cert, SC-900 Microsoft Security"
+                                },
+                                { 
+                                    title: "IAM Analyst", 
+                                    desc: "Access controller. Implements least-privilege profiles, designs dynamic multi-factor processes, and audits general directory services.",
+                                    salaries: { usd: 70000, ngn: 2800000 },
+                                    certs: "Okta Certified Professional, Microsoft Identity SC-300"
+                                }
                             ],
                             certs: "Security+, BTL1"
                         },
                         {
-                            name: "Offensive", icon: "zap", color: "border-[#FF5347]",
+                            name: "Offensive Validation", icon: "zap", color: "border-[#FF5347]",
                             roles: [
-                                { title: "Junior PenTester", desc: "The Scout. Conducts authorized network scans to identify open doors." },
-                                { title: "OSINT Researcher", desc: "Information Gatherer. Mines public data to find leaked organizational secrets." },
-                                { title: "Vulnerability Scout", desc: "Runs automated scanners (Nessus/OpenVAS) to find missing patches." }
+                                { 
+                                    title: "Junior Vulnerability Scout", 
+                                    desc: "Orchestrates automated scanning infrastructure (Nessus/Tenable), maps exposures, categorizes CVSS risk ratings, and files remediation tickets.",
+                                    salaries: { usd: 72000, ngn: 3200000 },
+                                    certs: "CompTIA PenTest+, Qualys Certified Specialist"
+                                },
+                                { 
+                                    title: "OSINT Researcher", 
+                                    desc: "Information gatherer. Mines public metadata registries, domain details, leaky GitHub codebases, and exposed records to identify external exposure paths.",
+                                    salaries: { usd: 65000, ngn: 2400000 },
+                                    certs: "OSIP (Certified OSINT Practitioner), SEC487"
+                                },
+                                { 
+                                    title: "Junior Penetration Auditor", 
+                                    desc: "Performs focused assessments on internal corporate staging assets. Documents code issues and provides proof-of-concept exploits to engineering teams.",
+                                    salaries: { usd: 78000, ngn: 3600000 },
+                                    certs: "eJPT (eLearnSecurity Junior Penetration Tester)"
+                                }
                             ],
                             certs: "eJPT, PenTest+"
                         },
                         {
-                            name: "Strategic", icon: "scale", color: "border-[#564887]",
+                            name: "Strategic & Governance", icon: "scale", color: "border-[#564887]",
                             roles: [
-                                { title: "GRC Analyst", desc: "Compliance Auditor. Ensures company policy follows legal standards like GDPR or NDPR." },
-                                { title: "Technical Policy Writer", desc: "Translates complex technical security into readable employee handbooks." }
+                                { 
+                                    title: "GRC Analyst (Entry)", 
+                                    desc: "Translates technical configurations into policy documentation. Coordinates compliance reviews against GDPR, ISO 27001, and NDPR.",
+                                    salaries: { usd: 70000, ngn: 3000000 },
+                                    certs: "CompTIA Security+, Certified in Cybersecurity (ISC2)"
+                                },
+                                { 
+                                    title: "Policy & Technical Writer", 
+                                    desc: "Bridges engineering with operations. Authors readable corporate acceptable-use rulebooks, remote-access guidelines, and incident playbooks.",
+                                    salaries: { usd: 65000, ngn: 2400000 },
+                                    certs: "ITIL Foundation, Technical Writer Professional Credential"
+                                }
                             ],
-                            certs: "Sec+, ITCA"
+                            certs: "ISC2 CC, Sec+"
                         }
                     ]
                 },
                 {
-                    level: "Level 2: Intermediate (2-5 Years)",
-                    desc: "Technical Mastery",
+                    level: "Level 2: Intermediate Mastery (2-5 Years Experience)",
+                    desc: "Advanced Technical Architects & Systems Analysts",
                     tracks: [
                         {
-                            name: "Defensive", icon: "activity", color: "border-[#27DEF2]",
+                            name: "Defensive Operations", icon: "terminal", color: "border-[#27DEF2]",
                             roles: [
-                                { title: "Malware Analyst", desc: "Reverse Engineers code in sandboxes to block malicious payloads." },
-                                { title: "Incident Responder", desc: "The Firefighter. Executes rapid containment to stop breaches in progress." },
-                                { title: "Forensics Investigator", desc: "Digital Detective. Performs autopsies on disks and RAM to extract evidence." }
+                                { 
+                                    title: "Malware Analyst & Reverse Engineer", 
+                                    desc: "Executes behavior testing inside protected virtual sandboxes to dissect hostile payloads, trace memory hooks, and export threat indicators.",
+                                    salaries: { usd: 125000, ngn: 6600000 },
+                                    certs: "SANS FOR610 (GREM), Certified Reverse Engineer"
+                                },
+                                { 
+                                    title: "Incident Responder", 
+                                    desc: "Emergency action manager. Eradicates active infections, coordinates real-time endpoint isolations, and blocks malicious pivot actions.",
+                                    salaries: { usd: 118000, ngn: 6000000 },
+                                    certs: "GCIH (GIAC Incident Handler), Certified Incident Handler (EC-Council)"
+                                },
+                                { 
+                                    title: "Digital Forensics Investigator", 
+                                    desc: "Uncovers digital traces. Recovers artifact evidence from drive blocks, maps memory dumps, and maintains chain-of-custody logs for legal scenarios.",
+                                    salaries: { usd: 115000, ngn: 5400000 },
+                                    certs: "CHFI (Computer Hacking Forensic Investigator), GCFE"
+                                }
                             ],
-                            certs: "CySA+, GCIH"
+                            certs: "GCIH, GREM, CySA+"
                         },
                         {
-                            name: "Offensive", icon: "target", color: "border-[#FF5347]",
+                            name: "Offensive Validation", icon: "brain", color: "border-[#FF5347]",
                             roles: [
-                                { title: "Ethical Hacker", desc: "The Infiltrator. Simulates attacks to prove technical risk to business owners." },
-                                { title: "API Security Tester", desc: "Secures the communication lines between mobile and web applications." }
+                                { 
+                                    title: "Ethical Hacker / Lead PenTester", 
+                                    desc: "Simulates complex real-world threat actors against live production endpoints, internal directories, and wireless arrays to assess actual risk profile.",
+                                    salaries: { usd: 130000, ngn: 7200000 },
+                                    certs: "OSCP (Offensive Security Certified Professional), PNPT"
+                                },
+                                { 
+                                    title: "API Security Specialist", 
+                                    desc: "Secures transactional data routes. Audits OAuth linkages, discovers broken object level authorizations (BOLA), and implements protection configurations.",
+                                    salaries: { usd: 120000, ngn: 6000000 },
+                                    certs: "Certified API Security Professional (CASP)"
+                                }
                             ],
                             certs: "OSCP, PNPT"
                         },
                         {
-                            name: "Specialized", icon: "brain", color: "border-[#05F283]",
+                            name: "Strategic & Governance", icon: "lock", color: "border-[#564887]",
                             roles: [
-                                { title: "AI Security Engineer", desc: "Protects machine learning models from prompt injection and data poisoning." },
-                                { title: "Data Privacy Officer (DPO)", desc: "Legal Guardian of user data. Manages compliance for high-stakes industries." }
+                                { 
+                                    title: "Data Privacy Specialist (DPO)", 
+                                    desc: "Ensures legal processing practices for user data. Manages regulatory alignment audits and reports structural risk maps to executive boards.",
+                                    salaries: { usd: 110000, ngn: 5400000 },
+                                    certs: "CIPP/E, CIPM"
+                                },
+                                { 
+                                    title: "Information Security Auditor", 
+                                    desc: "Systematically audits technical access registers, ledger rules, and backup structures against SOC2, ISO27001, and NIST baselines.",
+                                    salaries: { usd: 105000, ngn: 5000000 },
+                                    certs: "CISA, ISO 27001 Lead Auditor"
+                                }
                             ],
-                            certs: "CIPP, AI-102"
+                            certs: "CIPP, CISA, ISO-LA"
                         }
                     ]
                 }
             ];
 
             const toolkit = {
-                "Technical Tools": [
-                    { name: "Wireshark", category: "Network", desc: "Deep packet analysis for protocol troubleshooting.", url: "https://www.wireshark.org/" },
-                    { name: "Nmap", category: "Recon", desc: "The standard for network mapping and discovery.", url: "https://nmap.org/" },
-                    { name: "Recon-ng", category: "OSINT", desc: "Modular framework for automated intelligence gathering.", url: "https://github.com/lanmaster53/recon-ng" },
-                    { name: "Burp Suite", category: "Web", desc: "Interception proxy for testing web vulnerabilities.", url: "https://portswigger.net/burp" }
+                "Defensive Tools": [
+                    { name: "Wireshark", category: "Network Analysis", desc: "Allows deep-packet analysis of active network streams and protocol transactions.", url: "https://www.wireshark.org/" },
+                    { name: "Wazuh", category: "SIEM", desc: "Unified threat prevention, detection, monitoring, and compliance analytics platform.", url: "https://wazuh.com/" },
+                    { name: "Splunk", category: "Log Analytics", desc: "Aggregates complex system event records for telemetry and forensic tracking.", url: "https://www.splunk.com/" },
+                    { name: "Yara", category: "Malware Triage", desc: "Pattern matching tool used to classify malware based on binary signatures.", url: "https://virustotal.github.io/yara/" }
                 ],
-                "Industry Frameworks": [
-                    { name: "NIST SP 800-53", category: "Framework", desc: "Standard controls for federal and enterprise infra.", url: "https://csrc.nist.gov/publications/sp800" },
-                    { name: "MITRE ATT&CK", category: "Knowledge", desc: "Matrix of adversarial tactics and techniques.", url: "https://attack.mitre.org/" },
-                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global gold standard for InfoSec management.", url: "https://www.iso.org/standard/27001" }
+                "Offensive Tools": [
+                    { name: "Nmap", category: "Network Recon", desc: "The foundational utility for network mapping, port diagnostics, and active discovery.", url: "https://nmap.org/" },
+                    { name: "Burp Suite", category: "Web Pen", desc: "Interception proxy framework optimized for evaluating browser-level vulnerabilities.", url: "https://portswigger.net/burp" },
+                    { name: "John the Ripper", category: "Cracking", desc: "Rapid offline password cracker capable of processing custom hashes and rules.", url: "https://www.openwall.com/john/" },
+                    { name: "Metasploit", category: "Exploit", desc: "Standard modular penetration testing framework for verifying discovered vulnerabilities.", url: "https://www.metasploit.com/" }
+                ],
+                "Standards & Governance": [
+                    { name: "NIST CSF 2.0", category: "Framework", desc: "The core standard governing identity, defense, mitigation, detection, and restoration.", url: "https://csrc.nist.gov/" },
+                    { name: "MITRE ATT&CK", category: "Intel Matrix", desc: "Globally accessible knowledge database detailing real-world cyber adversary behaviors.", url: "https://attack.mitre.org/" },
+                    { name: "ISO/IEC 27001", category: "Standard", desc: "The global benchmark for building a modern Information Security Management System (ISMS).", url: "https://www.iso.org/standard/27001" },
+                    { name: "OWASP Top 10", category: "Web Standards", desc: "A living awareness guide outlining the most critical vulnerabilities for web apps.", url: "https://owasp.org/www-project-top-ten/" }
                 ]
             };
 
             const checklist = [
                 { 
-                    step: "Professional Profile Optimization", 
-                    detail: "Update LinkedIn with specific labs. Use industry best practices for a high-impact profile.",
-                    links: [{ label: "Profile Best Practices", url: "https://www.linkedin.com" }]
+                    step: "Establish Home Lab Basics", 
+                    detail: "Install VirtualBox or VMware Workstation. Deploy a Kali Linux attacking module and target deliberately vulnerable systems (Metasploitable, DVWA) inside an isolated local network.",
+                    resource: "Kali Installation Guide", url: "https://www.kali.org/docs/"
                 },
                 { 
-                    step: "Download the Starter Pack", 
-                    detail: "Your all-in-one resource for kickstarting your cybersecurity journey.",
-                    links: [{ label: "Launch Starter Pack", url: "https://www.canva.com" }]
+                    step: "Complete Primary Certifications", 
+                    detail: "Study and complete the CompTIA Security+ or ISC2 Certified in Cybersecurity (CC) to establish a baseline of security terminology and standard models.",
+                    resource: "ISC2 Free CC Training Path", url: "https://www.isc2.org/Certifications/CC"
+                },
+                { 
+                    step: "Build Proof-of-Work Portfolio", 
+                    detail: "Never hide your knowledge. Create detailed GitHub walk-through write-ups of retired HackTheBox machines, TryHackMe tracks, or custom Wireshark traffic investigations.",
+                    resource: "Write-up Framework Example", url: "https://github.com"
+                },
+                { 
+                    step: "Optimize Professional Profile", 
+                    detail: "Ensure your LinkedIn highlights completed home-labs, CTF events (e.g., NaijaSecCon, CyberTalents), and detailed security projects. Use professional titles like 'Aspiring SOC Analyst'.",
+                    resource: "Profile Optimization Best Practices", url: "https://www.linkedin.com"
                 }
             ];
 
             const jobBoards = [
-                { name: "ALX Career Page", url: "https://careers.alxafrica.com/", icon: "award" },
-                { name: "LinkedIn Jobs", url: "https://www.linkedin.com/jobs/", icon: "linkedin" },
-                { name: "NinjaJobs", url: "https://ninjajobs.org/", icon: "zap" },
-                { name: "Infosec-Jobs.com", url: "https://infosec-jobs.com/", icon: "lock" }
-            ];
-
-            const businessTracks = [
-                {
-                    tier: 'Phase 1: Knowledge-Based (Freelance)',
-                    roles: [
-                        { t: 'Bug Bounty Professional', d: 'Hunting for vulnerabilities in public platforms for rewards.' },
-                        { t: 'Cyber Content Creator', d: 'Monetizing technical expertise via YouTube, blogs, or newsletters.' },
-                        { t: 'Security Awareness Trainer', d: 'Delivering corporate workshops to reduce human-factor risk.' }
-                    ]
-                }
+                { name: "ALX Careers Africa Portal", url: "https://careers.alxafrica.com/", desc: "Curated regional technology roles for ALX graduates and local talent." },
+                { name: "NaijaSecCon Community", url: "https://www.naijaseccon.com/", desc: "Nigeria's flagship security conference and professional pipeline directory." },
+                { name: "MyJobMag Nigeria (Cyber)", url: "https://www.myjobmag.com/", desc: "Local corporate career board frequently highlighting local bank and MSP positions." },
+                { name: "NinjaJobs InfoSec Platform", url: "https://ninjajobs.org/", desc: "A specialized job platform tailored to cybersecurity professionals." }
             ];
 
             return (
-                <div className="min-h-screen relative z-10 flex flex-col bg-slate-50">
+                <div className="min-h-screen relative z-10 flex flex-col bg-slate-50 animate-in">
                     {/* Header */}
-                    <header className="bg-[#002b56] text-white pt-6 pb-12 px-6 text-center relative overflow-hidden shadow-2xl">
+                    <header className="bg-[#002b56] text-white pt-8 pb-14 px-6 text-center relative overflow-hidden shadow-2xl">
                         <div className="absolute top-0 left-0 w-full h-1.5 flex">
                             <div className="flex-1 bg-[#05F283]" />
                             <div className="flex-1 bg-[#564887]" />
                             <div className="flex-1 bg-[#27DEF2]" />
                         </div>
                         <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
-                            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-white">Cybersecurity <span className="text-[#05F283]">Master Portal</span></h1>
-                            <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-1">TAMBALI >>> READY TO LAUNCH</p>
+                            <span className="text-[9px] md:text-[10px] bg-slate-800/80 text-[#05F283] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2">ALX Cybersecurity Hub</span>
+                            <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight text-white">Career &amp; Resources <span className="text-[#05F283]">Master Portal</span></h1>
+                            <p className="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-[0.4em] mt-2">TAMBALI &gt;&gt;&gt; READY TO LAUNCH</p>
                         </div>
                     </header>
 
-                    {/* Navigation Bar */}
-                    <nav className="max-w-7xl mx-auto -mt-6 px-4 relative z-30 w-full">
-                        <div className="bg-white rounded-xl shadow-xl p-1.5 flex flex-wrap gap-1 border border-slate-200 justify-center sm:justify-start">
-                            {[
-                                { id: 'map', label: 'Career Map', icon: 'trending-up' },
-                                { id: 'toolkit', label: 'Security Toolkit', icon: 'wrench' },
-                                { id: 'specialties', label: 'Frontier Specialties', icon: 'brain' },
-                                { id: 'checklist', label: 'Success Checklist', icon: 'check-square' },
-                                { id: 'benchmarks', label: 'Job Boards & Pathfinder', icon: 'briefcase' }
-                            ].map((tab) => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${activeTab === tab.id ? 'bg-[#002b56] text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'}`}
+                    {/* Navigation and Currency Bar */}
+                    <div className="max-w-7xl mx-auto -mt-6 px-4 relative z-30 w-full">
+                        <div className="bg-white rounded-xl shadow-xl p-2.5 flex flex-col lg:flex-row gap-3 items-center justify-between border border-slate-200">
+                            {/* Tabs */}
+                            <nav className="flex flex-wrap gap-1 w-full lg:w-auto justify-center sm:justify-start">
+                                {[
+                                    { id: 'map', label: 'Career Map', icon: 'trending-up' },
+                                    { id: 'toolkit', label: 'Security Toolkit', icon: 'wrench' },
+                                    { id: 'specialties', label: 'Frontier Specialties', icon: 'brain' },
+                                    { id: 'checklist', label: 'Success Checklist', icon: 'check-square' },
+                                    { id: 'benchmarks', label: 'Job Boards & Pathfinder', icon: 'briefcase' }
+                                ].map((tab) => (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id)}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === tab.id ? 'bg-[#002b56] text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'}`}
+                                    >
+                                        <Icon name={tab.icon} size={14} />
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </nav>
+
+                            {/* Currency Filter */}
+                            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200">
+                                <button 
+                                    onClick={() => setCurrency('NGN')} 
+                                    className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${currency === 'NGN' ? 'bg-[#002b56] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
                                 >
-                                    <Icon name={tab.icon} size={14} />
-                                    {tab.label}
+                                    Nigeria (₦)
                                 </button>
-                            ))}
+                                <button 
+                                    onClick={() => setCurrency('USD')} 
+                                    className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${currency === 'USD' ? 'bg-[#002b56] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+                                >
+                                    Global ($)
+                                </button>
+                            </div>
                         </div>
-                    </nav>
+                    </div>
 
                     {/* Content Display Engine */}
                     <main className="max-w-7xl mx-auto px-4 py-8 flex-1 w-full tab-content">
+                        
+                        {/* Tab 1: Career Map */}
                         {activeTab === 'map' && (
                             <div className="space-y-6 animate-in">
                                 {careerData.map((lvl, idx) => (
                                     <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                                        <h3 className="text-base font-bold text-[#002b56]">{lvl.level}</h3>
-                                        <p className="text-xs text-slate-400 mb-4">{lvl.desc}</p>
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="border-b border-slate-100 pb-3 mb-4">
+                                            <h3 className="text-base md:text-lg font-bold text-[#002b56]">{lvl.level}</h3>
+                                            <p className="text-xs text-slate-400 mt-0.5">{lvl.desc}</p>
+                                        </div>
+                                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                             {lvl.tracks.map((track, tIdx) => (
                                                 <div key={tIdx} className={`p-4 rounded-2xl border-2 ${track.color} bg-slate-50/50 flex flex-col justify-between`}>
                                                     <div>
-                                                        <div className="flex items-center gap-2 mb-2">
-                                                            <Icon name={track.icon} size={15} className="text-[#564887]" />
-                                                            <h4 className="font-bold text-xs text-slate-700">{track.name}</h4>
+                                                        <div className="flex items-center gap-2 mb-3">
+                                                            <Icon name={track.icon} size={16} className="text-[#564887]" />
+                                                            <h4 className="font-bold text-xs text-slate-700 uppercase tracking-wider">{track.name}</h4>
                                                         </div>
                                                         <div className="space-y-1">
                                                             {track.roles.map((role, rIdx) => (
-                                                                <RoleItem key={rIdx} title={role.title} desc={role.desc} />
+                                                                <RoleItem 
+                                                                    key={rIdx} 
+                                                                    title={role.title} 
+                                                                    desc={role.desc} 
+                                                                    salaries={role.salaries} 
+                                                                    currency={currency}
+                                                                    certs={role.certs}
+                                                                />
                                                             ))}
                                                         </div>
                                                     </div>
-                                                    <div className="mt-4 pt-2 border-t border-slate-200 text-[11px] text-slate-500">
-                                                        <strong>Target Certs:</strong> {track.certs}
+                                                    <div className="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500">
+                                                        <strong>Core Certifications:</strong> {track.certs}
                                                     </div>
                                                 </div>
                                             ))}
@@ -381,20 +639,24 @@
                             </div>
                         )}
 
+                        {/* Tab 2: Security Toolkit */}
                         {activeTab === 'toolkit' && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in">
                                 {Object.keys(toolkit).map((catName) => (
                                     <div key={catName} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                                        <h3 className="text-base font-bold text-[#002b56] mb-4">{catName}</h3>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <h3 className="text-sm font-bold text-[#002b56] mb-4 flex items-center gap-2 pb-2 border-b border-slate-100">
+                                            <Icon name="wrench" size={14} className="text-[#564887]" />
+                                            {catName}
+                                        </h3>
+                                        <div className="space-y-3">
                                             {toolkit[catName].map((tool, tIdx) => (
-                                                <a href={tool.url} target="_blank" rel="noreferrer" key={tIdx} className="p-3 rounded-xl border border-slate-100 hover:border-[#05F283] transition-all bg-slate-50 flex flex-col justify-between group">
+                                                <a href={tool.url} target="_blank" rel="noreferrer" key={tIdx} className="p-3 rounded-xl border border-slate-100 hover:border-[#05F283] transition-all bg-slate-50/50 flex flex-col justify-between group">
                                                     <div>
                                                         <div className="flex justify-between items-center mb-1">
                                                             <span className="font-bold text-xs text-slate-700 group-hover:text-[#002b56]">{tool.name}</span>
-                                                            <span className="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-semibold uppercase">{tool.category}</span>
+                                                            <span className="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-bold uppercase shrink-0 whitespace-nowrap">{tool.category}</span>
                                                         </div>
-                                                        <p className="text-[11px] text-slate-400 leading-normal">{tool.desc}</p>
+                                                        <p className="text-[11px] text-slate-400 leading-relaxed mt-1">{tool.desc}</p>
                                                     </div>
                                                 </a>
                                             ))}
@@ -404,75 +666,152 @@
                             </div>
                         )}
 
+                        {/* Tab 3: Frontier Specialties */}
                         {activeTab === 'specialties' && (
-                            <div className="space-y-6 animate-in">
-                                {businessTracks.map((phase, pIdx) => (
-                                    <div key={pIdx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                                        <h3 className="text-base font-bold text-[#564887] mb-4">{phase.tier}</h3>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                            {phase.roles.map((bizRole, rIdx) => (
-                                                <div key={rIdx} className="p-4 rounded-xl border border-slate-100 bg-slate-50/30 border-l-4 border-l-[#002b56] standard-card transition-all">
-                                                    <h4 className="font-bold text-xs text-[#002b56] mb-1">{bizRole.t}</h4>
-                                                    <p className="text-[11px] text-slate-500 leading-relaxed">{bizRole.d}</p>
-                                                </div>
-                                            ))}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in">
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+                                            <Icon name="brain" size={16} className="text-purple-500" />
+                                            <h3 className="text-sm font-bold text-[#002b56]">AI Security &amp; LLM Red Teaming</h3>
+                                        </div>
+                                        <p className="text-xs text-slate-500 leading-relaxed mb-4">
+                                            With the rapid integration of Large Language Models (LLMs) in enterprise software, protecting AI infrastructure has become critical. Practitioners focus on securing training data, auditing prompt endpoints, and hardening systems against prompt injections.
+                                        </p>
+                                        <div className="space-y-2">
+                                            <div className="p-2 bg-slate-50 rounded-lg text-[10px] text-slate-600 border border-slate-100">
+                                                <strong>OWASP LLM Top 10:</strong> Addressing risks like Prompt Injection and Data Poisoning.
+                                            </div>
+                                            <div className="p-2 bg-slate-50 rounded-lg text-[10px] text-slate-600 border border-slate-100">
+                                                <strong>Core Frameworks:</strong> Garak (LLM vulnerability scanner), Microsoft PyRIT.
+                                            </div>
                                         </div>
                                     </div>
-                                ))}
+                                    <div className="pt-4 mt-4 border-t border-slate-100 text-[10px] text-slate-400">
+                                        Projected 2026 Growth: <strong>+48% YOY</strong>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+                                            <Icon name="terminal" size={16} className="text-emerald-500" />
+                                            <h3 className="text-sm font-bold text-[#002b56]">Cloud-Native Architecture</h3>
+                                        </div>
+                                        <p className="text-xs text-slate-500 leading-relaxed mb-4">
+                                            Modern environments exist almost exclusively in containerized structures. Engineers secure software-defined infrastructure (IaC), audit serverless logic boundaries, and coordinate identity strategies.
+                                        </p>
+                                        <div className="space-y-2">
+                                            <div className="p-2 bg-slate-50 rounded-lg text-[10px] text-slate-600 border border-slate-100">
+                                                <strong>Cloud Providers:</strong> AWS, Azure, Google Cloud platform.
+                                            </div>
+                                            <div className="p-2 bg-slate-50 rounded-lg text-[10px] text-slate-600 border border-slate-100">
+                                                <strong>Key Techs:</strong> Kubernetes, Terraform, Docker, Helm, ArgoCD.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pt-4 mt-4 border-t border-slate-100 text-[10px] text-slate-400">
+                                        Projected 2026 Growth: <strong>+42% YOY</strong>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+                                            <Icon name="lock" size={16} className="text-blue-500" />
+                                            <h3 className="text-sm font-bold text-[#002b56]">ICS / SCADA Security</h3>
+                                        </div>
+                                        <p className="text-xs text-slate-500 leading-relaxed mb-4">
+                                            Securing physical systems (power grids, water systems, transport, manufacturing). Protects critical infrastructure from cyber-physical sabotage and unauthorized operational adjustments.
+                                        </p>
+                                        <div className="space-y-2">
+                                            <div className="p-2 bg-slate-50 rounded-lg text-[10px] text-slate-600 border border-slate-100">
+                                                <strong>Protocols Secured:</strong> Modbus, DNP3, BACnet analysis.
+                                            </div>
+                                            <div className="p-2 bg-slate-50 rounded-lg text-[10px] text-slate-600 border border-slate-100">
+                                                <strong>Reference Frameworks:</strong> ISA/IEC 62443 standard architectures.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pt-4 mt-4 border-t border-slate-100 text-[10px] text-slate-400">
+                                        Projected 2026 Growth: <strong>+22% YOY</strong>
+                                    </div>
+                                </div>
                             </div>
                         )}
 
+                        {/* Tab 4: Success Checklist */}
                         {activeTab === 'checklist' && (
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in">
-                                <div className="lg:col-span-2 space-y-3">
+                                <div className="lg:col-span-2 space-y-4">
                                     {checklist.map((item, cIdx) => (
                                         <div key={cIdx} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4 items-start">
                                             <div className="p-2 bg-emerald-50 text-emerald-500 rounded-xl mt-0.5">
-                                                <Icon name="check-circle" size={16} />
+                                                <Icon name="check-circle" size={18} />
                                             </div>
-                                            <div className="space-y-1 flex-1">
-                                                <h4 className="font-bold text-xs text-[#002b56]">{item.step}</h4>
-                                                <p className="text-[11px] text-slate-500 leading-relaxed">{item.detail}</p>
-                                                <div className="flex flex-wrap gap-2 pt-1">
-                                                    {item.links.map((link, lIdx) => (
-                                                        <a key={lIdx} href={link.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 bg-slate-100 text-slate-600 hover:bg-[#002b56] hover:text-white px-2.5 py-1 rounded text-[10px] font-semibold transition-all">
-                                                            {link.label} <Icon name="external-link" size={8} />
-                                                        </a>
-                                                    ))}
-                                                </div>
+                                            <div className="space-y-2 flex-1">
+                                                <h4 className="font-bold text-xs md:text-sm text-[#002b56]">{item.step}</h4>
+                                                <p className="text-[11px] md:text-xs text-slate-500 leading-relaxed">{item.detail}</p>
+                                                <a href={item.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-600 hover:bg-[#002b56] hover:text-white px-2.5 py-1 rounded text-[10px] font-semibold transition-all">
+                                                    {item.resource || "View Resource Link"} <Icon name="external-link" size={8} />
+                                                </a>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                <div className="bg-gradient-to-br from-[#564887] to-[#002b56] text-white p-6 rounded-3xl shadow-md h-fit">
-                                    <h4 className="font-bold text-xs mb-2 flex items-center gap-2">
-                                        <Icon name="rocket" size={14} className="text-[#05F283]" /> Operational Baseline
-                                    </h4>
-                                    <p className="text-[11px] text-slate-300 leading-relaxed">
-                                        Complete your primary portfolio blocks first. Stacking live laboratory proof environments generates the fastest corporate recruitment response.
-                                    </p>
+                                <div className="space-y-6">
+                                    <div className="bg-gradient-to-br from-[#564887] to-[#002b56] text-white p-6 rounded-3xl shadow-md h-fit">
+                                        <h4 className="font-bold text-xs mb-2 flex items-center gap-2 uppercase tracking-wider text-[#05F283]">
+                                            <Icon name="rocket" size={14} /> Operational Baseline
+                                        </h4>
+                                        <p className="text-[11px] text-slate-300 leading-relaxed">
+                                            Start with home projects first. Simulating realistic corporate IT environments on local virtualization configurations is the fastest way to demonstrate practical knowledge to employers.
+                                        </p>
+                                    </div>
+                                    <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-md h-fit border border-slate-800">
+                                        <h4 className="font-bold text-xs mb-3 uppercase tracking-wider text-teal-400 flex items-center gap-1.5">
+                                            <Icon name="book" size={14} /> Home Lab Blueprints
+                                        </h4>
+                                        <ul className="space-y-2.5 text-[11px] text-slate-300">
+                                            <li className="flex gap-2"><Icon name="chevron-right" size={10} className="text-[#05F283] mt-1 shrink-0" /> Host Metasploitable targets internally.</li>
+                                            <li className="flex gap-2"><Icon name="chevron-right" size={10} className="text-[#05F283] mt-1 shrink-0" /> Set up an active Active Directory Domain Services environment.</li>
+                                            <li className="flex gap-2"><Icon name="chevron-right" size={10} className="text-[#05F283] mt-1 shrink-0" /> Use Wazuh SIEM to analyze host security events.</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         )}
 
+                        {/* Tab 5: Job Boards & Pathfinder */}
                         {activeTab === 'benchmarks' && (
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in">
-                                <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                                    <h3 className="text-base font-bold text-[#002b56] mb-4 flex items-center gap-2">
-                                        <Icon name="briefcase" size={16} /> Cyber Ecosystem Job Boards
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        {jobBoards.map((jb, jIdx) => (
-                                            <a key={jIdx} href={jb.url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-all group">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-slate-200 text-slate-600 group-hover:bg-[#002b56] group-hover:text-white rounded-lg transition-colors">
-                                                        <Icon name={jb.icon} size={12} />
+                                <div className="lg:col-span-2 space-y-6">
+                                    <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                                        <h3 className="text-base font-bold text-[#002b56] mb-4 flex items-center gap-2">
+                                            <Icon name="briefcase" size={16} /> Cyber Ecosystem Jobs Directories
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            {jobBoards.map((jb, jIdx) => (
+                                                <a key={jIdx} href={jb.url} target="_blank" rel="noreferrer" className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-all group">
+                                                    <div>
+                                                        <h4 className="font-bold text-xs text-[#002b56] mb-0.5">{jb.name}</h4>
+                                                        <p className="text-[10px] text-slate-400 leading-relaxed">{jb.desc}</p>
                                                     </div>
-                                                    <span className="text-xs font-semibold text-slate-700">{jb.name}</span>
-                                                </div>
-                                                <Icon name="chevron-right" size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-                                            </a>
-                                        ))}
+                                                    <Icon name="chevron-right" size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Local Business Reality Notice */}
+                                    <div className="bg-slate-900 text-slate-100 p-6 rounded-3xl border border-slate-800 relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500 opacity-5 rounded-full -mr-16 -mt-16"></div>
+                                        <h4 className="font-bold text-xs text-indigo-400 mb-2 uppercase tracking-widest flex items-center gap-1.5">
+                                            <Icon name="alert-circle" size={14} /> Local Ecosystem Realities
+                                        </h4>
+                                        <p className="text-[11px] text-slate-400 leading-relaxed">
+                                            While remote global opportunities allow for direct USD compensation structures, local business benchmarks in Nigeria remain tied to regional guidelines. Less than 5% of regional tech organizations pay above ₦15 million annually, even at director or executive levels. The vast majority of mid-to-senior security operations roles scale reliably within the ₦5M - ₦8M range.
+                                        </p>
                                     </div>
                                 </div>
                                 <div>
@@ -484,7 +823,7 @@
 
                     {/* Footer Alignment */}
                     <footer className="bg-slate-900 text-slate-500 text-center py-6 text-[10px] border-t border-slate-800 tracking-wider font-semibold">
-                        © 2026 ALX CYBERSECURITY CAREER INSIGHT HUB • DEPLOYED THROUGH IN-BROWSER BABEL TRANSCOMPILATION
+                        &copy; 2026 ALX CYBERSECURITY CAREER INSIGHT HUB &bull; REGIONAL ECOSYSTEM &amp; STRATEGY PORTAL
                     </footer>
                 </div>
             );
